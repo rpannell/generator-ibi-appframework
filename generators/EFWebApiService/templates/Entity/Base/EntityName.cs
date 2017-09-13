@@ -10,14 +10,12 @@ using static IBI.<%= projectname %>.Service.Core.Attributes.Searchable;
 /// </summary>
 namespace IBI.<%= projectname %>.Service.Entities
 {
-	[Table("<%= entityinfo.TableName %>", Schema = "<%= entityinfo.Schema %>")]
+	[Table("<%= entityinfo.TableName %>", Schema = "<%= entityinfo.Schema %>")<% if(entityinfo.IsReadOnly) { %>, ReadOnly()<% } %>]
     public partial class <%= entityinfo.PropertyName %> : Entity<<%= entityinfo.PrimaryKey %>>
     {
-		<% for (property in entityinfo.Columns) { %>
-		<% if(!columns[property].Ignore) { %>
-		[<% if(columns[property].IsPrimaryKey) { %>Key(), <% } %>Column("<%= columns[property].ColumnName %>")]
+		<% for (property in entityinfo.Columns) { %><% if(!columns[property].Ignore) { %>
+		[<% if(columns[property].IsPrimaryKey) { %>Key(), <% } %>Column("<%= columns[property].ColumnName %>"<% if(columns[property].DataType == "varchar") { %>, TypeName = "VARCHAR"<% } %>)<% if(columns[property].IsAutoComplete) { %>, AutoComplete()<% } %><% if(columns[property].IsInsertOnly) { %>, InsertOnlyField()<% } %><% if(columns[property].SearchTypeAttribute != "") { %>, SearchAble(<%= columns[property].SearchTypeAttribute %>)<% } %>]
 		public <%= columns[property].PropertyType %> <%= columns[property].PropertyName %> { get; set; }
-		<% } %>
-		<% } %>
+		<% } %><% } %>
     }
 }

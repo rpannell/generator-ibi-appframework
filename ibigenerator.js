@@ -55,9 +55,11 @@ helper = {
 								if(foundIt){
 									for(var f = 0; f < newFiles.length; f++){
 										var file = newFiles[f];
-										var newCompile = doc.createElement("Compile");
-										newCompile.setAttribute("Include", file.replace(sourceLocation + "\\", ""));
-										e.appendChild(newCompile);
+										if(file.includes(sourceLocation)){
+											var newCompile = doc.createElement("Compile");
+											newCompile.setAttribute("Include", file.replace(sourceLocation + "\\", ""));
+											e.appendChild(newCompile);
+										}
 									}
 								
 									
@@ -93,9 +95,11 @@ helper = {
 								if(foundIt){
 									for(var f = 0; f < newFiles.length; f++){
 										var file = newFiles[f];
-										var newCompile = doc.createElement("Compile");
-										newCompile.setAttribute("Include", file.replace(sourceLocation + "\\", ""));
-										e.appendChild(newCompile);
+										if(file.includes(sourceLocation)){
+											var newCompile = doc.createElement("Compile");
+											newCompile.setAttribute("Include", file.replace(sourceLocation + "\\", ""));
+											e.appendChild(newCompile);
+										}
 									}
 								
 									
@@ -140,9 +144,13 @@ exports.writeScaffoldingToProj = function(sourceLocation){
 		if(er == null && files != null && files.length > 0){
 			progFile = files[0];
 		}
-			
+		
+		console.log("Service Loc: " + sourceLocation);
+		console.log("Service Proj: " + progFile);
+		console.log(newFiles);
+		
 		helper.checkout(path.join(sourceLocation, progFile));
-		helper.standardPluginProj(sourceLocation, progFile);
+		helper.netWebApi(sourceLocation, progFile);
 	});
 }
 
@@ -153,9 +161,13 @@ exports.writeScaffoldingToPluginProj = function(sourceLocation){
 		if(er == null && files != null && files.length > 0){
 			progFile = files[0];
 		}
-			
+		
+		console.log("Plugin Loc: " + sourceLocation);
+		console.log("Plugin Proj: " + progFile);
+		console.log(newFiles);
+		
 		helper.checkout(path.join(sourceLocation, progFile));
-		helper.netWebApi(sourceLocation, progFile);
+		helper.standardPluginProj(sourceLocation, progFile);
 	});
 }
 

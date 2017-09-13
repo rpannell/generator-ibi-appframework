@@ -13,15 +13,68 @@ module.exports = class extends Generator {
 	this.option('entityinfo', { description: "A JSON string of some of the entity information", type: String, alias: "ms" });
 	ibigenerator.resetFilesAndFolders();
   }
+
+  _searchAbleType(type){
+	var attr = "";
+	switch(type){
+		case "Contains":
+			attr = "SearchAbleType.Contains";
+            break;
+
+		case "Starts With":
+			attr = "SearchAbleType.StartsWith";
+			break;
+
+		case "Equal":
+			attr = "SearchAbleType.Equal";
+			break;
+
+		case "Not Equal":
+			attr = "SearchAbleType.NotEqual";
+			break;
+
+		case "Ends With":
+			attr = "SearchAbleType.EndsWith";
+			break;
+
+		case "Greater Than":
+			attr = "SearchAbleType.GreaterThan";
+			break;
+
+		case "Greater Than or Equal":
+			attr = "SearchAbleType.GreaterThanEqual";
+			break;
+
+		case "Less Than":
+			attr = "SearchAbleType.LessThan";
+			break;
+
+		case "Less Than or Equal":
+			attr = "SearchAbleType.LessThanEqual";
+			break;
+
+		default:
+			attr = "";
+			break;
+	  }
+	  return attr;
+  }  
   
   _buildTemplateData() {
 	var entityInfo = JSON.parse(this.options.entityinfo);
+	for(var i = 0; i < entityInfo.Columns.length; i++){
+		entityInfo.Columns[i].SearchTypeAttribute = this._searchAbleType(entityInfo.Columns[i].Search);
+	}
+	
 	this.templatedata = {};
 	this.templatedata.entityinfo = entityInfo;
 	this.templatedata.projectname = this.options.projectname;
 	this.templatedata.primarykey = entityInfo.PrimaryKey;
 	this.templatedata.columns =  entityInfo.Columns;
+	
   }
+  
+
   
   _writeFile(templatePath, filePath, overwrite){
 	ibigenerator.checkoutoradd(filePath);
