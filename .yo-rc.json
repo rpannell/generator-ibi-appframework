@@ -1,0 +1,9 @@
+{
+  "generator-node": {
+    "promptValues": {
+      "authorName": "Rodney Pannell",
+      "authorEmail": "rodney.pannell@gmail.com",
+      "authorUrl": ""
+    }
+  }
+}

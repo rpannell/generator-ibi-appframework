@@ -1,0 +1,50 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InterlineBrands.Web.Shell", "..\..\..\Trunk\StartFramework\Codebase\InterlineBrands.Web.Shell\InterlineBrands.Web.Shell.csproj", "{2B84F891-038B-40E6-8B0C-34DAB8A6E43C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IBI.<%= Name %>.Plugin", "IBI.<%= Name %>.Plugin\IBI.<%= Name %>.Plugin.csproj", "{95A8FDA9-8A75-49D9-A4D2-7D8DDA9337EF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Prod|Any CPU = Prod|Any CPU
+		Staging|Any CPU = Staging|Any CPU
+		Test|Any CPU = Test|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2B84F891-038B-40E6-8B0C-34DAB8A6E43C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B84F891-038B-40E6-8B0C-34DAB8A6E43C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B84F891-038B-40E6-8B0C-34DAB8A6E43C}.Prod|Any CPU.ActiveCfg = Prod|Any CPU
+		{2B84F891-038B-40E6-8B0C-34DAB8A6E43C}.Prod|Any CPU.Build.0 = Prod|Any CPU
+		{2B84F891-038B-40E6-8B0C-34DAB8A6E43C}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
+		{2B84F891-038B-40E6-8B0C-34DAB8A6E43C}.Staging|Any CPU.Build.0 = Staging|Any CPU
+		{2B84F891-038B-40E6-8B0C-34DAB8A6E43C}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{2B84F891-038B-40E6-8B0C-34DAB8A6E43C}.Test|Any CPU.Build.0 = Test|Any CPU
+		{95A8FDA9-8A75-49D9-A4D2-7D8DDA9337EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95A8FDA9-8A75-49D9-A4D2-7D8DDA9337EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95A8FDA9-8A75-49D9-A4D2-7D8DDA9337EF}.Prod|Any CPU.ActiveCfg = Prod|Any CPU
+		{95A8FDA9-8A75-49D9-A4D2-7D8DDA9337EF}.Prod|Any CPU.Build.0 = Prod|Any CPU
+		{95A8FDA9-8A75-49D9-A4D2-7D8DDA9337EF}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
+		{95A8FDA9-8A75-49D9-A4D2-7D8DDA9337EF}.Staging|Any CPU.Build.0 = Staging|Any CPU
+		{95A8FDA9-8A75-49D9-A4D2-7D8DDA9337EF}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{95A8FDA9-8A75-49D9-A4D2-7D8DDA9337EF}.Test|Any CPU.Build.0 = Test|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 3
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://jaxtfs01:8080/tfs/ebi
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = ..\\..\\..\\Trunk\\StartFramework\\Codebase\\InterlineBrands.Web.Shell\\InterlineBrands.Web.Shell.csproj
+		SccProjectName1 = ../../../Trunk/StartFramework/Codebase/InterlineBrands.Web.Shell
+		SccLocalPath1 = ..\\..\\..\\Trunk\\StartFramework\\Codebase\\InterlineBrands.Web.Shell
+		SccProjectUniqueName2 = IBI.<%= Name %>.Plugin\\IBI.<%= Name %>.Plugin.csproj
+		SccProjectName2 = IBI.<%= Name %>.Plugin
+		SccLocalPath2 = IBI.<%= Name %>.Plugin
+	EndGlobalSection
+EndGlobal

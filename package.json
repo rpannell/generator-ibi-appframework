@@ -1,0 +1,56 @@
+{
+  "name": "generator-ibi-appframework",
+  "version": "1.0.10",
+  "description": "Used to help speed up the development for the Application Framework",
+  "homepage": "",
+  "author": {
+    "name": "Rodney Pannell",
+    "email": "rodney.pannell@interlinebrands.com",
+    "url": ""
+  },
+  "files": [
+    "generators",
+    "ibigenerator.js",
+    "tfs-unlock.js"
+  ],
+  "main": "generators/index.js",
+  "keywords": [
+    "",
+    "yeoman-generator"
+  ],
+  "devDependencies": {
+    "yeoman-test": "^1.6.0",
+    "yeoman-assert": "^3.0.0",
+    "coveralls": "^2.13.1",
+    "nsp": "^2.6.3",
+    "eslint": "^4.1.0",
+    "eslint-config-xo-space": "^0.16.0",
+    "jest": "^19.0.2",
+    "jest-cli": "^20.0.0"
+  },
+  "dependencies": {
+    "chalk": "^1.1.3",
+    "glob": "^7.1.2",
+    "q": "^1.5.0",
+    "xmldom": "^0.1.27",
+    "yeoman-generator": "^1.1.1",
+    "yosay": "^2.0.0"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "scripts": {
+    "prepublish": "nsp check",
+    "pretest": "eslint . --fix",
+    "test": "jest"
+  },
+  "eslintConfig": {
+    "extends": "xo-space",
+    "env": {
+      "jest": true,
+      "node": true
+    }
+  },
+  "repository": "/generator-ibi-appframework",
+  "license": "AGPL-3.0"
+}

@@ -1,0 +1,401 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{95A8FDA9-8A75-49D9-A4D2-7D8DDA9337EF}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>IBI.<%= Name %>.Plugin</RootNamespace>
+    <AssemblyName>IBI.<%= Name %>.Plugin</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <NuGetPackageImportStamp>40d2d6ba</NuGetPackageImportStamp>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+    <UseGlobalApplicationHostFile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Prod|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime">
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.3.3.1\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper.Net4">
+      <HintPath>..\packages\AutoMapper.3.3.1\lib\net40\AutoMapper.Net4.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Core">
+      <HintPath>..\packages\Castle.Core.3.2.0\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Windsor">
+      <HintPath>..\packages\Castle.Windsor.3.2.1\lib\net45\Castle.Windsor.dll</HintPath>
+    </Reference>
+    <Reference Include="IBI.FrameworkSecurity.Client, Version=0.0.30.49592, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IBI.FrameworkSecurity.Client.0.0.30.49592-pre\lib\IBI.FrameworkSecurity.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IBI.Plugin.Utilities.Cache, Version=0.0.6.45965, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IBI.Plugin.Utilities.Cache.0.0.6.45965-pre\lib\IBI.Plugin.Utilities.Cache.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IBI.Plugin.Utilities.Controllers, Version=0.0.7.45965, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IBI.Plugin.Utilities.Controllers.0.0.7.45965-pre\lib\IBI.Plugin.Utilities.Controllers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IBI.Plugin.Utilities.Extensions, Version=0.0.6.45965, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IBI.Plugin.Utilities.Extensions.0.0.6.45965-pre\lib\IBI.Plugin.Utilities.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IBI.Plugin.Utilities.Logging, Version=0.0.4.50267, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IBI.Plugin.Utilities.Logging.0.0.4.50267-pre\lib\IBI.Plugin.Utilities.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IBI.Plugin.Utilities.UI, Version=0.0.9.45965, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IBI.Plugin.Utilities.UI.0.0.9.45965-pre\lib\IBI.Plugin.Utilities.UI.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="InterlineBrands.Platform.Core, Version=1.0.20.48943, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IBI.Platform.Core.1.0.20.48943\lib\InterlineBrands.Platform.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Log4Mongo, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4mongo-net.2.2.0\lib\net45\Log4Mongo.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Threading.Tasks, Version=1.0.12.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks.Extensions, Version=1.0.12.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks.Extensions.Desktop, Version=1.0.168.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.Desktop.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MongoDB.Bson, Version=2.2.4.26, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Bson.2.2.4\lib\net45\MongoDB.Bson.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MongoDB.Driver, Version=2.2.4.26, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Driver.2.2.4\lib\net45\MongoDB.Driver.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MongoDB.Driver.Core, Version=2.2.4.26, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Driver.Core.2.2.4\lib\net45\MongoDB.Driver.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Redis.Cache, Version=0.9.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Redis.Cache.0.9.2\lib\net\Redis.Cache.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\packages\RestSharp.104.4.0\lib\net4\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="StackExchange.Redis, Version=1.0.297.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\StackExchange.Redis.1.0.297\lib\net45\StackExchange.Redis.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WebGrease">
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="ConfigSettings\AutoMapperConfiguration.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\<%= Name %>Controller.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AdvancedSearch.cs" />
+    <Compile Include="Models\PaginationResult.cs" />
+    <Compile Include="Models\ViewModels\<%= Name %>ViewModel.cs" />
+    <Compile Include="<%= Name %>Logger.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\BaseService.cs" />
+    <Compile Include="Services\RestClient\Base.cs" />
+    <Compile Include="<%= Name %>.Installer.cs" />
+    <Compile Include="Utils\RestClient.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\CSS\Site.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="Scripts\IBI.<%= Name %>.js" />
+    <None Include="Properties\PublishProfiles\Prod.pubxml" />
+    <None Include="Properties\PublishProfiles\Staging.pubxml" />
+    <None Include="Properties\PublishProfiles\Test.pubxml" />
+    <None Include="Scripts\_references.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <None Include="Web.Staging.config">
+      <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web.Test.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Content\Images\" />
+    <Folder Include="Enums\" />
+    <Folder Include="Models\Entities\" />
+    <Folder Include="Services\Interfaces\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="<%= Name %>.Plugin.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\<%= Name %>\Index.cshtml">
+      <Generator>RazorGenerator</Generator>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web.Prod.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Staging|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>60762</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:60762/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <!-- Set the path to the staging directory. -->
+    <StagingPath>..\..\..\..\Trunk\StartFramework\Codebase\InterlineBrands.Web.Shell\Plugins\<%= Name %>\</StagingPath>
+    <StagingJSPath>..\..\..\..\Trunk\StartFramework\Codebase\InterlineBrands.Web.Shell\Scripts\PlugInScripts\<%= Name %>\</StagingJSPath>
+    <StagingContentPath>..\..\..\..\Trunk\StartFramework\Codebase\InterlineBrands.Web.Shell\Content\PlugInContent\<%= Name %>\</StagingContentPath>
+    <MasterJSPath>Scripts\</MasterJSPath>
+    <MasterContentPath>Content\</MasterContentPath>
+  </PropertyGroup>
+  <Target Name="BeforeBuild">
+    <RemoveDir Directories="$(StagingPath)" />
+    <RemoveDir Directories="$(StagingJSPath)" />
+    <RemoveDir Directories="$(StagingContentPath)" />
+    <ItemGroup>
+      <FilesToDelete Include="$(OutputPath)**\*" />
+    </ItemGroup>
+    <Delete Files="@(FilesToDelete)" />
+  </Target>
+  <Target Name="AfterBuild">
+    <TransformXml Source="Web.config" Transform="Web.$(Configuration).config" Destination="bin\IBI.<%= Name %>.PlugIn.dll.config" />
+    <CreateItem Include="$(OutputPath)**\*">
+      <Output ItemName="FilesToCopy" TaskParameter="Include" />
+    </CreateItem>
+    <CreateItem Include="$(MasterJSPath)*.js">
+      <Output ItemName="JSFilesToCopy" TaskParameter="Include" />
+    </CreateItem>
+    <CreateItem Include="$(MasterContentPath)\**\*">
+      <Output ItemName="ContentFilesToCopy" TaskParameter="Include" />
+    </CreateItem>
+    <MakeDir Directories="$(StagingPath)" Condition="!Exists('$(StagingPath)')" />
+    <MakeDir Directories="$(StagingJSPath)" Condition="!Exists('$(StagingJSPath)')" />
+    <MakeDir Directories="$(StagingContentPath)" Condition="!Exists('$(StagingContentPath)')" />
+    <Copy SourceFiles="@(FilesToCopy)" DestinationFolder="$(StagingPath)" />
+    <Copy SourceFiles="@(JSFilesToCopy)" DestinationFolder="$(StagingPath)\Scripts\" />
+    <Copy SourceFiles="@(ContentFilesToCopy)" DestinationFiles="@(ContentFilesToCopy->'$(StagingPath)\Content\%(RecursiveDir)%(Filename)%(Extension)')" />
+  </Target>
+  <Target Name="DeploymentCleanUp" AfterTargets="GatherAllFilesToPublish">
+    <!-- First Move the Scripts and Content Folder to the bin folder-->
+    <CreateItem Include="$(WebProjectOutputDir)\$(WPPAllFilesInSingleFolder)\Scripts\*.js">
+      <Output ItemName="JSFilesToPublish" TaskParameter="Include" />
+    </CreateItem>
+    <CreateItem Include="$(WebProjectOutputDir)\$(WPPAllFilesInSingleFolder)\Content\**\*">
+      <Output ItemName="ContentFilesToPublish" TaskParameter="Include" />
+    </CreateItem>
+    <Copy SourceFiles="@(JSFilesToPublish)" DestinationFolder="$(WebProjectOutputDir)\$(WPPAllFilesInSingleFolder)\bin\Scripts\" />
+    <Copy SourceFiles="@(ContentFilesToPublish)" DestinationFiles="@(ContentFilesToPublish->'$(WebProjectOutputDir)\$(WPPAllFilesInSingleFolder)\bin\Content\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <!-- Transform the Web.config and add to the bin folder-->
+    <TransformXml Source="Web.config" Transform="Web.$(Configuration).config" Destination="$(WebProjectOutputDir)\$(WPPAllFilesInSingleFolder)\bin\IBI.<%= Name %>.Plugin.dll.config" />
+    <!-- Delete the files that were created-->
+    <ItemGroup>
+      <FilesToDelete Include="$(WebProjectOutputDir)\$(WPPAllFilesInSingleFolder)\*.*" />
+    </ItemGroup>
+    <Delete Files="@(FilesToDelete)" />
+    <!-- Delete the misc other folders-->
+    <RemoveDir Directories="$(WebProjectOutputDir)\$(WPPAllFilesInSingleFolder)\Content\" />
+    <RemoveDir Directories="$(WebProjectOutputDir)\$(WPPAllFilesInSingleFolder)\Scripts\" />
+    <RemoveDir Directories="$(WebProjectOutputDir)\$(WPPAllFilesInSingleFolder)\Views\" />
+    <!-- Move the files from the bin folder to the publish folder -->
+    <CreateItem Include="$(WebProjectOutputDir)\$(WPPAllFilesInSingleFolder)\bin\**\*">
+      <Output ItemName="BinFilesToPublish" TaskParameter="Include" />
+    </CreateItem>
+    <Copy SourceFiles="@(BinFilesToPublish)" DestinationFiles="@(BinFilesToPublish->'$(WebProjectOutputDir)\$(WPPAllFilesInSingleFolder)\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <!-- Delete the nolonger needed bin folder -->
+    <RemoveDir Directories="$(WebProjectOutputDir)\$(WPPAllFilesInSingleFolder)\bin\" />
+    <!-- Delete any debug files -->
+    <ItemGroup>
+      <DeletePDB Include="$(WebProjectOutputDir)\$(WPPAllFilesInSingleFolder)\*.pdb" />
+    </ItemGroup>
+    <Delete Files="@(DeletePDB)" />
+    <!-- Zip Up the Files -->
+    <!-- <Exec Command="&quot;c:\Program Files\7-Zip\7z.exe&quot; a $(WebProjectOutputDir)\$(WPPAllFilesInSingleFolder)\Zipped\<%= Name %>.zip $(WebProjectOutputDir)\$(WPPAllFilesInSingleFolder)\*" /> -->
+  </Target>
+  <Import Project="..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets" Condition="Exists('..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets')" />
+  <Import Project="..\packages\RazorGenerator.MsBuild.2.2.2\build\RazorGenerator.MsBuild.targets" Condition="Exists('..\packages\RazorGenerator.MsBuild.2.2.2\build\RazorGenerator.MsBuild.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\RazorGenerator.MsBuild.2.2.2\build\RazorGenerator.MsBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\RazorGenerator.MsBuild.2.2.2\build\RazorGenerator.MsBuild.targets'))" />
+  </Target>
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
+</Project>

@@ -1,0 +1,8 @@
+{
+  "CurrentEntitiesInfo": [ ],
+  "DatabaseName": "<%= DatabaseName %>",
+  "DatabaseUser": "<%= DatabaseUser %>",
+  "DatabaseUserPassword": "<%= DatabasePassword %>",
+  "IsWindowsAuth": false,
+  "ServerName": "<%= DatabaseServer %>"
+}

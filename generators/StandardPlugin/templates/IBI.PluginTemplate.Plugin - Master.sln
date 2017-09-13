@@ -1,0 +1,76 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InterlineBrands.Web.Shell", "..\..\..\Trunk\StartFramework\Codebase\InterlineBrands.Web.Shell\InterlineBrands.Web.Shell.csproj", "{2B84F891-038B-40E6-8B0C-34DAB8A6E43C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IBI.<%= Name %>.Plugin", "IBI.<%= Name %>.Plugin\IBI.<%= Name %>.Plugin.csproj", "{95A8FDA9-8A75-49D9-A4D2-7D8DDA9337EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IBI.<%= Name %>.Service", "..\..\..\Services\<%= Name %>\Trunk\IBI.<%= Name %>.Service\IBI.<%= Name %>.Service.csproj", "{6B79A372-AB0A-4A29-9D3B-B368B402EA35}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IBI.<%= Name %>.Service.Test", "..\..\..\Services\<%= Name %>\Trunk\IBI.<%= Name %>.Service.Test\IBI.<%= Name %>.Service.Test.csproj", "{F78CBB5A-031A-40FA-91BF-57250A4051D1}"
+EndProject
+Global
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 3
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://jaxtfs01:8080/tfs/ebi
+		SccProjectUniqueName0 = ..\\..\\..\\Trunk\\StartFramework\\Codebase\\InterlineBrands.Web.Shell\\InterlineBrands.Web.Shell.csproj
+		SccProjectName0 = ../../../Trunk/StartFramework/Codebase/InterlineBrands.Web.Shell
+		SccLocalPath0 = ..\\..\\..\\Trunk\\StartFramework\\Codebase\\InterlineBrands.Web.Shell
+		SccLocalPath1 = .
+		SccProjectUniqueName2 = IBI.<%= Name %>.Plugin\\IBI.<%= Name %>.Plugin.csproj
+		SccProjectName2 = IBI.<%= Name %>.Plugin
+		SccLocalPath2 = IBI.<%= Name %>.Plugin
+		SccProjectUniqueName3 = ..\\..\\..\\Services\\<%= Name %>\\Trunk\\IBI.<%= Name %>.Service\\IBI.<%= Name %>.Service.csproj
+		SccProjectName3 = ../../../Services/<%= Name %>/Trunk/IBI.<%= Name %>.Service
+		SccLocalPath3 = ..\\..\\..\\Services\\<%= Name %>\\Trunk\\IBI.<%= Name %>.Service
+		SccProjectUniqueName4 = ..\\..\\..\\Services\\<%= Name %>\\Trunk\\IBI.<%= Name %>.Service.Test\\IBI.<%= Name %>.Service.Test.csproj
+		SccProjectName4 = ../../../Services/<%= Name %>/Trunk/IBI.<%= Name %>.Service.Test
+		SccLocalPath4 = ..\\..\\..\\Services\\<%= Name %>\\Trunk\\IBI.<%= Name %>.Service.Test
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Prod|Any CPU = Prod|Any CPU
+		Test|Any CPU = Test|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2B84F891-038B-40E6-8B0C-34DAB8A6E43C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B84F891-038B-40E6-8B0C-34DAB8A6E43C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B84F891-038B-40E6-8B0C-34DAB8A6E43C}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{2B84F891-038B-40E6-8B0C-34DAB8A6E43C}.Test|Any CPU.Build.0 = Test|Any CPU
+		{2B84F891-038B-40E6-8B0C-34DAB8A6E43C}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
+		{2B84F891-038B-40E6-8B0C-34DAB8A6E43C}.Staging|Any CPU.Build.0 = Staging|Any CPU
+		{2B84F891-038B-40E6-8B0C-34DAB8A6E43C}.Prod|Any CPU.ActiveCfg = Prod|Any CPU
+		{2B84F891-038B-40E6-8B0C-34DAB8A6E43C}.Prod|Any CPU.Build.0 = Prod|Any CPU
+		{95A8FDA9-8A75-49D9-A4D2-7D8DDA9337EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95A8FDA9-8A75-49D9-A4D2-7D8DDA9337EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95A8FDA9-8A75-49D9-A4D2-7D8DDA9337EF}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{95A8FDA9-8A75-49D9-A4D2-7D8DDA9337EF}.Test|Any CPU.Build.0 = Test|Any CPU
+		{95A8FDA9-8A75-49D9-A4D2-7D8DDA9337EF}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
+		{95A8FDA9-8A75-49D9-A4D2-7D8DDA9337EF}.Staging|Any CPU.Build.0 = Staging|Any CPU
+		{95A8FDA9-8A75-49D9-A4D2-7D8DDA9337EF}.Prod|Any CPU.ActiveCfg = Prod|Any CPU
+		{95A8FDA9-8A75-49D9-A4D2-7D8DDA9337EF}.Prod|Any CPU.Build.0 = Prod|Any CPU
+		{6B79A372-AB0A-4A29-9D3B-B368B402EA35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B79A372-AB0A-4A29-9D3B-B368B402EA35}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B79A372-AB0A-4A29-9D3B-B368B402EA35}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{6B79A372-AB0A-4A29-9D3B-B368B402EA35}.Test|Any CPU.Build.0 = Test|Any CPU
+		{6B79A372-AB0A-4A29-9D3B-B368B402EA35}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
+		{6B79A372-AB0A-4A29-9D3B-B368B402EA35}.Staging|Any CPU.Build.0 = Staging|Any CPU
+		{6B79A372-AB0A-4A29-9D3B-B368B402EA35}.Prod|Any CPU.ActiveCfg = Prod|Any CPU
+		{6B79A372-AB0A-4A29-9D3B-B368B402EA35}.Prod|Any CPU.Build.0 = Prod|Any CPU
+		{F78CBB5A-031A-40FA-91BF-57250A4051D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F78CBB5A-031A-40FA-91BF-57250A4051D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F78CBB5A-031A-40FA-91BF-57250A4051D1}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{F78CBB5A-031A-40FA-91BF-57250A4051D1}.Test|Any CPU.Build.0 = Test|Any CPU
+		{F78CBB5A-031A-40FA-91BF-57250A4051D1}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
+		{F78CBB5A-031A-40FA-91BF-57250A4051D1}.Staging|Any CPU.Build.0 = Staging|Any CPU
+		{F78CBB5A-031A-40FA-91BF-57250A4051D1}.Prod|Any CPU.ActiveCfg = Prod|Any CPU
+		{F78CBB5A-031A-40FA-91BF-57250A4051D1}.Prod|Any CPU.Build.0 = Prod|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
