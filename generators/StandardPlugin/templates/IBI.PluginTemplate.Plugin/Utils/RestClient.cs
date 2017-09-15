@@ -23,7 +23,12 @@ namespace IBI.<%= Name %>.Plugin.Utils
 
         #region Constructor
 
-        public RestClient(string url, string resource, string username, string role)
+        /// <summary>
+        /// Create a RestClient with no authentication
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="resource"></param>
+        public RestClient(string url, string resource)
         {
             //ensure the resource is setup correctly
             resource = !resource.StartsWith("api/") ? string.Format("api/{0}", resource) : resource;
@@ -32,12 +37,34 @@ namespace IBI.<%= Name %>.Plugin.Utils
             resourceUrl = resource;
 
             this.url = url;
-            this.user = username;
-            this.password = role;
             this.httpClient = new HttpClient();
             httpClient.BaseAddress = new Uri(this.url);
-            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(UTF8Encoding.UTF8.GetBytes(string.Format("{0}:{1}", this.user, this.password))));
             httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+        }
+
+        /// <summary>
+        /// Creates a RestClient that uses a user name and password for
+        /// authentication
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="resource"></param>
+        /// <param name="username"></param>
+        /// <param name="role"></param>
+        public RestClient(string url, string resource, string username, string role) : this(url, resource)
+        {
+            //ensure the resource is setup correctly
+            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(UTF8Encoding.UTF8.GetBytes(string.Format("{0}:{1}", username, role))));
+        }
+
+        /// <summary>
+        /// Creates RestClient that uses a token for authentication
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="resource"></param>
+        /// <param name="token"></param>
+        public RestClient(string url, string resource, string token) : this(url, resource)
+        {
+            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
         }
 
         #endregion Constructor

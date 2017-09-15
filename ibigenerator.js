@@ -34,6 +34,9 @@ helper = {
 		folders.push(folderPath);
 	},
 	netWebApi: function(sourceLocation, progFile){
+		
+		console.log("NewFiles Service: ");
+		console.log(newFiles);
 		fs.readFile(path.join(sourceLocation, progFile), 'utf-8', function(err, data) {
 			var doc = new xmldom().parseFromString(data, 'text/xml');
 			var items = doc.getElementsByTagName('Project');
@@ -55,6 +58,51 @@ helper = {
 								if(foundIt){
 									for(var f = 0; f < newFiles.length; f++){
 										var file = newFiles[f];
+										console.log("F: " + f);
+										console.log("File: " + file);
+										console.log("New File: " + newFiles[f]);
+										if(file.includes(sourceLocation)){
+											var newCompile = doc.createElement("Compile");
+											newCompile.setAttribute("Include", file.replace(sourceLocation + "\\", ""));
+											e.appendChild(newCompile);
+										}
+									}
+								
+									
+									break;
+								}
+							}
+						}
+					}
+				}
+			}
+			fs.writeFileSync(path.join(sourceLocation, progFile), new xmlserial().serializeToString(doc));	
+		});
+	},
+	netWebApiFiles: function(sourceLocation, progFile, files){
+		console.log("Files Service: ");
+		console.log(files);
+		fs.readFile(path.join(sourceLocation, progFile), 'utf-8', function(err, data) {
+			var doc = new xmldom().parseFromString(data, 'text/xml');
+			var items = doc.getElementsByTagName('Project');
+			var foundIt = false;
+			for(var i in items){
+				var item = items[i];
+				if(item.documentElement != undefined){
+					if(item.documentElement.tagName == "Project"){
+						for(var j = 0; j < item.documentElement.childNodes.length; j++){
+							var e = item.documentElement.childNodes[j];
+							if(e.tagName == "ItemGroup" && e.hasChildNodes()){
+								for(var k = 0; k < e.childNodes.length; k++){
+									if(e.childNodes[k].tagName == "Compile"){
+										foundIt = true;
+										break;
+									}
+								}
+								
+								if(foundIt){
+									for(var f = 0; f < files.length; f++){
+										var file = files[f];
 										if(file.includes(sourceLocation)){
 											var newCompile = doc.createElement("Compile");
 											newCompile.setAttribute("Include", file.replace(sourceLocation + "\\", ""));
@@ -137,7 +185,7 @@ exports.checkoutoradd = function (filePath) {
 	}
 };
 
-exports.writeScaffoldingToProj = function(sourceLocation){
+exports.writeScaffoldingToProj = function(sourceLocation, serviceFiles){
 	//find the prog file
 	glob("*.csproj", { cwd: sourceLocation }, function(er, files){
 		var progFile = "";
@@ -145,12 +193,8 @@ exports.writeScaffoldingToProj = function(sourceLocation){
 			progFile = files[0];
 		}
 		
-		console.log("Service Loc: " + sourceLocation);
-		console.log("Service Proj: " + progFile);
-		console.log(newFiles);
-		
 		helper.checkout(path.join(sourceLocation, progFile));
-		helper.netWebApi(sourceLocation, progFile);
+		helper.netWebApiFiles(sourceLocation, progFile, serviceFiles);
 	});
 }
 

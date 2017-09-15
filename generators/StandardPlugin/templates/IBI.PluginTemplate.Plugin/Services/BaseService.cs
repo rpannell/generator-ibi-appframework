@@ -1,4 +1,5 @@
-﻿using IBI.Plugin.Utilities.Cache.Redis;
+﻿using IBI.FrameworkSecurity.Client;
+using IBI.Plugin.Utilities.Cache.Redis;
 using InterlineBrands.Platform.Core.Settings;
 using System.Web;
 
@@ -20,6 +21,7 @@ namespace IBI.<%= Name %>.Plugin.Services
         public BaseService(IPluginSettings pluginSettings)
         {
             this.URL = pluginSettings["<%= Name %>ServiceURL"];
+			this.UserName = Impersonation.Instance.CurrentImpersonatedUser;
             //create the comma delimited list of roles
             foreach (var pluginRole in <%= Name %>.PLUGINROLES.Split(','))
             {

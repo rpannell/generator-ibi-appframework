@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http.Headers;
 using System.Security.Principal;
 using System.Text;
@@ -41,7 +42,12 @@ namespace IBI.<%= Name %>.Service.Core.Authentication
             if (username != string.Empty && password != string.Empty)
             {
                 var identity = new GenericIdentity(username);
-                SetPrincipal(new GenericPrincipal(identity, null));
+                var roles = new List<string>();
+                foreach (var role in password.Split(','))
+                {
+                    roles.Add(role.Trim());
+                }
+                SetPrincipal(new GenericPrincipal(identity, roles.ToArray()));
                 return true;
             }
 
