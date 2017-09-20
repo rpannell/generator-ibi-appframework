@@ -15,6 +15,11 @@ namespace IBI.<%= projectname %>.Plugin.Services
             this.serviceClient = new RestClient.<%= entityinfo.PropertyName %>RestClient(this.URL, "api/<%= entityinfo.PropertyName %>/", this.UserName, this.UserName);
         }
 		
+		public List<<%= entityinfo.PropertyName %>> Get()
+        {
+			return ServiceCache.Get<List<<%= entityinfo.PropertyName %>>>("All<%= entityinfo.PropertyName %>", () => this.serviceClient.GetAll());
+        }
+		
 		public <%= entityinfo.PropertyName %> Get(<%= entityinfo.PrimaryKey %> Id)
         {
             return this.serviceClient.Get(Id);

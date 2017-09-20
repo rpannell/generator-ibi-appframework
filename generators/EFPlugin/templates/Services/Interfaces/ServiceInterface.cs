@@ -9,6 +9,8 @@ namespace IBI.<%= projectname %>.Plugin.Services.Interfaces
         PaginationResult<<%= entityinfo.PropertyName %>> GetPage(int limit, int offset, string search, string sort, string order);
 
 		void Delete(<%= entityinfo.PrimaryKey %> id);
+		
+		List<<%= entityinfo.PropertyName %>> Get();
 
 		<%= entityinfo.PropertyName %> Get(<%= entityinfo.PrimaryKey %> id);
 

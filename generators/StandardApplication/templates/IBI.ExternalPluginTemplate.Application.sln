@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.16
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IBI.<%= Name %>.Application", "IBI.<%= Name %>.Application\IBI.<%= Name %>.Application.csproj", "{3CA715C4-152A-4E83-A981-7153B437D601}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Prod|Any CPU = Prod|Any CPU
+		Staging|Any CPU = Staging|Any CPU
+		Test|Any CPU = Test|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3CA715C4-152A-4E83-A981-7153B437D601}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CA715C4-152A-4E83-A981-7153B437D601}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CA715C4-152A-4E83-A981-7153B437D601}.Prod|Any CPU.ActiveCfg = Prod|Any CPU
+		{3CA715C4-152A-4E83-A981-7153B437D601}.Prod|Any CPU.Build.0 = Prod|Any CPU
+		{3CA715C4-152A-4E83-A981-7153B437D601}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
+		{3CA715C4-152A-4E83-A981-7153B437D601}.Staging|Any CPU.Build.0 = Staging|Any CPU
+		{3CA715C4-152A-4E83-A981-7153B437D601}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{3CA715C4-152A-4E83-A981-7153B437D601}.Test|Any CPU.Build.0 = Test|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3BE088D9-8377-46D1-B76E-DC0E8AF0B437}
+	EndGlobalSection
+EndGlobal

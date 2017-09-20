@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/FontAwesome")
+    @Styles.Render("~/Content/BootstrapTable")
+    @Styles.Render("~/Content/Bootstrap")
+    @Styles.Render("~/Content/SmartAdminProductionPlugin")
+    @Styles.Render("~/Content/SmartAdminProduction")
+    @Styles.Render("~/Content/SmartAdminSkins")
+    @Styles.Render("~/Content/Site")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body class="smart-style-0 fixed-header fixed-ribbon">
+    <aside id="left-panel">
+        <nav>
+            <ul>
+                <li>
+                    <a href="/Home/Index">
+                        <i class="fa fa-lg fa-fw fa-list-alt"></i> <span class="menu-item-parent">Current Request</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <span class="minifyme" data-action="minifyMenu"> <i class="fa fa-arrow-circle-left hit"></i> </span>
+    </aside>
+    <div id="main">
+        <div id="content" class="row">
+            @RenderBody()
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/jQuery")
+    @Scripts.Render("~/bundles/jQueryVal")
+    @Scripts.Render("~/bundles/jQueryAjax")
+    @Scripts.Render("~/bundles/jQueryUI")
+    <script src="https://code.jquery.com/jquery-migrate-3.0.0.js"></script>
+    @Scripts.Render("~/bundles/Bootstrap")
+    @Scripts.Render("~/bundles/BootstrapTable")
+    @Scripts.Render("~/bundles/Moment")
+    @Scripts.Render("~/bundles/IBI")
+    @Scripts.Render("~/bundles/APP")
+    @RenderSection("scripts", required: false)
+    <script type="text/javascript" language="javascript">
+        pageSetUp();
+
+        window.addEventListener("message", function (e) {
+            if (e.data.Event == "BackToUrl") {
+                window.location.href = e.data.RelativePath;
+            } else if (e.data.Event == "HiddenMenu") {
+                if (e.data.IsHidden) {
+                    $("body").addClass("hidden-menu");
+                } else {
+                    $("body").removeClass("hidden-menu");
+                }
+            }
+        });
+
+        $(document).ready(function () {
+            IBI.External.SendUrl("@(ViewBag.Title)", window.location.pathname + window.location.search)
+        });
+    </script>
+</body>
+</html>
