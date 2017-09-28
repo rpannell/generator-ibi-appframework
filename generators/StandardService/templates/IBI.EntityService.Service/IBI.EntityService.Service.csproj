@@ -230,6 +230,7 @@
     <Compile Include="Core\Services\Interfaces\IBaseService.cs" />
     <Compile Include="<%= Name %>Logger.cs" />
     <Compile Include="Core\Config\AutoMapperProfile.cs" />
+	<Compile Include="Utils\SendTemplateEmail.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />

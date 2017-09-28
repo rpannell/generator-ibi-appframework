@@ -70,6 +70,7 @@ module.exports = class extends Generator {
 		this._runTemplateOnFolder('Scripts', this._serviceSourceLocation());
 		this._createDirectory(path.join(this._serviceSourceLocation(), 'Services', 'Interfaces', 'Base'));
 		this._createDirectory(path.join(this._serviceSourceLocation(), 'Services', 'Base'));
+		this._runTemplateOnFolder('Utils', this._serviceSourceLocation());
 		this._runTemplateOnFolder('Views', this._serviceSourceLocation());
 		this.fs.copyTpl(this.templatePath('IBI.EntityService.Service/EntityServiceLogger.cs'), path.join(this._serviceSourceLocation(), this.templatedata.Name + 'Logger.cs'), this.templatedata);	
 		this.fs.copy(this.templatePath('IBI.EntityService.Service/favicon.ico'),path.join(this._serviceSourceLocation(), 'favicon.ico'));

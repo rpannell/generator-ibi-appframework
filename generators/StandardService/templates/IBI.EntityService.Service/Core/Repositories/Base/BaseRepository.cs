@@ -453,5 +453,215 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
         }
 
         #endregion Expression
-    }
+
+        #region Stored Proc Helpers
+
+        #region Input Parameters
+
+        /// <summary>
+        /// Create an input SqlParameter of type bigint
+        /// </summary>
+        /// <param name="parameterName">The name of the parameter</param>
+        /// <param name="length">The size of the parameter</param>
+        /// <param name="value">The value of the parameter</param>
+        /// <returns>SqlParameter</returns>
+        public SqlParameter GetInputBigInt(string parameterName, int length, string value)
+        {
+            return this.GetSqlParameter(parameterName, SqlDbType.BigInt, value, length);
+        }
+
+        /// <summary>
+        /// Create an input SqlParameter of type bit
+        /// </summary>
+        /// <param name="parameterName">The name of the parameter</param>
+        /// <param name="length">The size of the parameter</param>
+        /// <param name="value">The value of the parameter</param>
+        /// <returns>SqlParameter</returns>
+        public SqlParameter GetInputBit(string parameterName, int length, string value)
+        {
+            return this.GetSqlParameter(parameterName, SqlDbType.Bit, value, length);
+        }
+
+        /// <summary>
+        /// Create an input SqlParameter of type int
+        /// </summary>
+        /// <param name="parameterName">The name of the parameter</param>
+        /// <param name="length">The size of the parameter</param>
+        /// <param name="value">The value of the parameter</param>
+        /// <returns>SqlParameter</returns>
+        public SqlParameter GetInputInt(string parameterName, int length, string value)
+        {
+            return this.GetSqlParameter(parameterName, SqlDbType.Int, value, length);
+        }
+
+        /// <summary>
+        /// Create an input SqlParameter of type nvarchar
+        /// </summary>
+        /// <param name="parameterName">The name of the parameter</param>
+        /// <param name="length">The size of the parameter</param>
+        /// <param name="value">The value of the parameter</param>
+        /// <returns>SqlParameter</returns>
+        public SqlParameter GetInputNVarChar(string parameterName, int length, string value)
+        {
+            return this.GetSqlParameter(parameterName, SqlDbType.NVarChar, value, length);
+        }
+
+        /// <summary>
+        /// Create an input SqlParameter of type varchar
+        /// </summary>
+        /// <param name="parameterName">The name of the parameter</param>
+        /// <param name="length">The size of the parameter</param>
+        /// <param name="value">The value of the parameter</param>
+        /// <returns>SqlParameter</returns>
+        public SqlParameter GetInputVarChar(string parameterName, int length, string value)
+        {
+            return this.GetSqlParameter(parameterName, SqlDbType.VarChar, value, length);
+        }
+
+        #endregion Input Parameters
+
+        #region Output Parameters
+
+        /// <summary>
+        /// Create an output SqlParameter of type bigint
+        /// </summary>
+        /// <param name="parameterName">The name of the parameter</param>
+        /// <param name="length">The size of the parameter</param>
+        /// <returns>SqlParameter</returns>
+        public SqlParameter GetOutputBigInt(string parameterName, int length)
+        {
+            return this.GetSqlParameter(parameterName, SqlDbType.BigInt, null, length, ParameterDirection.Output);
+        }
+
+        /// <summary>
+        /// Create an output SqlParameter of type bit
+        /// </summary>
+        /// <param name="parameterName">The name of the parameter</param>
+        /// <param name="length">The size of the parameter</param>
+        /// <returns>SqlParameter</returns>
+        public SqlParameter GetOutputBit(string parameterName, int length)
+        {
+            return this.GetSqlParameter(parameterName, SqlDbType.Bit, null, length);
+        }
+
+        /// <summary>
+        /// Create an output SqlParameter of type int
+        /// </summary>
+        /// <param name="parameterName">The name of the parameter</param>
+        /// <param name="length">The size of the parameter</param>
+        /// <returns>SqlParameter</returns>
+        public SqlParameter GetOutputInt(string parameterName, int length)
+        {
+            return this.GetSqlParameter(parameterName, SqlDbType.Int, null, length, ParameterDirection.Output);
+        }
+
+        /// <summary>
+        /// Create an output SqlParameter of type nvarchar
+        /// </summary>
+        /// <param name="parameterName">The name of the parameter</param>
+        /// <param name="length">The size of the parameter</param>
+        /// <returns>SqlParameter</returns>
+        public SqlParameter GetOutputNVarChar(string parameterName, int length)
+        {
+            return this.GetSqlParameter(parameterName, SqlDbType.NVarChar, null, length, ParameterDirection.Output);
+        }
+
+        /// <summary>
+        /// Create an output SqlParameter of type varchar
+        /// </summary>
+        /// <param name="parameterName">The name of the parameter</param>
+        /// <param name="length">The size of the parameter</param>
+        /// <returns>SqlParameter</returns>
+        public SqlParameter GetOutputVarChar(string parameterName, int length)
+        {
+            return this.GetSqlParameter(parameterName, SqlDbType.VarChar, null, length, ParameterDirection.Output);
+        }
+
+        #endregion Output Parameters
+
+        #region Run Stored Procedure
+
+        /// <summary>
+        /// Run a stored procedure with multiple parameters
+        /// </summary>
+        /// <typeparam name="T">The return type</typeparam>
+        /// <param name="storedProcName">The name of the stored proc</param>
+        /// <param name="args">The parameters</param>
+        /// <returns>T</returns>
+        public object RunStoredProc<T>(string storedProcName, params SqlParameter[] args)
+        {
+            var proc = this.StoredProcQueryString(storedProcName, args);
+
+            try
+            {
+                //checking to seee if the type is a list will throw an exception it it's not
+                //a list so we
+                if (typeof(T).GetGenericTypeDefinition() == typeof(List<>))
+                {
+                    return this.Database.SqlQuery<T>(proc, args).ToList();
+                }
+            }
+            catch (Exception) { }
+            return this.Database.SqlQuery<T>(proc, args).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Runs a stored procedure that doesn't return an object
+        /// </summary>
+        /// <param name="storedProcName">The name of the stored procedure</param>
+        /// <param name="args">The SqlParameter to use</param>
+        public void RunStoredProc(string storedProcName, params SqlParameter[] args)
+        {
+            try
+            {
+                var proc = this.StoredProcQueryString(storedProcName, args);
+                this.Database.SqlQuery(null, proc, args);
+            }
+            catch (Exception) { }
+        }
+
+        #endregion Run Stored Procedure
+
+        /// <summary>
+        /// Generic function to create a SqlParameter
+        /// </summary>
+        /// <param name="parameterName">Name of the parameter</param>
+        /// <param name="type">The SqlDbType of the parameter</param>
+        /// <param name="value">The value of the parameter (defaults to null)</param>
+        /// <param name="length">The length of the parameter (defaults to 0)</param>
+        /// <param name="direction">The direction of the parameter (defaults to Input)</param>
+        /// <returns>SqlParameter</returns>
+        private SqlParameter GetSqlParameter(string parameterName, SqlDbType type, object value = null, int length = 0, ParameterDirection direction = ParameterDirection.Input)
+        {
+            var parameter = new SqlParameter(parameterName.StartsWith("@") ? parameterName : string.Format("@{0}", parameterName), value);
+            parameter.SqlDbType = type;
+            parameter.Direction = direction;
+            if (length != 0)
+            {
+                parameter.Size = length;
+            }
+
+            return parameter;
+        }
+
+        /// <summary>
+        /// Helper function to create the query to run a stored procedure
+        /// </summary>
+        /// <param name="storedProcName">The name of the stored procedure</param>
+        /// <param name="args">The list of SqlParameters that are needed for the stored proc</param>
+        /// <returns>A string of the EXEC query</returns>
+        private string StoredProcQueryString(string storedProcName, params SqlParameter[] args)
+        {
+            var proc = string.Format("exec {0}", storedProcName);
+
+            foreach (var param in args)
+            {
+                proc += string.Format(" {0}", param.ParameterName);
+            }
+
+            return proc;
+        }
+
+        #endregion Stored Proc Helpers		
+	}
 }
