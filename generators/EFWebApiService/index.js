@@ -4,6 +4,7 @@ const chalk = require('chalk');
 const yosay = require('yosay');
 const path = require('path');
 const globalfs = require('fs');
+const moment = require('moment');
 const ibigenerator = require('../../ibigenerator');
 var newFiles = [];
 module.exports = class extends Generator {
@@ -70,6 +71,7 @@ module.exports = class extends Generator {
 	this.templatedata.projectname = this.options.projectname;
 	this.templatedata.primarykey = entityInfo.PrimaryKey;
 	this.templatedata.columns =  entityInfo.Columns;
+	this.templatedata.TodaysDate = moment().format("YYYY-MM-DD, hh:mm A");
   }
   
   _writeFile(templatePath, filePath, overwrite){

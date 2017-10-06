@@ -5,7 +5,11 @@ using System.Collections.Generic;
 using System.Data.Entity;
 
 /// <summary>
-/// Created by Entity Scaffolding Version 1.17 on 8/24/2017 3:29 PM
+/// Created by Entity Scaffolding on <%= TodaysDate %>
+///
+///	Add any necessary custom functions should be added
+/// to this file and not the <%= entityinfo.PropertyName %>Repository 
+/// file in the base folder
 /// </summary>
 namespace IBI.<%= projectname %>.Service.Repositories
 {

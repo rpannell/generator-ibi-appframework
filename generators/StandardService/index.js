@@ -65,6 +65,7 @@ module.exports = class extends Generator {
 		this._createDirectory(path.join(this._serviceSourceLocation(), 'Entities', 'Base'));
 		this._createDirectory(path.join(this._serviceSourceLocation(), 'Entities', 'Enum'));
 		this._runTemplateOnFolder('Properties', this._serviceSourceLocation());
+		this._createDirectory(path.join(this._serviceSourceLocation(), 'Models'));
 		this._createDirectory(path.join(this._serviceSourceLocation(), 'Repositories', 'Interfaces', 'Base'));
 		this._createDirectory(path.join(this._serviceSourceLocation(), 'Repositories', 'Base'));
 		this._runTemplateOnFolder('Scripts', this._serviceSourceLocation());
@@ -88,6 +89,7 @@ module.exports = class extends Generator {
 		ibigenerator.addfolder(path.join(this._serviceSourceLocation(), 'Repositories', 'Base'));
 		ibigenerator.addfolder(path.join(this._serviceSourceLocation(), 'Services', 'Interfaces', 'Base'));
 		ibigenerator.addfolder(path.join(this._serviceSourceLocation(), 'Services', 'Base'));
+		ibigenerator.addfolder(path.join(this._serviceSourceLocation(), 'Models'));
 		ibigenerator.addNewFolderToTFS(path.join(this.templatedata.SourceLoc, 'Services', this.templatedata.Name));
 	}
 };

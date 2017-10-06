@@ -28,16 +28,6 @@ namespace IBI.<%= Name %>.Service
                 routeTemplate: "api/{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
-            config.Routes.MapHttpRoute(
-                name: "AdvancedPageRoute",
-                routeTemplate: "api/{controller}/AdvancedPage/{id}/{options}",
-                defaults: new { options = RouteParameter.Optional }
-            );
-            config.Routes.MapHttpRoute(
-                name: "AutoCompleteRoute",
-                routeTemplate: "api/{controller}/GetAutoComplete/{id}/{options}",
-                defaults: new { options = RouteParameter.Optional }
-            );
         }
 
         private static void RegisterControllerActivator(IWindsorContainer container)

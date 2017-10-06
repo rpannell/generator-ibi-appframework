@@ -191,7 +191,8 @@
     <Folder Include="Controllers\Base\" />
     <Folder Include="Entities\Base\" />
     <Folder Include="Entities\Enum\" />
-    <Folder Include="Repositories\Base\" />
+    <Folder Include="Models\" />
+	<Folder Include="Repositories\Base\" />
     <Folder Include="Repositories\Interfaces\Base\" />
     <Folder Include="Services\Base\" />
     <Folder Include="Services\Interfaces\Base\" />

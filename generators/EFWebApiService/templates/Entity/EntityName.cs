@@ -1,7 +1,11 @@
 using IBI.<%= projectname %>.Service.Core.Entities;
 
 /// <summary>
-/// Created by Entity Scaffolding Version 1.17 on 8/24/2017 3:29 PM
+/// Created by Entity Scaffolding on <%= TodaysDate %>
+///
+///	Add any necessary custom properties should be added
+/// to this file and not the <%= entityinfo.PropertyName %> 
+/// file in the base folder
 /// </summary>
 namespace IBI.<%= projectname %>.Service.Entities
 {

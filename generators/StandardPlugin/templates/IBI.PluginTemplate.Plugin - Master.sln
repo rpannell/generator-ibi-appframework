@@ -9,8 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IBI.<%= Name %>.Plugin", "I
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IBI.<%= Name %>.Service", "..\..\..\Services\<%= Name %>\Trunk\IBI.<%= Name %>.Service\IBI.<%= Name %>.Service.csproj", "{6B79A372-AB0A-4A29-9D3B-B368B402EA35}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IBI.<%= Name %>.Service.Test", "..\..\..\Services\<%= Name %>\Trunk\IBI.<%= Name %>.Service.Test\IBI.<%= Name %>.Service.Test.csproj", "{F78CBB5A-031A-40FA-91BF-57250A4051D1}"
-EndProject
+
 Global
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
@@ -27,9 +26,6 @@ Global
 		SccProjectUniqueName3 = ..\\..\\..\\Services\\<%= Name %>\\Trunk\\IBI.<%= Name %>.Service\\IBI.<%= Name %>.Service.csproj
 		SccProjectName3 = ../../../Services/<%= Name %>/Trunk/IBI.<%= Name %>.Service
 		SccLocalPath3 = ..\\..\\..\\Services\\<%= Name %>\\Trunk\\IBI.<%= Name %>.Service
-		SccProjectUniqueName4 = ..\\..\\..\\Services\\<%= Name %>\\Trunk\\IBI.<%= Name %>.Service.Test\\IBI.<%= Name %>.Service.Test.csproj
-		SccProjectName4 = ../../../Services/<%= Name %>/Trunk/IBI.<%= Name %>.Service.Test
-		SccLocalPath4 = ..\\..\\..\\Services\\<%= Name %>\\Trunk\\IBI.<%= Name %>.Service.Test
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,36 +35,22 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{2B84F891-038B-40E6-8B0C-34DAB8A6E43C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2B84F891-038B-40E6-8B0C-34DAB8A6E43C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2B84F891-038B-40E6-8B0C-34DAB8A6E43C}.Test|Any CPU.ActiveCfg = Test|Any CPU
-		{2B84F891-038B-40E6-8B0C-34DAB8A6E43C}.Test|Any CPU.Build.0 = Test|Any CPU
-		{2B84F891-038B-40E6-8B0C-34DAB8A6E43C}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
-		{2B84F891-038B-40E6-8B0C-34DAB8A6E43C}.Staging|Any CPU.Build.0 = Staging|Any CPU
 		{2B84F891-038B-40E6-8B0C-34DAB8A6E43C}.Prod|Any CPU.ActiveCfg = Prod|Any CPU
 		{2B84F891-038B-40E6-8B0C-34DAB8A6E43C}.Prod|Any CPU.Build.0 = Prod|Any CPU
+		{2B84F891-038B-40E6-8B0C-34DAB8A6E43C}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{2B84F891-038B-40E6-8B0C-34DAB8A6E43C}.Test|Any CPU.Build.0 = Test|Any CPU
 		{95A8FDA9-8A75-49D9-A4D2-7D8DDA9337EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{95A8FDA9-8A75-49D9-A4D2-7D8DDA9337EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{95A8FDA9-8A75-49D9-A4D2-7D8DDA9337EF}.Test|Any CPU.ActiveCfg = Test|Any CPU
-		{95A8FDA9-8A75-49D9-A4D2-7D8DDA9337EF}.Test|Any CPU.Build.0 = Test|Any CPU
-		{95A8FDA9-8A75-49D9-A4D2-7D8DDA9337EF}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
-		{95A8FDA9-8A75-49D9-A4D2-7D8DDA9337EF}.Staging|Any CPU.Build.0 = Staging|Any CPU
 		{95A8FDA9-8A75-49D9-A4D2-7D8DDA9337EF}.Prod|Any CPU.ActiveCfg = Prod|Any CPU
 		{95A8FDA9-8A75-49D9-A4D2-7D8DDA9337EF}.Prod|Any CPU.Build.0 = Prod|Any CPU
-		{6B79A372-AB0A-4A29-9D3B-B368B402EA35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6B79A372-AB0A-4A29-9D3B-B368B402EA35}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6B79A372-AB0A-4A29-9D3B-B368B402EA35}.Test|Any CPU.ActiveCfg = Test|Any CPU
-		{6B79A372-AB0A-4A29-9D3B-B368B402EA35}.Test|Any CPU.Build.0 = Test|Any CPU
-		{6B79A372-AB0A-4A29-9D3B-B368B402EA35}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
-		{6B79A372-AB0A-4A29-9D3B-B368B402EA35}.Staging|Any CPU.Build.0 = Staging|Any CPU
-		{6B79A372-AB0A-4A29-9D3B-B368B402EA35}.Prod|Any CPU.ActiveCfg = Prod|Any CPU
-		{6B79A372-AB0A-4A29-9D3B-B368B402EA35}.Prod|Any CPU.Build.0 = Prod|Any CPU
-		{F78CBB5A-031A-40FA-91BF-57250A4051D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F78CBB5A-031A-40FA-91BF-57250A4051D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F78CBB5A-031A-40FA-91BF-57250A4051D1}.Test|Any CPU.ActiveCfg = Test|Any CPU
-		{F78CBB5A-031A-40FA-91BF-57250A4051D1}.Test|Any CPU.Build.0 = Test|Any CPU
-		{F78CBB5A-031A-40FA-91BF-57250A4051D1}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
-		{F78CBB5A-031A-40FA-91BF-57250A4051D1}.Staging|Any CPU.Build.0 = Staging|Any CPU
-		{F78CBB5A-031A-40FA-91BF-57250A4051D1}.Prod|Any CPU.ActiveCfg = Prod|Any CPU
-		{F78CBB5A-031A-40FA-91BF-57250A4051D1}.Prod|Any CPU.Build.0 = Prod|Any CPU
+		{95A8FDA9-8A75-49D9-A4D2-7D8DDA9337EF}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{95A8FDA9-8A75-49D9-A4D2-7D8DDA9337EF}.Test|Any CPU.Build.0 = Test|Any CPU
+		{337B01C6-21AC-4C32-ADA3-B47F109F4586}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{337B01C6-21AC-4C32-ADA3-B47F109F4586}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{337B01C6-21AC-4C32-ADA3-B47F109F4586}.Prod|Any CPU.ActiveCfg = Prod|Any CPU
+		{337B01C6-21AC-4C32-ADA3-B47F109F4586}.Prod|Any CPU.Build.0 = Prod|Any CPU
+		{337B01C6-21AC-4C32-ADA3-B47F109F4586}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{337B01C6-21AC-4C32-ADA3-B47F109F4586}.Test|Any CPU.Build.0 = Test|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

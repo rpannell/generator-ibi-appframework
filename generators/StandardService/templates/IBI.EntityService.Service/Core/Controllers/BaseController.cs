@@ -13,27 +13,56 @@ namespace IBI.<%= Name %>.Service.Core.Controllers
         where TRepository : IBaseRepository<TEntity, TPrimaryKey>
         where TService : IBaseService<TRepository, TEntity, TPrimaryKey>
     {
+        #region Fields
+
         public TService CurrentService;
+
+        #endregion Fields
+
+        #region Constructors
 
         public BaseController()
         {
         }
 
+        #endregion Constructors
+
         #region Get
 
-        [Route("api/{controller}/{id}")]
-        [HttpGet()]
-        public virtual IHttpActionResult Get(TPrimaryKey id)
+        [HttpPost(), Route("api/{controller}/AdvancedPage/{id}/")]
+        public virtual IHttpActionResult AdvancedPage(int id, [FromBody] AdvancedPageModel model)
         {
-            var status = this.CurrentService.Get(id);
-            if (status == null)
+            try
             {
-                return NotFound();
+                var pageResult = this.CurrentService.GetAdvancedPage(model);
+                return Ok(pageResult);
             }
-            return Ok(status);
+            catch (Exception ex)
+            {
+                //return
+                return BadRequest(ex.Message);
+            }
         }
 
-        [HttpGet]
+        [HttpGet(), Route("api/{controller}/{id}")]
+        public virtual IHttpActionResult Get(TPrimaryKey id)
+        {
+            try
+            {
+                var status = this.CurrentService.Get(id);
+                if (status == null)
+                {
+                    return NotFound();
+                }
+                return Ok(status);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet(), Route("api/{controller}/")]
         public virtual IHttpActionResult Get()
         {
             try
@@ -43,21 +72,22 @@ namespace IBI.<%= Name %>.Service.Core.Controllers
             }
             catch (Exception ex)
             {
-                return NotFound();
+                return BadRequest(ex.Message);
             }
         }
 
+        [HttpGet(), Route("api/{controller}/GetPage")]
         public virtual IHttpActionResult GetPage(int limit, int offset, string search = null, string sort = null, string sortOrder = "desc")
         {
-            var pageResult = this.CurrentService.GetPage(offset, limit, search, sort, sortOrder);
-            return Ok(pageResult);
-        }
-
-        public virtual IHttpActionResult AdvancedPage(int id, [FromBody] AdvancedPageModel model)
-        {
-            var pageResult = this.CurrentService.GetAdvancedPage(model);
-
-            return Ok(pageResult);
+            try
+            {
+                var pageResult = this.CurrentService.GetPage(offset, limit, search, sort, sortOrder);
+                return Ok(pageResult);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         #endregion Get
@@ -69,13 +99,19 @@ namespace IBI.<%= Name %>.Service.Core.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpDelete()]
-        [Route("api/{controller}/{id}")]
+        [HttpDelete(), Route("api/{controller}/{id}")]
         public virtual IHttpActionResult Delete(TPrimaryKey id)
         {
-            var entity = this.CurrentService.Get(id);
-            this.CurrentService.Delete(id);
-            return Ok(entity);
+            try
+            {
+                var entity = this.CurrentService.Get(id);
+                this.CurrentService.Delete(id);
+                return Ok(entity);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         #endregion Delete Actions
@@ -87,11 +123,18 @@ namespace IBI.<%= Name %>.Service.Core.Controllers
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPost(), Route("api/{controller}/")]
         public virtual IHttpActionResult Post([FromBody]TEntity entity)
         {
-            this.CurrentService.Insert(entity);
-            return Ok(entity);
+            try
+            {
+                this.CurrentService.Insert(entity);
+                return Ok(entity);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         #endregion Post Actions
@@ -103,10 +146,18 @@ namespace IBI.<%= Name %>.Service.Core.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <param name="entity"></param>
-        [HttpPut()]
-        public virtual void Put(int id, [FromBody]TEntity entity)
+        [HttpPut(), Route("api/{controller}/{id}")]
+        public virtual IHttpActionResult Put(int id, [FromBody]TEntity entity)
         {
-            this.CurrentService.Update(entity);
+            try
+            {
+                this.CurrentService.Update(entity);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         #endregion Put Actions
@@ -119,11 +170,18 @@ namespace IBI.<%= Name %>.Service.Core.Controllers
         /// <param name="length"></param>
         /// <param name="searchTerm"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPost(), Route("api/{controller}/GetAutoComplete/{id}")]
         public virtual IHttpActionResult GetAutoComplete(int id, [FromBody] AutoComplete model)
         {
-            var pageResult = this.CurrentService.GetAutocomplete(model.Length, model.SearchTerm);
-            return Ok(pageResult);
+            try
+            {
+                var pageResult = this.CurrentService.GetAutocomplete(model.Length, model.SearchTerm);
+                return Ok(pageResult);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         #endregion AutoComplete

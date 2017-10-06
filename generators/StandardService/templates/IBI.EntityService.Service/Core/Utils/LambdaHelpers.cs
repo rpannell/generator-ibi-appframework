@@ -56,6 +56,21 @@ namespace IBI.<%= Name %>.Service.Core.Utils
             return Expression.LessThan(left, right);
         }
 
+		/// <summary>
+        /// Ensures you check fo the nullable value instead of the null
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
+		public static Expression NullableLessThanOrEqualTo(Expression left, Expression right)
+        {
+            if (IsNullableType(left.Type) && !IsNullableType(right.Type))
+                right = Expression.Convert(right, left.Type);
+            else if (!IsNullableType(left.Type) && IsNullableType(right.Type))
+                left = Expression.Convert(left, right.Type);
+            return Expression.LessThanOrEqual(left, right);
+        }
+		
         /// <summary>
         /// Ensures you check fo the nullable value instead of the null
         /// </summary>
@@ -71,6 +86,21 @@ namespace IBI.<%= Name %>.Service.Core.Utils
             return Expression.GreaterThan(left, right);
         }
 
+		/// <summary>
+        /// Ensures you check fo the nullable value instead of the null
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
+		public static Expression NullableGreaterThanOrEqualTo(Expression left, Expression right)
+        {
+            if (IsNullableType(left.Type) && !IsNullableType(right.Type))
+                right = Expression.Convert(right, left.Type);
+            else if (!IsNullableType(left.Type) && IsNullableType(right.Type))
+                left = Expression.Convert(left, right.Type);
+            return Expression.GreaterThanOrEqual(left, right);
+        }
+		
         public static bool? IsVirtual(this PropertyInfo self)
         {
             if (self == null)
@@ -94,6 +124,19 @@ namespace IBI.<%= Name %>.Service.Core.Utils
             return found;
         }
 
+		public static Expression InExpression<T>(this ParameterExpression genericType, string propertyName, List<object> values)
+        {
+            var orExpr = (Expression)null;
+            var key = typeof(T).GetPropertyExpressionFromSubProperty(propertyName, genericType);
+            foreach (var value in values)
+            {
+                var ex = Expression.Equal(key, Expression.Convert(Expression.Constant(value), key.Type));
+                orExpr = orExpr == null ? ex : Expression.OrElse(orExpr, ex);
+            }
+
+            return orExpr;
+        }
+		
         public static Expression InExpression<T>(this ParameterExpression genericType, string propertyName, List<int> values)
         {
             var orExpr = (Expression)null;

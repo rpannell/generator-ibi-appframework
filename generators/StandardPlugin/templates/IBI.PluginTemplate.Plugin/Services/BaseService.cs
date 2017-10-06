@@ -16,7 +16,11 @@ namespace IBI.<%= Name %>.Plugin.Services
         public string URL = string.Empty;
         public string UserName = string.Empty;
         public string Roles = string.Empty;
+#if DEBUG
+        public RedisCacheProvider ServiceCache = new RedisCacheProvider("<%= Name %>-Local");
+#else
         public RedisCacheProvider ServiceCache = new RedisCacheProvider("<%= Name %>");
+#endif		
 
         public BaseService(IPluginSettings pluginSettings)
         {

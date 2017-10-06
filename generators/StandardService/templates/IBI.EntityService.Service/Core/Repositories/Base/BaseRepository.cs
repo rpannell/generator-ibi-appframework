@@ -6,8 +6,10 @@ using IBI.<%= Name %>.Service.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using static IBI.<%= Name %>.Service.Core.Attributes.Searchable;
@@ -148,7 +150,10 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
             }
 
             //set the query
-            if (query == null) query = this.GetFullEntity();
+            if (query == null)
+            {
+                query = this.GetFullEntity();
+            }
 
             //get the row count
             var rowCount = GetPageRowCount(restrictions, genericType, query);
@@ -170,7 +175,7 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
             {
                 foreach (var sc in typeof(TEntity).GetProperties())
                 {
-                    if (sc.IsDefined(typeof(<%= Name %>.Service.Core.Attributes.Searchable.SearchAbleAttribute), true))
+                    if (sc.IsDefined(typeof(SearchAbleAttribute), true))
                     {
                         var searchAtts = (SearchAbleAttribute[])sc.GetCustomAttributes(typeof(SearchAbleAttribute), true);
                         //walk each searchable attribute on the property
@@ -268,7 +273,8 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
 
         private List<TEntity> GetSearchResults(Expression restrictions, int limit, int offset, string sortName, string sortOrder, ParameterExpression genericType, IQueryable<TEntity> query)
         {
-            return query.WhereHelper(restrictions, genericType)
+            return query.AsNoTracking()
+                        .WhereHelper(restrictions, genericType)
                         .OrderByHelper(GetOrderBy(sortName), sortOrder == "desc")
                         .Skip(offset)
                         .Take(limit)
@@ -299,9 +305,9 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
             {
                 foreach (var sc in typeof(TEntity).GetProperties())
                 {
-                    if (sc.IsDefined(typeof(<%= Name %>.Service.Core.Attributes.AutoComplete), true))
+                    if (sc.IsDefined(typeof(Attributes.AutoComplete), true))
                     {
-                        var searchAtts = (<%= Name %>.Service.Core.Attributes.AutoComplete[])sc.GetCustomAttributes(typeof(<%= Name %>.Service.Core.Attributes.AutoComplete), true);
+                        var searchAtts = (Attributes.AutoComplete[])sc.GetCustomAttributes(typeof(Attributes.AutoComplete), true);
                         var isSearchTermString = searchCriteria.GetType() == typeof(string);
                         var isSearchTermInt = searchCriteria.GetType() == typeof(int);
                         var containsmethod = typeof(string).GetMethod("Contains", new[] { typeof(string) });
@@ -395,7 +401,7 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
                 //};
 
                 var propertyType = typeof(TEntity).FollowPropertyPath(adv.PropertyName).PropertyType;
-                var value = Expression.Constant(LambdaHelpers.ChangeType(valueA, propertyType));
+                var value = valueA != null ? Expression.Constant(LambdaHelpers.ChangeType(valueA, propertyType)) : null;
                 Expression addedExpression = null;
                 switch (adv.TypeOfSearch)
                 {
@@ -407,16 +413,32 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
                         addedExpression = Expression.NotEqual(key, Expression.Constant(null));
                         break;
 
+                    case AdvancedSearchType.In:
+                        addedExpression = LambdaHelpers.InExpression<TEntity>(genericType, adv.PropertyName, adv.ListValue);
+                        break;
+
                     case AdvancedSearchType.Equal:
                         addedExpression = Expression.Equal(key, value);
+                        break;
+
+                    case AdvancedSearchType.NotEqual:
+                        addedExpression = Expression.NotEqual(key, value);
                         break;
 
                     case AdvancedSearchType.LessThan:
                         addedExpression = LambdaHelpers.NullableLessThan(key, value);
                         break;
 
+                    case AdvancedSearchType.LessThanEqual:
+                        addedExpression = LambdaHelpers.NullableLessThanOrEqualTo(key, value);
+                        break;
+
                     case AdvancedSearchType.GreaterThan:
                         addedExpression = LambdaHelpers.NullableGreaterThan(key, value);
+                        break;
+
+                    case AdvancedSearchType.GreaterThanEqual:
+                        addedExpression = LambdaHelpers.NullableGreaterThanOrEqualTo(key, value);
                         break;
 
                     case AdvancedSearchType.Between:
@@ -582,27 +604,52 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
         #region Run Stored Procedure
 
         /// <summary>
-        /// Run a stored procedure with multiple parameters
+        /// Run a stored procedure with multiple parameters that returns a single row
         /// </summary>
-        /// <typeparam name="T">The return type</typeparam>
+        /// <param name="storedProcName">The name of the stored proc</param>
+        /// <param name="args">The parameters</param>
+        /// <returns>TEntity</returns>
+        public TEntity RunEntityStoredProc(string storedProcName, params SqlParameter[] args)
+        {
+            return this.RunEntityStoredProc<TEntity>(storedProcName, args);
+        }
+
+        /// <summary>
+        /// Run a stored procedure with multiple parameters that returns a single row
+        /// of a specific type
+        /// </summary>
+        /// <typeparam name="T">The type of the return</typeparam>
         /// <param name="storedProcName">The name of the stored proc</param>
         /// <param name="args">The parameters</param>
         /// <returns>T</returns>
-        public object RunStoredProc<T>(string storedProcName, params SqlParameter[] args)
+        public T RunEntityStoredProc<T>(string storedProcName, params SqlParameter[] args)
         {
             var proc = this.StoredProcQueryString(storedProcName, args);
-
-            try
-            {
-                //checking to seee if the type is a list will throw an exception it it's not
-                //a list so we
-                if (typeof(T).GetGenericTypeDefinition() == typeof(List<>))
-                {
-                    return this.Database.SqlQuery<T>(proc, args).ToList();
-                }
-            }
-            catch (Exception) { }
             return this.Database.SqlQuery<T>(proc, args).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Run a stored procedure with multiple parameters that returns a list
+        /// </summary>
+        /// <param name="storedProcName">The name of the stored proc</param>
+        /// <param name="args">The parameters</param>
+        /// <returns>List of TEntity</returns>
+        public List<TEntity> RunListEntityStoredProc(string storedProcName, params SqlParameter[] args)
+        {
+            return this.RunListEntityStoredProc<TEntity>(storedProcName, args);
+        }
+
+        /// <summary>
+        /// Runs a stored procedure and returns a list of a specific type
+        /// </summary>
+        /// <typeparam name="T">The type that is returned from the proc</typeparam>
+        /// <param name="storedProcName">The name of the stored proc</param>
+        /// <param name="args">The parameters</param>
+        /// <returns>List of T</returns>
+        public List<T> RunListEntityStoredProc<T>(string storedProcName, params SqlParameter[] args)
+        {
+            var proc = this.StoredProcQueryString(storedProcName, args);
+            return this.Database.SqlQuery<T>(proc, args).ToList();
         }
 
         /// <summary>
@@ -610,7 +657,7 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
         /// </summary>
         /// <param name="storedProcName">The name of the stored procedure</param>
         /// <param name="args">The SqlParameter to use</param>
-        public void RunStoredProc(string storedProcName, params SqlParameter[] args)
+        public void RunVoidStoredProc(string storedProcName, params SqlParameter[] args)
         {
             try
             {
@@ -652,16 +699,16 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
         /// <returns>A string of the EXEC query</returns>
         private string StoredProcQueryString(string storedProcName, params SqlParameter[] args)
         {
-            var proc = string.Format("exec {0}", storedProcName);
-
+            var parameters = string.Empty;
             foreach (var param in args)
             {
-                proc += string.Format(" {0}", param.ParameterName);
+                parameters += string.Format("{1}{0}", param.ParameterName, parameters != string.Empty ? ", " : string.Empty);
             }
 
+            var proc = string.Format("exec {0} {1}", storedProcName, parameters);
             return proc;
         }
 
-        #endregion Stored Proc Helpers		
-	}
+        #endregion Stored Proc Helpers
+    }
 }
