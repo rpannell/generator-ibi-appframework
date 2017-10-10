@@ -1,8 +1,11 @@
-using IBI.<%= projectname %>.Plugin.Models.Entities;
-using IBI.<%= projectname %>.Plugin.Models;
+<% if(isPlugin) { %>using IBI.<%= projectname %>.Plugin.Models.Entities;<% } else { %>using IBI.<%= projectname %>.Application.Models.Entities;<%}%>
+<% if(isPlugin) { %>using IBI.<%= projectname %>.Plugin.Models;<% } else { %>using IBI.<%= projectname %>.Application.Models;<%}%>
 using System.Collections.Generic;
 
-namespace IBI.<%= projectname %>.Plugin.Services.Interfaces
+/// <summary>
+/// Created by Entity Scaffolding on <%= TodaysDate %>
+/// </summary>
+<% if(isPlugin) { %>namespace IBI.<%= projectname %>.Plugin.Services.Interfaces<% } else { %>namespace IBI.<%= projectname %>.Application.Services.Interfaces<%}%>
 {
     public interface I<%= entityinfo.PropertyName %>Service
     {

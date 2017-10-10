@@ -4,6 +4,7 @@ const chalk = require('chalk');
 const yosay = require('yosay');
 const path = require('path');
 const globalfs = require('fs');
+const moment = require('moment');
 const ibigenerator = require('../../ibigenerator');
 var newFiles = [];
 module.exports = class extends Generator {
@@ -11,6 +12,7 @@ module.exports = class extends Generator {
     super(args, opts);
 	this.option('projectname', { description: "The name of the project (plugin or service) *required", type: String, alias: "pn" });
 	this.option('location', { description: "The folder location of the root application framework code *required", type: String, alias: "sl" });
+	this.option('isplugin', { description: "True if this is for a plugin false if this is for an application", type: Boolean, alias: "is" });
 	this.option('entityinfo', { description: "A JSON string of some of the entity information", type: String, alias: "ms" });
 	ibigenerator.resetFilesAndFolders();
   }
@@ -20,6 +22,8 @@ module.exports = class extends Generator {
 	this.templatedata.entityinfo = entityInfo;
 	this.templatedata.projectname = this.options.projectname;
 	this.templatedata.columns =  entityInfo.Columns;
+	this.templatedata.isPlugin =  this.options.isplugin;
+	this.templatedata.TodaysDate = moment().format("YYYY-MM-DD, hh:mm A");
   }
     
   _writeFile(templatePath, filePath, overwrite){
@@ -38,12 +42,12 @@ module.exports = class extends Generator {
 	for(var i = 0; i < entityInfo.length; i++){
 		this._buildTemplateData(entityInfo[i]);
 		
-		this._writeFile(path.join(this.templatePath(),"Entities", "Base", "Entity.cs"),
-						path.join(this.options.location, "Entities", "Base", this.templatedata.entityinfo.PropertyName + '.cs'),
+		this._writeFile(path.join(this.templatePath(), "Entities", "Base", "Entity.cs"),
+						path.join(this.options.location, "Models", "Entities", "Base", this.templatedata.entityinfo.PropertyName + '.cs'),
 						true);		
 		
-		this._writeFile(path.join(this.templatePath(),"Entities", "Entity.cs"),
-						path.join(this.options.location, "Entities", this.templatedata.entityinfo.PropertyName + '.cs'),
+		this._writeFile(path.join(this.templatePath(), "Entities", "Entity.cs"),
+						path.join(this.options.location, "Models", "Entities", this.templatedata.entityinfo.PropertyName + '.cs'),
 						false);	
 		
 		this._writeFile(path.join(this.templatePath(),"Services", "RestClient", "RestClient.cs"),

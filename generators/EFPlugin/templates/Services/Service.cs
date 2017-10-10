@@ -1,10 +1,16 @@
-using IBI.<%= projectname %>.Plugin.Models.Entities;
-using IBI.<%= projectname %>.Plugin.Models;
-using InterlineBrands.Platform.Core.Settings;
+<% if(isPlugin) { %>using IBI.<%= projectname %>.Plugin.Models.Entities;<% } else { %>using IBI.<%= projectname %>.Application.Models.Entities;<%}%>
+<% if(isPlugin) { %>using IBI.<%= projectname %>.Plugin.Models;<% } else { %>using IBI.<%= projectname %>.Application.Models;<%}%>
+<% if(isPlugin) { %>using InterlineBrands.Platform.Core.Settings;<% } else { }%>
 using System.Collections.Generic;
 using System.Linq;
 
-namespace IBI.<%= projectname %>.Plugin.Services
+/// <summary>
+/// Created by Entity Scaffolding on <%= TodaysDate %>
+///
+/// Add any necessarsy custom functions to needed to communicate
+/// to the <%= entityinfo.PropertyName %> web-api service
+/// </summary>
+<% if(isPlugin) { %>namespace IBI.<%= projectname %>.Plugin.Services<% } else { %>namespace IBI.<%= projectname %>.Application.Services<%}%>
 {
 	/// <summary>
     /// The plugin service that manages the <%= entityinfo.PropertyName %> entity via the web-api service connected to this plugin
@@ -21,6 +27,7 @@ namespace IBI.<%= projectname %>.Plugin.Services
 		
 		#region Constructors
 		
+		<% if(isPlugin) { %>
 		/// <summary>
         /// Creates a(n) <%= entityinfo.PropertyName %>Service with the help of the IPluginSettings
         /// </summary>
@@ -29,6 +36,16 @@ namespace IBI.<%= projectname %>.Plugin.Services
         {
             this.serviceClient = new RestClient.<%= entityinfo.PropertyName %>RestClient(this.URL, "api/<%= entityinfo.PropertyName %>/", this.UserName, this.UserName);
         }
+		<% } else { %>
+		/// <summary>
+        /// Creates a(n) <%= entityinfo.PropertyName %>Service with the help of the IPluginSettings
+        /// </summary>
+        public <%= entityinfo.PropertyName %>Service()
+            : base()
+        {
+            this.serviceClient = new RestClient.<%= entityinfo.PropertyName %>RestClient(this.URL, "api/<%= entityinfo.PropertyName %>/", this.UserName, this.UserName);
+        }
+		<%}%>
 		
 		#endregion Constructors
 		

@@ -1,6 +1,12 @@
-using IBI.<%= projectname %>.Plugin.Models.Entities;
+<% if(isPlugin) { %>using IBI.<%= projectname %>.Plugin.Models.Entities;<% } else { %>using IBI.<%= projectname %>.Application.Models.Entities;<%}%>
 
-namespace IBI.<%= projectname %>.Plugin.Services.RestClient
+/// <summary>
+/// Created by Entity Scaffolding on <%= TodaysDate %>
+///
+/// Add any necessarsy custom functions to custom
+/// entity controller actions
+/// </summary>
+<% if(isPlugin) { %>namespace IBI.<%= projectname %>.Plugin.Services.RestClient<% } else { %>namespace IBI.<%= projectname %>.Application.Services.RestClient<%}%>
 {
     public class <%= entityinfo.PropertyName %>RestClient : Base<<%= entityinfo.PropertyName %>>
     {
