@@ -21,9 +21,9 @@ namespace IBI.<%= projectname %>.Service.Entities
 		
 		#region Properties
 		
-		<% for (property in entityinfo.Columns) { %><% if(!columns[property].Ignore) { %>
-		[<% if(columns[property].IsPrimaryKey) { %>Key(), <% } %>Column("<%= columns[property].ColumnName %>"<% if(columns[property].DataType == "varchar") { %>, TypeName = "VARCHAR"<% } %>)<% if(columns[property].IsAutoComplete) { %>, AutoComplete()<% } %><% if(columns[property].IsInsertOnly) { %>, InsertOnlyField()<% } %><% if(columns[property].SearchTypeAttribute != "") { %>, SearchAble(<%= columns[property].SearchTypeAttribute %>)<% } %><% if(columns[property].MaxLength != null && columns[property].MaxLength != "MAX") { %>, StringLength(<%= columns[property].MaxLength %>), MaxLength(<%= columns[property].MaxLength %>)<% } %>]
-		public <%= columns[property].PropertyType %> <%= columns[property].PropertyName %> { get; set; }
+		<% for (property in entityinfo.Columns) { var columnData = entityinfo.Columns[property];%><% if(!columnData.Ignore) { %>// property called <%= columnData.PropertyName %> for column <%= columnData.ColumnName %> (<%= entityinfo.Columns[property].DataType %>)
+		[<% if(columnData.IsPrimaryKey) { %>Key(), <% } %>Column("<%= columnData.ColumnName %>"<% if(columnData.DataType == "varchar") { %>, TypeName = "VARCHAR"<% } %>)<% if(columnData.IsAutoComplete) { %>, AutoComplete()<% } %><% if(columnData.IsInsertOnly) { %>, InsertOnlyField()<% } %><% if(columnData.SearchTypeAttribute != "") { %>, SearchAble(<%= columnData.SearchTypeAttribute %>)<% } %><% if(columnData.MaxLength != null && columnData.MaxLength != "MAX") { %>, StringLength(<%= columnData.MaxLength %>), MaxLength(<%= columnData.MaxLength %>)<% } %>]
+		public <%= columnData.PropertyType %> <%= columnData.PropertyName %> { get; set; }
 		<% } %><% } %>
 		
 		#endregion Properties

@@ -11,12 +11,20 @@ var newFiles = [],
 	xmlserial = require('xmldom').XMLSerializer, 
 	helper;
 	
+const winston = require('winston');  	
+winston.configure({
+	transports: [new (winston.transports.File)({ filename: path.join(process.env.APPDATA, "ApplicationFrameworkManagement", "logs", "app.log") })]
+});
+	
 tfs.init({
 	"visualStudioPath": tfs.vs2017.bit64
 });	
 
 
 helper = { 
+	log: function(extraData, object){
+		winston.info(extraData, object);
+	},
 	checkout: function(filePath){
 		var paths = [];
 		paths.push(filePath);
@@ -162,7 +170,9 @@ helper = {
 		});
 	}
 };
-
+exports.log = function (extraData, object) {
+	helper.log(extraData, object);
+};
 exports.resetFilesAndFolders = function(){
 	folders = [];
 	newFiles = [];

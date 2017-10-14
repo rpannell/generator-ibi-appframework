@@ -1,6 +1,6 @@
 {
   "name": "generator-ibi-appframework",
-  "version": "1.1.0",
+  "version": "1.1.11",
   "description": "Used to help speed up the development for the Application Framework",
   "homepage": "",
   "author": {
@@ -34,6 +34,7 @@
     "glob": "^7.1.2",
     "moment": "^2.18.1",
     "q": "^1.5.0",
+    "winston": "^2.4.0",
     "xmldom": "^0.1.27",
     "yeoman-generator": "^1.1.1",
     "yosay": "^2.0.0"

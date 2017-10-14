@@ -7,6 +7,12 @@ const globalfs = require('fs');
 const moment = require('moment');
 const ibigenerator = require('../../ibigenerator');
 var newFiles = [];
+const winston = require('winston');  
+winston.configure({
+	transports: [
+	  new (winston.transports.File)({ filename: path.join(process.env.APPDATA, "ApplicationFrameworkManagement", "logs", "app.log") })
+	]
+});
 module.exports = class extends Generator {
   constructor(args, opts) {  
     super(args, opts);
@@ -72,6 +78,7 @@ module.exports = class extends Generator {
 	this.templatedata.primarykey = entityInfo.PrimaryKey;
 	this.templatedata.columns =  entityInfo.Columns;
 	this.templatedata.TodaysDate = moment().format("YYYY-MM-DD, hh:mm A");
+	ibigenerator.log('Entity Scaffolding Data', this.templatedata);
   }
   
   _writeFile(templatePath, filePath, overwrite){
@@ -87,7 +94,9 @@ module.exports = class extends Generator {
   writing() {
 	//walk each entity and running scaffolding for each entity
 	newFiles = [];
+	ibigenerator.log("Entity Data Before parsing the string", this.options.entityinfo);
 	var entityInfo = JSON.parse(this.options.entityinfo);
+	ibigenerator.log("Entity Data After parsing the string", entityInfo);
 	for(var i = 0; i < entityInfo.length; i++){
 		this._buildTemplateData(entityInfo[i]);
 		this._writeFile(path.join(this.templatePath(),"Entity", "Base", "EntityName.cs"),
