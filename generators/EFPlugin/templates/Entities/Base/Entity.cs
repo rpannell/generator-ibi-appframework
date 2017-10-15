@@ -14,8 +14,8 @@ using System;
 		/* DO NOT UPDATE THIS FILE */
 		
 		#region Properties
-		<% for (property in columns) { if(!columns[property].Ignore) { %>
-		public <%= columns[property].PropertyType %> <%= columns[property].PropertyName %> { get; set; }
+		<% for (var i = 0; i < entityinfo.Columns.length; i++) {  var columnData = entityinfo.Columns[i]; if(!columnData.Ignore) { %>
+		public <%= columnData.PropertyType %> <%= columnData.PropertyName %> { get; set; }
 		<% } } %>
 		#endregion Properties
 		
