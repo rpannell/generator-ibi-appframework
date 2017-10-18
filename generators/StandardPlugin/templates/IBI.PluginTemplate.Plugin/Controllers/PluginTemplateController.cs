@@ -7,6 +7,11 @@ namespace IBI.<%= Name %>.Plugin.Controllers
     {
         private readonly ILogAdapter Log = <%= Name %>Logger<<%= Name %>Controller>.GetLogger();
 
+        public <%= Name %>Controller()
+        {
+            
+        }
+
         public ActionResult Index()
         {
             Log.Debug("Index Entered");

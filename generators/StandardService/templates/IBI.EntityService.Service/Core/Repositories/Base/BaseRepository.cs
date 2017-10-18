@@ -59,13 +59,18 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
                 }
             }
 
-            return returnEntity;
+            return returnEntity.AsNoTracking();
         }
 
         #endregion Methods
 
         #region CRUD
 
+        /// <summary>
+        /// Deletes the entity from the database by the primary key
+        /// Unless the entity is marked as Readonly thus it will do nothing
+        /// </summary>
+        /// <param name="id">The primary key value of the entity</param>
         public virtual void Delete(TPrimaryKey id)
         {
             if (!typeof(TEntity).IsDefined(typeof(ReadOnlyAttribute), true))
@@ -76,20 +81,49 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
             }
         }
 
+        /// <summary>
+        /// Get all of the entities from the database table
+        /// </summary>
+        /// <returns>List of TEntity</returns>
         public virtual List<TEntity> Get()
         {
             return GetFullEntity().ToList();
         }
 
+        /// <summary>
+        /// Get the entity by the primary key, but do
+        /// not track any changes to the entity so that
+        /// it will not be updated
+        /// </summary>
+        /// <param name="id">The primary key value of the entity</param>
+        /// <returns>TEntity</returns>
         public virtual TEntity Get(TPrimaryKey id)
         {
-            var entity = this.Entity.Find(id);
+            var entity = this.Entity.Find(id).AsNoTracking();
             //this ensures that entity can be retrieved and possible changed
             //in another piece of memory later on
-            this.Entry(entity).State = EntityState.Detached;
+            //this.Entry(entity).State = EntityState.Detached;
             return entity;
         }
 
+        /// <summary>
+        /// Will get the entity by the primary key and keep 
+        /// it attached to the session to allow for update
+        /// </summary>
+        /// <param name="id">The primary key value of the entity</param>
+        /// <returns>TEntity</returns>
+        public virtual TEntity GetForUpdate(TPrimaryKey id)
+        {
+            return this.Entity.Find(id);
+        }
+
+        /// <summary>
+        /// Will add a new version of the entity to the database and
+        /// return the new item so the developer will have acces to the 
+        /// newly created primary key
+        /// </summary>
+        /// <param name="newItem"></param>
+        /// <returns></returns>
         public virtual TEntity Insert(TEntity newItem)
         {
             if (!typeof(TEntity).IsDefined(typeof(ReadOnlyAttribute), true))

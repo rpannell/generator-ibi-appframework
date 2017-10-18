@@ -1,0 +1,4 @@
+public <%- Return %> <%= functionname %>(<%= FunctionDefinition %>)
+        {
+            return this.serviceClient.<%if(IsList){%>GetListFromAction<%}else{%>GetFromAction<%}%>("<%= functionname %>", <%= FunctionCall %>);
+        }

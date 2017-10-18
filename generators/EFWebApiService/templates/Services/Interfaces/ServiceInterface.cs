@@ -14,5 +14,7 @@ namespace IBI.<%= projectname %>.Service.Services.Interfaces
 {
     public partial interface I<%= entityinfo.PropertyName %>Service : IBaseService<I<%= entityinfo.PropertyName %>Repository, <%= entityinfo.PropertyName %>, <%= entityinfo.PrimaryKey %>>
     {
+        /* GENIE HOOK */
+        /* DO NOT DELETE THE ABOVE LINE */
     }
 }

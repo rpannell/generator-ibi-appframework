@@ -1,9 +1,0 @@
-using <%= namespace %>;
-namespace IBI.<%= namespace %>.Temp
-{
-	public class <%= namespace %> {
-	<% for (property in data) { %>
-		public string <%= data[property].Test %> { get; set; }
-	<% } %>
-	}
-}

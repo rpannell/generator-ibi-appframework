@@ -152,5 +152,8 @@ using System.Linq;
         }
 		
 		#endregion
+
+        /* GENIE HOOK */
+        /* DO NOT DELETE THE ABOVE LINE */
     }
 }

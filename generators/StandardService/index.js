@@ -81,6 +81,7 @@ module.exports = class extends Generator {
 		this.fs.copy(this.templatePath('IBI.EntityService.Service/favicon.ico'),path.join(this._serviceSourceLocation(), 'favicon.ico'));
 		this.fs.copyTpl(this.templatePath('IBI.EntityService.Service/IBI.EntityService.Service.csproj'),path.join(this._serviceSourceLocation(), 'IBI.' + this.templatedata.Name + '.Service.csproj'),this.templatedata);
 		this.fs.copyTpl(this.templatePath('IBI.EntityService.Service/*.config'),path.join(this._serviceSourceLocation()),this.templatedata);
+		this.fs.copyTpl(this.templatePath('IBI.EntityService.Service/scaffoldinginfo.json'),path.join(this._serviceSourceLocation(), 'scaffoldinginfo.json'),this.templatedata);
 	}
 	install() {
 		ibigenerator.addfolder(path.join(this._serviceSourceLocation(), 'Entities', 'Base'));

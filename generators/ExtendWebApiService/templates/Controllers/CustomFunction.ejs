@@ -1,0 +1,12 @@
+[HttpGet(), Route("<%= functionname %><%= ControllerPath %>")]
+        public IHttpActionResult <%= functionname %>(<%= FunctionDefinition %>)
+        {
+            try
+            {
+                return Ok(this.CurrentService.<%= functionname %>(<%= FunctionCall %>));
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }

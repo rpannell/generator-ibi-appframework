@@ -24,5 +24,8 @@ using System.Collections.Generic;
 		void Update(<%= entityinfo.PropertyName %> entity);
 		
 		List<<%= entityinfo.PropertyName %>> GetAutocomplete(string term, int length = 20, int type = 0);
+
+		/* GENIE HOOK */
+        /* DO NOT DELETE THE ABOVE LINE */
     }
 }

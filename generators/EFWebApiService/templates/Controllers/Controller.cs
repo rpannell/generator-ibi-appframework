@@ -17,5 +17,7 @@ namespace IBI.<%= projectname %>.Service.Controllers
 	[RoutePrefix("api/<%= entityinfo.PropertyName %>")]
     public partial class <%= entityinfo.PropertyName %>Controller : BaseController<I<%= entityinfo.PropertyName %>Service, I<%= entityinfo.PropertyName %>Repository, <%= entityinfo.PropertyName %>, <%= entityinfo.PrimaryKey %>>
     {
+        /* GENIE HOOK */
+        /* DO NOT DELETE THE ABOVE LINE */
     }
 }

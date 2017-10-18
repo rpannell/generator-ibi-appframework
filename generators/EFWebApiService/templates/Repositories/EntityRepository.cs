@@ -23,5 +23,8 @@ namespace IBI.<%= projectname %>.Service.Repositories
 		}
 
 		#endregion Custom Model Building Use with Caution
+
+		/* GENIE HOOK */
+        /* DO NOT DELETE THE ABOVE LINE */
     }
 }
