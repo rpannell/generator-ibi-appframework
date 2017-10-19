@@ -42,6 +42,11 @@ module.exports = class extends Generator {
       type: Boolean,
       alias: "il"
     });
+    this.option('isPost', {
+      description: "A JSON string of some of the custom function information to add",
+      type: Boolean,
+      alias: "ip"
+    });
   }
 
   _buildTemplateData() {
@@ -53,6 +58,7 @@ module.exports = class extends Generator {
     this.templatedata.ControllerPath = "";
     this.templatedata.FunctionCall = "";
     this.templatedata.FunctionDefinition = "";
+    this.templatedata.IsPost = this.options.isPost;
     this.templatedata.IsList = this.options.isList;
     this.templatedata.Return = this.options.isList ?
       "System.Collections.Generic.List<" + this.templatedata.entityname + ">" :
@@ -69,10 +75,12 @@ module.exports = class extends Generator {
       }
     }
     ibigenerator.log('Entity Scaffolding Data', this.templatedata);
+    ibigenerator.log('Options', this.options);
   }
 
   _writeFile(filePath, contents) {
     try {
+      ibigenerator.log('Writing', filePath);
       ibigenerator.checkoutoradd(filePath);
       if (globalfs.existsSync(filePath)) {
         this.fs.write(filePath, contents);
@@ -94,13 +102,14 @@ module.exports = class extends Generator {
           currentFile = currentFile.replace(HOOKSTRING, str + "\n\t\t" + HOOKSTRING);
           that._writeFile(fileName, currentFile);
         }
-      } catch (err) {}
+      } catch (err) { ibigenerator.log("Error Reading Existing File", err); }
     });
   }
   writing() {
     this._buildTemplateData();
 
     if (this.options.serviceLocation != undefined && this.options.serviceLocation != null && this.options.serviceLocation != "") {
+      ibigenerator.log("", "Has Service Location");
       this._templateFile(path.join(this.templatePath(), "Repositories", "Interfaces", "CustomFunction.ejs"),
         path.join(this.options.serviceLocation, "Repositories", "Interfaces", "I" + this.templatedata.entityname + "Repository.cs"));
 
@@ -118,6 +127,7 @@ module.exports = class extends Generator {
     }
 
     if (this.options.pluginLocation != undefined && this.options.pluginLocation != null && this.options.pluginLocation != "") {
+      ibigenerator.log("", "Has Plugin Location");
       this._templateFile(path.join(this.templatePath(), "Plugin", "Services", "Interfaces", "CustomFunction.ejs"),
         path.join(this.options.pluginLocation, "Services", "Interfaces", "I" + this.templatedata.entityname + "Service.cs"));
 

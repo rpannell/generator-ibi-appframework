@@ -1,4 +1,4 @@
-[HttpGet(), Route("<%= functionname %><%= ControllerPath %>")]
+[<%if(IsPost){%>HttpPost()<%}else{%>HttpGet()<%}%>, Route("<%= functionname %><%= ControllerPath %>")]
         public IHttpActionResult <%= functionname %>(<%= FunctionDefinition %>)
         {
             try
