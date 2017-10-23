@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Xml;
 
+/// <summary>
+/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
+/// </summary>
 namespace IBI.<%= Name %>.Service.Models
 {
     public class KoreReponseMessage

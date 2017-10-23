@@ -5,6 +5,7 @@ const yosay = require('yosay');
 const path = require('path');
 var globalfs = require('fs');
 var mkdirp = require('mkdirp');
+const moment = require('moment');
 const ibigenerator = require('../../ibigenerator');
 module.exports = class extends Generator {
 	constructor(args, opts) {
@@ -31,6 +32,8 @@ module.exports = class extends Generator {
 	}
 	_buildTemplateData() {
 		this.templatedata = {};
+		this.templatedata.Version = ibigenerator.currentVersion();
+		this.templatedata.TodaysDate = moment().format("YYYY-MM-DD, hh:mm A");
 		this.templatedata.Name = this.options.serviceName;
 		this.templatedata.SourceLoc = this.options.sourceLocation;
 		this.templatedata.DatabaseName = this.options.databaseName;

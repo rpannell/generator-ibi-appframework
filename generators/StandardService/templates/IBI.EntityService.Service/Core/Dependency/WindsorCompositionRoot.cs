@@ -4,8 +4,14 @@ using System.Net.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Dispatcher;
 
+/// <summary>
+/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
+/// </summary>
 namespace IBI.<%= Name %>.Service.Core.Dependency
 {
+    /// <summary>
+    /// Sets up the IoC dependency injection on the controllers
+    /// </summary>
     public class WindsorCompositionRoot : IHttpControllerActivator
     {
         private readonly IWindsorContainer _container;

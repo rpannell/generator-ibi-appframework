@@ -8,12 +8,18 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 
+/// <summary>
+/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
+/// </summary>
 namespace IBI.<%= Name %>.Service
 {
     public class WebApiApplication : System.Web.HttpApplication
     {
         private static IWindsorContainer _container;
 
+        /// <summary>
+        /// Setups everything in memory needed for the application to run
+        /// </summary>
         protected void Application_Start()
         {
             ConfigureWindsor(GlobalConfiguration.Configuration);
@@ -22,10 +28,16 @@ namespace IBI.<%= Name %>.Service
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            //sets the application/json header for every request made, unless it already has another one set
             GlobalConfiguration.Configuration.Formatters.JsonFormatter.MediaTypeMappings.Add(new QueryStringMapping("json", "true", "application/json"));
+            //configures the log4net based on the web.config settings
             log4net.Config.XmlConfigurator.Configure();
         }
 
+        /// <summary>
+        /// Configures the Castle Windsor information
+        /// </summary>
+        /// <param name="configuration"></param>
         private void ConfigureWindsor(HttpConfiguration configuration)
         {
             _container = new WindsorContainer();
@@ -35,6 +47,9 @@ namespace IBI.<%= Name %>.Service
             configuration.DependencyResolver = dependencyResolver;
         }
 
+        /// <summary>
+        /// Removes from the memory when the application ends
+        /// </summary>
         protected void Application_End()
         {
             _container.Dispose();

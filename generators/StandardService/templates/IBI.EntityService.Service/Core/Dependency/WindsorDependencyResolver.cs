@@ -7,8 +7,14 @@ using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Dependencies;
 
+/// <summary>
+/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
+/// </summary>
 namespace IBI.<%= Name %>.Service.Core.Dependency
 {
+    /// <summary>
+    /// Setups up everything needed for the Castle Windsor dependency injection
+    /// </summary>
     public class WindsorDependencyResolver : System.Web.Http.Dependencies.IDependencyResolver
     {
         private readonly IWindsorContainer _container;

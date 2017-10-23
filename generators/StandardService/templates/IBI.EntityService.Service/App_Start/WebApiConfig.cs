@@ -2,6 +2,9 @@ using Castle.Windsor;
 using System.Web.Http;
 using System.Web.Http.Dispatcher;
 
+/// <summary>
+/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
+/// </summary>
 namespace IBI.<%= Name %>.Service
 {
     public static class WebApiConfig

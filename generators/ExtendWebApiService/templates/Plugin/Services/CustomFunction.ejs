@@ -1,4 +1,6 @@
-public <%- Return %> <%= functionname %>(<%= FunctionDefinition %>)
+
+        // Created by Genie on <%= TodaysDate %> by v<%= Version %> 
+        public <%- Return %> <%= functionname %>(<%= FunctionDefinition %>)
         {
             return this.serviceClient.<%if(IsList){if(IsPost){%>PostGetListFromAction<%}else{%>GetListFromAction<%}}else{if(IsPost){%>PostGetFromAction<%}else{%>GetFromAction<%}}%>("<%= functionname %>"<%if(FunctionCall != ""){%>,<%}%> <%= FunctionCall %>);
         }

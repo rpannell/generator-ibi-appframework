@@ -9,6 +9,7 @@ var newFiles = [],
 	glob = require('glob'),
 	xmldom = require('xmldom').DOMParser,
 	xmlserial = require('xmldom').XMLSerializer, 
+	pjson = require('./package.json'),
 	helper;
 	
 const winston = require('winston');  	
@@ -241,4 +242,8 @@ exports.addNewFolderToTFS = function(sourceLocation){
 exports.doTfsOperations = function(){
 	tfs.add(folders);
 	tfs.add(newFiles);
+};
+
+exports.currentVersion = function(){
+	return pjson.version;
 };

@@ -4,8 +4,10 @@ using System.Linq;
 using System.Web.Http;
 using WebActivatorEx;
 
+/// <summary>
+/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
+/// </summary>
 [assembly: PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
-
 namespace IBI.<%= Name %>.Service
 {
     public class SwaggerConfig

@@ -1,7 +1,7 @@
 <% if(isPlugin) { %>using IBI.<%= projectname %>.Plugin.Models.Entities;<% } else { %>using IBI.<%= projectname %>.Application.Models.Entities;<%}%>
 
 /// <summary>
-/// Created by Entity Scaffolding on <%= TodaysDate %>
+/// Created by Genie - Entity Scaffolding on <%= TodaysDate %> by verion <%= Version %>
 ///
 /// Add any necessarsy custom functions to custom
 /// entity controller actions

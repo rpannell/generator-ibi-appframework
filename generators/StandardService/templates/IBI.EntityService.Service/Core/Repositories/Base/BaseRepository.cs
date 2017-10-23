@@ -15,22 +15,30 @@ using System.Linq.Expressions;
 using static IBI.<%= Name %>.Service.Core.Attributes.Searchable;
 using static IBI.<%= Name %>.Service.Core.Models.AdvancedSearch;
 
+/// <summary>
+/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
+/// </summary>
 namespace IBI.<%= Name %>.Service.Core.Repositories
 {
+    /// <summary>
+    /// Base class that defines the default functions for every entity in the web-api service
+    /// </summary>
     public class BaseRepository<TEntity, TPrimaryKey> : DbContext, IBaseRepository<TEntity, TPrimaryKey> where TEntity : Entity<TPrimaryKey>
     {
         #region Constructors
-
+        /// <summary>
+        /// The default constructor that sets the DbContext to the DefaultConnection in the web.config
+        /// </summary>
         public BaseRepository() : base("DefaultConnection")
         {
-            //this.Configuration.LazyLoadingEnabled = false;
-            //this.Configuration.ProxyCreationEnabled = false;
         }
 
         #endregion Constructors
 
         #region Properties
-
+        /// <summary>
+        /// Represents the Entity in the database
+        /// </summary>
         public DbSet<TEntity> Entity { get; set; }
 
         #endregion Properties
@@ -38,11 +46,10 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
         #region Methods
 
         /// <summary>
-        /// Used to get the full entity  that includes the
-        /// sub entities in the query as long as they are
-        /// marked virtual (unless it's the Id property)
+        /// Gets the full entity also joining any sub-entities in 
+        /// one call to the database
         /// </summary>
-        /// <returns></returns>
+        /// <returns>IQueryable</returns>
         public virtual IQueryable<TEntity> GetFullEntity()
         {
             var genericType = this.GetGenericType();
@@ -67,10 +74,10 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
         #region CRUD
 
         /// <summary>
-        /// Deletes the entity from the database by the primary key
-        /// Unless the entity is marked as Readonly thus it will do nothing
+        /// Delete an entity by the primary key
+        /// /// If it's ReadOnly, nothing is done
         /// </summary>
-        /// <param name="id">The primary key value of the entity</param>
+        /// <param name="Id">The primary key</param>
         public virtual void Delete(TPrimaryKey id)
         {
             if (!typeof(TEntity).IsDefined(typeof(ReadOnlyAttribute), true))
@@ -82,21 +89,19 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
         }
 
         /// <summary>
-        /// Get all of the entities from the database table
+        /// Gets a list of all of the entities from a database view or table
         /// </summary>
-        /// <returns>List of TEntity</returns>
+        /// <returns>A List of Entity</returns>
         public virtual List<TEntity> Get()
         {
             return GetFullEntity().ToList();
         }
 
         /// <summary>
-        /// Get the entity by the primary key, but do
-        /// not track any changes to the entity so that
-        /// it will not be updated
+        /// Gets a single row of the entity by the value of the primary key
         /// </summary>
-        /// <param name="id">The primary key value of the entity</param>
-        /// <returns>TEntity</returns>
+        /// <param name="Id">The value of the primary key</param>
+        /// <returns>An Entity by the primary key</returns>
         public virtual TEntity Get(TPrimaryKey id)
         {
             var entity = this.Entity.Find(id).AsNoTracking();
@@ -118,12 +123,11 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
         }
 
         /// <summary>
-        /// Will add a new version of the entity to the database and
-        /// return the new item so the developer will have acces to the 
-        /// newly created primary key
+        /// Insert an entity in the database
+        /// If it's ReadOnly nothing is done
         /// </summary>
-        /// <param name="newItem"></param>
-        /// <returns></returns>
+        /// <param name="newItem">The entity to insert</param>
+        /// <returns>The Entity after the database insert</returns>
         public virtual TEntity Insert(TEntity newItem)
         {
             if (!typeof(TEntity).IsDefined(typeof(ReadOnlyAttribute), true))
@@ -136,12 +140,24 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
             return null;
         }
 
+        /// <summary>
+        /// Used to merge the values of one entity into another entity
+        /// </summary>
+        /// <param name="previousEntity">The current entity</param>
+        /// <param name="newEntity">The updated entity containing the new values</param>
         public virtual void MergeValues(TEntity previousEntity, TEntity newEntity)
         {
             this.Entry(previousEntity).CurrentValues.SetValues(newEntity);
         }
 
-        public virtual void Update(TEntity entity)
+        /// <summary>
+        /// Updates the row in the database that represents the entity
+        /// If it's ReadOnly nothing is done
+        /// And InsertOnly properties are ignored
+        /// </summary>
+        /// <param name="Entity">The Entity to update</param>
+        /// <returns>The Entity after the database update</returns>
+        public virtual TEntity Update(TEntity entity)
         {
             if (!typeof(TEntity).IsDefined(typeof(ReadOnlyAttribute), true))
             {
@@ -159,12 +175,26 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
 
                 this.SaveChanges();
             }
+
+            return entity;
         }
 
         #endregion CRUD
 
         #region Get Page
 
+        /// <summary>
+        /// Returns a page of data of the entity
+        /// </summary>
+        /// <param name="offSet">The row offset on the database</param>
+        /// <param name="limit">The number of records to return</param>
+        /// <param name="searchCriteria">The criteria to search on the searchable attribute</param>
+        /// <param name="sortName">The name of the property to sort on</param>
+        /// <param name="sortOrder">The direction to sort (desc/asc)</param>
+        /// <param name="genericType">The parameter expression that represents the entity table</param>
+        /// <param name="extraExpr">Any extra Linq.Expression to filter down in the database</param>
+        /// <param name="query">Extra query to filter down the entity</param>
+        /// <returns>A PaginationResult that contains the entities</returns>
         public virtual PaginationResult<TEntity> GetPage(int offSet, int limit, string searchCriteria = null, string sortName = null, string sortOrder = "desc",
                                                         ParameterExpression genericType = null, Expression extraExpr = null, IQueryable<TEntity> query = null)
         {
@@ -201,6 +231,12 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
             };
         }
 
+        /// <summary>
+        /// Creates an Linq.Expression for the Searchable properties
+        /// </summary>
+        /// <param name="searchCriteria">The search string</param>
+        /// <param name="genericType">The ParameterExpression that represents the Entity</param>
+        /// <returns>Expression</returns>
         public Expression GetSearchRestrictions(object searchCriteria, ParameterExpression genericType)
         {
             Expression restrictions = null;
@@ -282,7 +318,7 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
         /// entity and return that as the name of the order by else just return the name
         /// </summary>
         /// <param name="orderBy">current order by string</param>
-        /// <returns></returns>
+        /// <returns>the name of the property to order</returns>
         private string GetOrderBy(string orderBy)
         {
             if (orderBy == null || orderBy == string.Empty)
@@ -299,12 +335,30 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
             return orderBy;
         }
 
+        /// <summary>
+        /// Get the number of rows a search would contain if not set to a specific amount
+        /// </summary>
+        /// <param name="restrictions">The current Expression</param>
+        /// <param name="genericType">The ParameterExpression that represents the Entity</param>
+        /// <param name="query">Current state of the query</param>
+        /// <returns>The count of rows in the query</returns>
         private int GetPageRowCount(Expression restrictions, ParameterExpression genericType, IQueryable<TEntity> query)
         {
             return query.WhereHelper(restrictions, genericType)
                         .Count();
         }
 
+        /// <summary>
+        /// Gets the results of a search from the database
+        /// </summary>
+        /// <param name="restrictions">The current Expression</param>
+        /// <param name="limit">The number of records to return</param>
+        /// <param name="offset"The row offset on the database</param>
+        /// <param name="sortName">The name of the property to sort on</param>
+        /// <param name="sortOrder">The direction to sort (desc/asc)</param>
+        /// <param name="genericType">The ParameterExpression that represents the Entity</param>
+        /// <param name="query">Current state of the query</param>
+        /// <returns>List of entities</returns>
         private List<TEntity> GetSearchResults(Expression restrictions, int limit, int offset, string sortName, string sortOrder, ParameterExpression genericType, IQueryable<TEntity> query)
         {
             return query.AsNoTracking()
@@ -319,6 +373,12 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
 
         #region Get Autocomplete
 
+        /// <summary>
+        /// Gets a set a records that are triggered by the AutoComplete search
+        /// </summary>
+        /// <param name="length">The number of records to return</param>
+        /// <param name="term">The search term of the AutoComplete properties</param>
+        /// <returns>List of the Entity</returns>
         public virtual List<TEntity> GetAutocomplete(int length, object term)
         {
             var genericType = Expression.Parameter(typeof(TEntity));
@@ -331,6 +391,12 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
                                .ToList();
         }
 
+        /// <summary>
+        /// Gets the Expression for the AutoComplete query
+        /// </summary>
+        /// <param name="searchCriteria">The search string</param>
+        /// <param name="genericType">The ParameterExpression that represents the Entity</param>
+        /// <returns>Expression</returns>
         private Expression GetAutoCompleteRestrictions(object searchCriteria, ParameterExpression genericType)
         {
             Expression restrictions = null;
@@ -398,6 +464,17 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
 
         #region Get Advanced Page
 
+        /// <summary>
+        /// Returns a page of data of the entity
+        /// </summary>
+        /// <param name="offSet">The row offset on the database</param>
+        /// <param name="limit">The number of records to return</param>
+        /// <param name="searchCriteria">The criteria to search on the searchable attribute</param>
+        /// <param name="sortName">The name of the property to sort on</param>
+        /// <param name="sortOrder">The direction to sort (desc/asc)</param>
+        /// <param name="model">The AdvancedPageModel</param>
+        /// <param name="query">Extra query to filter down the entity</param>
+        /// <returns>A PaginationResult that contains the entities</returns>
         public virtual PaginationResult<TEntity> GetAdvancedPage(int offSet, int limit, string searchCriteria = null, string sortName = null, string sortOrder = "desc", AdvancedPageModel model = null, IQueryable<TEntity> query = null)
         {
             //create the restrictions if needed
@@ -421,6 +498,12 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
             };
         }
 
+        /// <summary>
+        /// Gets the Linq.Expression that will represent the AdvancedPaging query
+        /// </summary>
+        /// <param name="model">The AdvancedPageModel</param>
+        /// <param name="genericType">The ParameterExpression that represents the Entity</param>
+        /// <returns>The Expression for the AdvancedPage</returns>
         public Expression GetAdvancedSearchRestrictions(AdvancedPageModel model, ParameterExpression genericType)
         {
             Expression restrictions = null;
@@ -503,6 +586,10 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
 
         #region Expression
 
+        /// <summary>
+        /// Creates an Express.Parameter of the current type of the Entity
+        /// </summary>
+        /// <returns>ParameterExpression</returns>
         public ParameterExpression GetGenericType()
         {
             return Expression.Parameter(typeof(TEntity));

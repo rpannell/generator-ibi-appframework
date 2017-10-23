@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 /// <summary>
-/// Created by Entity Scaffolding on <%= TodaysDate %>
+/// Created by Genie - Entity Scaffolding on <%= TodaysDate %> by verion <%= Version %>
 ///
 /// Add any necessarsy custom functions to needed to communicate
 /// to the <%= entityinfo.PropertyName %> web-api service
@@ -34,7 +34,7 @@ using System.Linq;
         public <%= entityinfo.PropertyName %>Service(IPluginSettings pluginSettings)
             : base(pluginSettings)
         {
-            this.serviceClient = new RestClient.<%= entityinfo.PropertyName %>RestClient(this.URL, "api/<%= entityinfo.PropertyName %>/", this.UserName, this.UserName);
+            this.serviceClient = new RestClient.<%= entityinfo.PropertyName %>RestClient(this.URL, "api/<%= entityinfo.PropertyName %>/", this.UserName, this.Role);
         }
 		<% } else { %>
 		/// <summary>
@@ -43,7 +43,7 @@ using System.Linq;
         public <%= entityinfo.PropertyName %>Service()
             : base()
         {
-            this.serviceClient = new RestClient.<%= entityinfo.PropertyName %>RestClient(this.URL, "api/<%= entityinfo.PropertyName %>/", this.UserName, this.UserName);
+            this.serviceClient = new RestClient.<%= entityinfo.PropertyName %>RestClient(this.URL, "api/<%= entityinfo.PropertyName %>/", this.UserName, this.Role);
         }
 		<%}%>
 		

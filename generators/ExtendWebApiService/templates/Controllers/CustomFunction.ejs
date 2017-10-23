@@ -1,4 +1,6 @@
-[<%if(IsPost){%>HttpPost()<%}else{%>HttpGet()<%}%>, Route("<%= functionname %><%= ControllerPath %>")]
+
+        // Created by Genie on <%= TodaysDate %> by v<%= Version %> 
+        [<%if(IsPost){%>HttpPost()<%}else{%>HttpGet()<%}%>, Route("<%= functionname %><%= ControllerPath %>")]
         public IHttpActionResult <%= functionname %>(<%= FunctionDefinition %>)
         {
             try

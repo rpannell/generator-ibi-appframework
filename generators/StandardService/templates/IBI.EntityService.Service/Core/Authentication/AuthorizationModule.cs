@@ -6,6 +6,9 @@ using System.Text;
 using System.Threading;
 using System.Web;
 
+/// <summary>
+/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
+/// </summary>
 namespace IBI.<%= Name %>.Service.Core.Authentication
 {
     public class AuthorizationModule : IHttpModule

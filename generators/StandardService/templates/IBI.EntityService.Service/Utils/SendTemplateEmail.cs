@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Mail;
 
+/// <summary>
+/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
+/// </summary>
 namespace IBI.<%= Name %>.Service.Utils
 {
     public class SendTemplateEmail

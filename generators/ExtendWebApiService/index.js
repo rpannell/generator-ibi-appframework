@@ -54,7 +54,7 @@ module.exports = class extends Generator {
     this.templatedata.entityname = this.options.entityname;
     this.templatedata.functionname = this.options.functionname;
     this.templatedata.TodaysDate = moment().format("YYYY-MM-DD, hh:mm A");
-
+    this.templatedata.Version = ibigenerator.currentVersion();
     this.templatedata.ControllerPath = "";
     this.templatedata.FunctionCall = "";
     this.templatedata.FunctionDefinition = "";

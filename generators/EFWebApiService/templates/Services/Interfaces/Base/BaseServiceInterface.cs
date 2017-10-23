@@ -3,7 +3,7 @@ using IBI.<%= projectname %>.Service.Entities;
 using IBI.<%= projectname %>.Service.Repositories.Interfaces;
 
 /// <summary>
-/// Created by Entity Scaffolding on <%= TodaysDate %>
+/// Created by Genie - Entity Scaffolding on <%= TodaysDate %> by verion <%= Version %>
 ///
 ///	DO NOT UPDATE THIS FILE, ANY CHANGES WILL BE OVERWRITTEN 
 /// BY THE ENTITY SCAFFOLDING ON THE NEXT RUN, ADD ANY NECESSARY

@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 
 /// <summary>
-/// Created by Entity Scaffolding on <%= TodaysDate %>
+/// Created by Genie - Entity Scaffolding on <%= TodaysDate %> by verion <%= Version %>
 /// </summary>
 <% if(isPlugin) { %>namespace IBI.<%= projectname %>.Plugin.Services.Interfaces<% } else { %>namespace IBI.<%= projectname %>.Application.Services.Interfaces<%}%>
 {
