@@ -3,6 +3,9 @@ using System.Linq.Expressions;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 
+/// <summary>
+/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
+/// </summary>
 namespace IBI.<%= Name %>.Application.Utils.UI
 {
     public static class HtmlHiddenHelperFor

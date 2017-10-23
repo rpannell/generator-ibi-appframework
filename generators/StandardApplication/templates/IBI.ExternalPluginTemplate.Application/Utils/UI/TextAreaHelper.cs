@@ -1,6 +1,9 @@
 ﻿using System.Text;
 using System.Web.Mvc;
 
+/// <summary>
+/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
+/// </summary>
 namespace IBI.<%= Name %>.Application.Utils.UI
 {
     public static class TextAreaHelper

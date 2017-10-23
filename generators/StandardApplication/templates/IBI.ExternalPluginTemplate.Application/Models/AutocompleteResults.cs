@@ -1,4 +1,7 @@
-﻿namespace IBI.<%= Name %>.Application.Models
+﻿/// <summary>
+/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
+/// </summary>
+namespace IBI.<%= Name %>.Application.Models
 {
     public class AutocompleteResults
     {
