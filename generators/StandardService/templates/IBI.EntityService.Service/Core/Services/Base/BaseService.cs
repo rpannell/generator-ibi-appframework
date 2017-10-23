@@ -76,9 +76,9 @@ namespace IBI.<%= Name %>.Service.Core.Services
         /// </summary>
         /// <param name="Entity">The Entity to update</param>
         /// <returns>The Entity after the database update</returns>
-        public virtual void Update(TEntity entity)
+        public virtual TEntity Update(TEntity entity)
         {
-            this.Repository.Update(entity);
+            return this.Repository.Update(entity);
         }
 
         /// <summary>

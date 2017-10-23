@@ -1,6 +1,4 @@
 using System;
-using System.Configuration;
-using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -53,19 +51,10 @@ namespace IBI.<%= Name %>.Service.Core.Authentication
                 }
                 return base.SendAsync(request, cancellationToken);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //User did not set Authentication header
                 return base.SendAsync(request, cancellationToken);
-            }
-        }
-
-        private bool IsLogin(string username, string password)
-        {
-            using (var pc = new PrincipalContext(ContextType.Domain, ConfigurationManager.AppSettings["WindowsDomain"]))
-            {
-                var isvalid = pc.ValidateCredentials(username, password);
-                return isvalid;
             }
         }
 

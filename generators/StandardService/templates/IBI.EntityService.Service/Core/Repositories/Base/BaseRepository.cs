@@ -104,10 +104,10 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
         /// <returns>An Entity by the primary key</returns>
         public virtual TEntity Get(TPrimaryKey id)
         {
-            var entity = this.Entity.Find(id).AsNoTracking();
+            var entity = this.Entity.Find(id);
             //this ensures that entity can be retrieved and possible changed
             //in another piece of memory later on
-            //this.Entry(entity).State = EntityState.Detached;
+            this.Entry(entity).State = EntityState.Detached;
             return entity;
         }
 

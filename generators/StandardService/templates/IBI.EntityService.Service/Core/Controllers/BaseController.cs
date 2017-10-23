@@ -69,7 +69,7 @@ namespace IBI.<%= Name %>.Service.Core.Controllers
             try
             {
                 var entity = this.CurrentService.Get(id);
-                return entity == null ? NotFound() : Ok(entity);
+                return entity == null ? (IHttpActionResult)NotFound() : Ok(entity);
             }
             catch (Exception ex)
             {
