@@ -34,7 +34,7 @@ using System.Linq;
         public <%= entityinfo.PropertyName %>Service(IPluginSettings pluginSettings)
             : base(pluginSettings)
         {
-            this.serviceClient = new RestClient.<%= entityinfo.PropertyName %>RestClient(this.URL, "api/<%= entityinfo.PropertyName %>/", this.UserName, this.Role);
+            this.serviceClient = new RestClient.<%= entityinfo.PropertyName %>RestClient(this.URL, "api/<%= entityinfo.PropertyName %>/", this.UserName, this.Roles);
         }
 		<% } else { %>
 		/// <summary>
@@ -43,7 +43,7 @@ using System.Linq;
         public <%= entityinfo.PropertyName %>Service()
             : base()
         {
-            this.serviceClient = new RestClient.<%= entityinfo.PropertyName %>RestClient(this.URL, "api/<%= entityinfo.PropertyName %>/", this.UserName, this.Role);
+            this.serviceClient = new RestClient.<%= entityinfo.PropertyName %>RestClient(this.URL, "api/<%= entityinfo.PropertyName %>/", this.UserName, this.Roles);
         }
 		<%}%>
 		

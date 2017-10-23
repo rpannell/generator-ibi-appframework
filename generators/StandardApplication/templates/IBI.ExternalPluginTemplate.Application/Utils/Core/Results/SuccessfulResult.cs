@@ -1,5 +1,8 @@
 ﻿using System.Web.Mvc;
 
+/// <summary>
+/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
+/// </summary>
 namespace IBI.<%= Name %>.Application.Utils.Core.Results
 {
     public static class SuccessfulResult

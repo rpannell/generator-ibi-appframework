@@ -2,6 +2,9 @@
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 
+/// <summary>
+/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
+/// </summary>
 namespace IBI.<%= Name %>.Application.Utils.Core.Results
 {
     public class LargeJsonResult : JsonResult

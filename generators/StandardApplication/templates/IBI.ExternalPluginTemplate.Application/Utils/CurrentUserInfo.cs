@@ -2,6 +2,9 @@
 using System.Security.Claims;
 using System.Web;
 
+/// <summary>
+/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
+/// </summary>
 namespace IBI.<%= Name %>.Application.Utils
 {
     public static class CurrentUserInfo

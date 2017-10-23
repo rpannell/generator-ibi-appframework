@@ -8,6 +8,9 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
+/// <summary>
+/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
+/// </summary>
 namespace IBI.<%= Name %>.Application.App_Start
 {
     public static class IocContainer
