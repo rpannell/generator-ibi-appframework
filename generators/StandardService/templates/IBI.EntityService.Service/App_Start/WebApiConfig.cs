@@ -12,15 +12,20 @@ namespace IBI.<%= Name %>.Service
         public static void Register(HttpConfiguration config, IWindsorContainer container)
         {
             // Web API configuration and services
+            //set Newtonsoft as the JSON body handler
             var json = config.Formatters.JsonFormatter;
             json.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects;
+
+            //remove the XML formatter
             config.Formatters.Remove(config.Formatters.XmlFormatter);
 
             // Web API routes
             RegisterControllerActivator(container);
 
+            //map the routes that are based on attributes
             config.MapHttpAttributeRoutes();
 
+            //create the generic routes
             config.Routes.MapHttpRoute(
                 name: "defaultapi",
                 routeTemplate: "api/{controller}/{id}",
@@ -33,6 +38,10 @@ namespace IBI.<%= Name %>.Service
             );
         }
 
+        /// <summary>
+        /// Register the ControllerActivator based on Castle Windsor
+        /// </summary>
+        /// <param name="container">The Castle Windsor container</param>
         private static void RegisterControllerActivator(IWindsorContainer container)
         {
             GlobalConfiguration.Configuration.Services.Replace(typeof(IHttpControllerActivator),

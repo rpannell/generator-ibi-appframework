@@ -3,6 +3,9 @@ using IBI.Plugin.Utilities.Cache.Redis;
 using InterlineBrands.Platform.Core.Settings;
 using System.Web;
 
+/// <summary>
+/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
+/// </summary>
 namespace IBI.<%= Name %>.Plugin.Services
 {
     /// <summary>

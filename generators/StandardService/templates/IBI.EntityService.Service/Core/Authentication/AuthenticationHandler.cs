@@ -13,6 +13,10 @@ using System.Web;
 /// </summary>
 namespace IBI.<%= Name %>.Service.Core.Authentication
 {
+    /// <summary>
+    /// Creates a handler that deals with basic authentication of web-api service
+    /// </summary>
+    [Obsolete()]
     public class AuthenticationHandler : DelegatingHandler
     {
         #region Methods

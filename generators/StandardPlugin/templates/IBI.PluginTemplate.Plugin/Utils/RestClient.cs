@@ -6,6 +6,9 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
+/// <summary>
+/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
+/// </summary>
 namespace IBI.<%= Name %>.Plugin.Utils
 {
     public class RestClient<T>
@@ -24,14 +27,13 @@ namespace IBI.<%= Name %>.Plugin.Utils
         /// <summary>
         /// Create a RestClient with no authentication
         /// </summary>
-        /// <param name="url"></param>
-        /// <param name="resource"></param>
+        /// <param name="url">The root URL of the service</param>
+        /// <param name="resource">The resource to call</param>
         public RestClient(string url, string resource)
         {
             //ensure the resource is setup correctly
             resource = !resource.StartsWith("api/") ? string.Format("api/{0}", resource) : resource;
             resource = !resource.EndsWith("/") ? string.Format("{0}/", resource) : resource;
-
             resourceUrl = resource;
 
             this.url = url;
@@ -44,10 +46,10 @@ namespace IBI.<%= Name %>.Plugin.Utils
         /// Creates a RestClient that uses a user name and password for
         /// authentication
         /// </summary>
-        /// <param name="url"></param>
-        /// <param name="resource"></param>
-        /// <param name="username"></param>
-        /// <param name="role"></param>
+        /// <param name="url">The root URL of the service</param>
+        /// <param name="resource">The resource to call</param>
+        /// <param name="username">The username</param>
+        /// <param name="role">The comma delimited list of roles</param>
         public RestClient(string url, string resource, string username, string role) : this(url, resource)
         {
             //ensure the resource is setup correctly
@@ -57,9 +59,9 @@ namespace IBI.<%= Name %>.Plugin.Utils
         /// <summary>
         /// Creates RestClient that uses a token for authentication
         /// </summary>
-        /// <param name="url"></param>
-        /// <param name="resource"></param>
-        /// <param name="token"></param>
+        /// <param name="url">The root URL of the service</param>
+        /// <param name="resource">The resource to call</param>
+        /// <param name="token">The user token</param>
         public RestClient(string url, string resource, string token) : this(url, resource)
         {
             httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);

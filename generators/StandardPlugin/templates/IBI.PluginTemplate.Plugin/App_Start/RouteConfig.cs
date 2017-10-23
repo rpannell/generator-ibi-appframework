@@ -1,6 +1,9 @@
 ﻿using System.Web.Mvc;
 using System.Web.Routing;
 
+/// <summary>
+/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
+/// </summary>
 namespace IBI.<%= Name %>.Plugin
 {
     public class RouteConfig

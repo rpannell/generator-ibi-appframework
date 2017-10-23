@@ -1,6 +1,9 @@
 ﻿using IBI.<%= Name %>.Plugin.Utils;
 using System.Collections.Generic;
 
+/// <summary>
+/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
+/// </summary>
 namespace IBI.<%= Name %>.Plugin.Services.RestClient
 {
     public class Base<T> : RestClient<T>
@@ -17,31 +20,5 @@ namespace IBI.<%= Name %>.Plugin.Services.RestClient
             : base(url, resource, username, role)
         {
         }
-
-        /// <summary>
-        /// Parses the string and deserialize it back to a type
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="parse"></param>
-        /// <returns></returns>
-        public T ParseResponseStringToEntity(string parse)
-        {
-            return (T)Newtonsoft.Json.JsonConvert.DeserializeObject(parse, typeof(T));
-        }
-
-        /// <summary>
-        /// Parses the string and deserialize it back to a list of type
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="parse"></param>
-        /// <returns></returns>
-        public List<T> ParseResponseStringToListOfEntity(string parse)
-        {
-            return (List<T>)Newtonsoft.Json.JsonConvert.DeserializeObject(parse, typeof(List<T>));
-        }
-
-        /*
-         *  ADD CUSTOM REST FUNCTION SPECIFIC TO THE <%= Name %> HERE
-         */
     }
 }

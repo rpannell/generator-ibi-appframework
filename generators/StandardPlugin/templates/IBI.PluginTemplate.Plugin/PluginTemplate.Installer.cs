@@ -2,8 +2,14 @@
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 
+/// <summary>
+/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
+/// </summary>
 namespace IBI.<%= Name %>.Plugin
 {
+    /// <summary>
+    /// Installs any necessary Castle Windsor IoC
+    /// </summary>
     public class <%= Name %>Installer : IWindsorInstaller
     {
         #region Methods

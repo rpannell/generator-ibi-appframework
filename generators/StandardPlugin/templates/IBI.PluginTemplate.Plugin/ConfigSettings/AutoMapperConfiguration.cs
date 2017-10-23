@@ -1,5 +1,11 @@
-﻿namespace IBI.<%= Name %>.Plugin.ConfigSettings
+﻿/// <summary>
+/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
+/// </summary>
+namespace IBI.<%= Name %>.Plugin.ConfigSettings
 {
+    /// <summary>
+    /// Set up AutoMapper
+    /// </summary>
     public class AutoMapperConfiguration
     {
         public static bool loaded = false;
@@ -15,6 +21,7 @@
 
         private static void ConfigureProjectMapping()
         {
+            //ADD THE AUTOMAPPER CONFIGURATIONS HERE
         }
     }
 }

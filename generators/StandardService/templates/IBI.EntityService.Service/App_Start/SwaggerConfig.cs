@@ -10,6 +10,9 @@ using WebActivatorEx;
 [assembly: PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
 namespace IBI.<%= Name %>.Service
 {
+    /// <summary>
+    /// Configures the swagger UI, all of the settings are in the comment
+    /// </summary>
     public class SwaggerConfig
     {
         #region Methods
@@ -171,7 +174,6 @@ namespace IBI.<%= Name %>.Service
                         // with the same path (sans query string) and HTTP method. You can workaround this by providing a
                         // custom strategy to pick a winner or merge the descriptions for the purposes of the Swagger docs
                         //
-                        //c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
                         c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
                         // Wrap the default SwaggerGenerator with additional behavior (e.g. caching) or provide an
                         // alternative implementation for ISwaggerProvider with the CustomProvider option.
@@ -214,6 +216,8 @@ namespace IBI.<%= Name %>.Service
                         // it for all operations.
                         //
                         //c.SupportedSubmitMethods("GET", "HEAD");
+
+                        //REMOVE THE ABILITY OF THE UI TO SUBMIT REQUEST
                         c.SupportedSubmitMethods();
                         // Use the CustomAsset option to provide your own version of assets used in the swagger-ui.
                         // It's typically used to instruct Swashbuckle to return your version instead of the default

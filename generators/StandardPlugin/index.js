@@ -6,6 +6,7 @@ const path = require('path');
 var globalfs = require('fs');
 var mkdirp = require('mkdirp');
 const ibigenerator = require('../../ibigenerator');
+const moment = require('moment');
 module.exports = class extends Generator {
 	constructor(args, opts) {
 		super(args, opts);
@@ -63,6 +64,8 @@ module.exports = class extends Generator {
 	}
 	_buildTemplateData() {
 		this.templatedata = {};
+		this.templatedata.Version = ibigenerator.currentVersion();
+		this.templatedata.TodaysDate = moment().format("YYYY-MM-DD, hh:mm A");
 		this.templatedata.Name = this.options.pluginName == undefined || this.options.pluginName == null ? this.props.pluginName : this.options.pluginName;
 		this.templatedata.SourceLoc = this.options.sourceLocation == undefined || this.options.sourceLocation == null ? this.props.sourceCodeLocation : this.options.sourceLocation;
 		this.templatedata.WebServiceUrl = this.options.webServiceUrl == undefined || this.options.webServiceUrl == null ? this.props.webServiceUrl : this.options.webServiceUrl;
