@@ -783,9 +783,12 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
             try
             {
                 var proc = this.StoredProcQueryString(storedProcName, args);
-                this.Database.SqlQuery(null, proc, args);
+                this.Database.ExecuteSqlCommand(proc, args);
             }
-            catch (Exception) { }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         #endregion Run Stored Procedure
