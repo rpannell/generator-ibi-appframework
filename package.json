@@ -20,7 +20,7 @@
   ],
   "devDependencies": {
     "coveralls": "^2.13.3",
-    "eslint": "^4.9.0",
+    "eslint": "^4.13.1",
     "eslint-config-xo-space": "^0.16.0",
     "jest": "^19.0.2",
     "jest-cli": "^20.0.0",
@@ -33,7 +33,7 @@
     "debug": "^3.1.0",
     "ejs": "^2.5.7",
     "glob": "^7.1.2",
-    "moment": "^2.19.1",
+    "moment": "^2.20.0",
     "q": "^1.5.1",
     "winston": "^2.4.0",
     "xmldom": "^0.1.27",
