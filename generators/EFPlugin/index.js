@@ -45,11 +45,11 @@ module.exports = class extends Generator {
 
   _writeFile(templatePath, filePath, overwrite) {
     ibigenerator.checkoutoradd(filePath);
-    if (!globalfs.exists(filePath) || overwrite) {
-      this.fs.copyTpl(templatePath, filePath, this.templatedata);
-    }
     if (!globalfs.existsSync(filePath)) {
       newFiles.push(filePath);
+    }
+    if (!globalfs.existsSync(filePath) || overwrite) {
+      this.fs.copyTpl(templatePath, filePath, this.templatedata);
     }
   }
 
