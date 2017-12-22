@@ -27,25 +27,27 @@ helper = {
 		winston.info(extraData, object);
 	},
 	checkout: function(filePath){
+		console.log("Checkout");
 		var paths = [];
 		paths.push(filePath);
-		tfs.checkout(paths);
+		return tfs.checkout(paths);
 	},
 	addfile: function(filePath){
-		if(newFiles == null || newFiles == undefined){
-			newFiles = [];
-		}
-		newFiles.push(filePath);
-		var dirName = path.dirname(filePath);
-		folders.push(dirName);
+		return new Promise(function (resolve){
+			if(newFiles == null || newFiles == undefined){
+				newFiles = [];
+			}
+			newFiles.push(filePath);
+			var dirName = path.dirname(filePath);
+			folders.push(dirName);
+
+			resolve("Worked");
+		});
 	},
 	addfolder: function(folderPath){
 		folders.push(folderPath);
 	},
 	netWebApi: function(sourceLocation, progFile){
-		
-		console.log("NewFiles Service: ");
-		console.log(newFiles);
 		fs.readFile(path.join(sourceLocation, progFile), 'utf-8', function(err, data) {
 			var doc = new xmldom().parseFromString(data, 'text/xml');
 			var items = doc.getElementsByTagName('Project');
@@ -189,10 +191,11 @@ exports.checkout = function (filePath) {
 };
 
 exports.checkoutoradd = function (filePath) {
+	helper.log("Looking for: " + filePath);
 	if(fs.existsSync(filePath)){
-		helper.checkout(filePath);
+		return helper.checkout(filePath);
 	} else {
-		helper.addfile(filePath);
+		return helper.addfile(filePath);
 	}
 };
 
@@ -204,8 +207,10 @@ exports.writeScaffoldingToProj = function(sourceLocation, serviceFiles){
 			progFile = files[0];
 		}
 		
-		helper.checkout(path.join(sourceLocation, progFile));
-		helper.netWebApiFiles(sourceLocation, progFile, serviceFiles);
+		helper.checkout(path.join(sourceLocation, progFile)).then(function(resolve){
+			helper.log("Done check out of: " + path.join(sourceLocation, progFile) + " update proj file");
+			helper.netWebApiFiles(sourceLocation, progFile, serviceFiles);
+		});
 	});
 }
 
@@ -233,15 +238,13 @@ exports.addNewFolderToTFS = function(sourceLocation){
 			helper.addfile(fullpath);
 		}
 		
-		tfs.add(folders);
-		tfs.add(newFiles);
+		Promise.all([tfs.add(folders), tfs.add(newFiles)]).then(function(resolve){ helper.log("Done adding files to TFS")});
 	});
 	
 }
 
 exports.doTfsOperations = function(){
-	tfs.add(folders);
-	tfs.add(newFiles);
+	return Promise.all([tfs.add(folders), tfs.add(newFiles)]);
 };
 
 exports.currentVersion = function(){

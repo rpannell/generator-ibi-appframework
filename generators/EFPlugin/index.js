@@ -44,13 +44,16 @@ module.exports = class extends Generator {
   }
 
   _writeFile(templatePath, filePath, overwrite) {
-    ibigenerator.checkoutoradd(filePath);
-    if (!globalfs.existsSync(filePath)) {
-      newFiles.push(filePath);
-    }
-    if (!globalfs.existsSync(filePath) || overwrite) {
-      this.fs.copyTpl(templatePath, filePath, this.templatedata);
-    }
+    var that = this;
+    ibigenerator.checkoutoradd(filePath).then(function(result){
+      ibigenerator.log("Checked out or add" + filePath);
+      if (!globalfs.existsSync(filePath)) {
+        newFiles.push(filePath);
+      }
+      if (!globalfs.existsSync(filePath) || overwrite) {
+        that.fs.copyTpl(templatePath, filePath, that.templatedata);
+      }
+    });
   }
 
 
@@ -83,6 +86,6 @@ module.exports = class extends Generator {
   }
 
   install() {
-    ibigenerator.doTfsOperations();
+    ibigenerator.doTfsOperations().then(function(resolve) { ibigenerator.log("Finished writing files")});
   }
 };
