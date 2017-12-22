@@ -8,9 +8,17 @@ namespace IBI.<%= Name %>.Service
 {
     public class RouteConfig
     {
+        #region Methods
+
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
+            routes.MapRoute(
+                name: "Healthcheck",
+                url: "Healthcheck",
+                defaults: new { controller = "Home", action = "Healthcheck", id = UrlParameter.Optional }
+            );
 
             routes.MapRoute(
                 name: "Default",
@@ -18,5 +26,7 @@ namespace IBI.<%= Name %>.Service
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
         }
+
+        #endregion Methods
     }
 }
