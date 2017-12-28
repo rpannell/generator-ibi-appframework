@@ -20,6 +20,7 @@ module.exports = class extends Generator {
 	this.option('location', { description: "The folder location of the root application framework code *required", type: String, alias: "sl" });
 	this.option('entityinfo', { description: "A JSON string of some of the entity information", type: String, alias: "ms" });
 	ibigenerator.resetFilesAndFolders();
+	newFiles = [];
   }
 
   _searchAbleType(type){
@@ -137,6 +138,6 @@ module.exports = class extends Generator {
   }
 
   install() {
-	ibigenerator.doTfsOperations().then(function(result){ ibigenerator.log("Done Adding TFS files" + filePath);});
+	ibigenerator.doTfsOperations().then(function(result){ ibigenerator.log("Done Adding TFS files");});
   }
 };

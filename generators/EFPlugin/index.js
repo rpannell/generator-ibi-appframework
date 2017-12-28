@@ -31,6 +31,7 @@ module.exports = class extends Generator {
       alias: "ms"
     });
     ibigenerator.resetFilesAndFolders();
+    newFiles = [];
   }
 
   _buildTemplateData(entityInfo) {
@@ -58,6 +59,7 @@ module.exports = class extends Generator {
 
 
   writing() {
+    newFiles = []; //clear everything out
     var entityInfo = JSON.parse(this.options.entityinfo);
     for (var i = 0; i < entityInfo.length; i++) {
       this._buildTemplateData(entityInfo[i]);

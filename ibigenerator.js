@@ -91,8 +91,6 @@ helper = {
 		});
 	},
 	netWebApiFiles: function(sourceLocation, progFile, files){
-		console.log("Files Service: ");
-		console.log(files);
 		fs.readFile(path.join(sourceLocation, progFile), 'utf-8', function(err, data) {
 			var doc = new xmldom().parseFromString(data, 'text/xml');
 			var items = doc.getElementsByTagName('Project');
