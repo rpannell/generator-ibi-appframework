@@ -35,16 +35,17 @@ module.exports = class extends Generator {
   }
 
   _buildTemplateData(entityInfo) {
-    this.templatedata = {};
-    this.templatedata.entityinfo = entityInfo;
-    this.templatedata.projectname = this.options.projectname;
-    this.templatedata.columns = entityInfo.Columns;
-    this.templatedata.isPlugin = this.options.isplugin;
-		this.templatedata.TodaysDate = moment().format("YYYY-MM-DD, hh:mm A");
-		this.templatedata.Version = ibigenerator.currentVersion();
+    var entityTemplateData = {};
+    entityTemplateData.entityinfo = entityInfo;
+    entityTemplateData.projectname = this.options.projectname;
+    entityTemplateData.columns = entityInfo.Columns;
+    entityTemplateData.isPlugin = this.options.isplugin;
+		entityTemplateData.TodaysDate = moment().format("YYYY-MM-DD, hh:mm A");
+    entityTemplateData.Version = ibigenerator.currentVersion();
+    return entityTemplateData;
   }
 
-  _writeFile(templatePath, filePath, overwrite) {
+  _writeFile(templatePath, filePath, templateData, overwrite) {
     var that = this;
     ibigenerator.checkoutoradd(filePath).then(function(result){
       ibigenerator.log("Checked out or add" + filePath);
@@ -52,7 +53,7 @@ module.exports = class extends Generator {
         newFiles.push(filePath);
       }
       if (!globalfs.existsSync(filePath) || overwrite) {
-        that.fs.copyTpl(templatePath, filePath, that.templatedata);
+        that.fs.copyTpl(templatePath, filePath, templateData);
       }
     });
   }
@@ -62,26 +63,31 @@ module.exports = class extends Generator {
     newFiles = []; //clear everything out
     var entityInfo = JSON.parse(this.options.entityinfo);
     for (var i = 0; i < entityInfo.length; i++) {
-      this._buildTemplateData(entityInfo[i]);
-
+      var entityTemplateData = this._buildTemplateData(entityInfo[i]);
+      
       this._writeFile(path.join(this.templatePath(), "Entities", "Base", "Entity.cs"),
-        path.join(this.options.location, "Models", "Entities", "Base", this.templatedata.entityinfo.PropertyName + '.cs'),
+        path.join(this.options.location, "Models", "Entities", "Base", entityTemplateData.entityinfo.PropertyName + '.cs'),
+        entityTemplateData,
         true);
 
       this._writeFile(path.join(this.templatePath(), "Entities", "Entity.cs"),
-        path.join(this.options.location, "Models", "Entities", this.templatedata.entityinfo.PropertyName + '.cs'),
+        path.join(this.options.location, "Models", "Entities", entityTemplateData.entityinfo.PropertyName + '.cs'),
+        entityTemplateData,
         false);
 
       this._writeFile(path.join(this.templatePath(), "Services", "RestClient", "RestClient.cs"),
-        path.join(this.options.location, "Services", "RestClient", this.templatedata.entityinfo.PropertyName + 'RestClient.cs'),
+        path.join(this.options.location, "Services", "RestClient", entityTemplateData.entityinfo.PropertyName + 'RestClient.cs'),
+        entityTemplateData,
         false);
 
       this._writeFile(path.join(this.templatePath(), "Services", "Interfaces", "ServiceInterface.cs"),
-        path.join(this.options.location, "Services", "Interfaces", "I" + this.templatedata.entityinfo.PropertyName + 'Service.cs'),
+        path.join(this.options.location, "Services", "Interfaces", "I" + entityTemplateData.entityinfo.PropertyName + 'Service.cs'),
+        entityTemplateData,
         false);
 
       this._writeFile(path.join(this.templatePath(), "Services", "Service.cs"),
-        path.join(this.options.location, "Services", this.templatedata.entityinfo.PropertyName + 'Service.cs'),
+        path.join(this.options.location, "Services", entityTemplateData.entityinfo.PropertyName + 'Service.cs'),
+        entityTemplateData,
         false);
       ibigenerator.writeScaffoldingToProj(this.options.location, newFiles);
     }

@@ -70,30 +70,31 @@ module.exports = class extends Generator {
   }  
   
   _buildTemplateData(entityInfo) {
-	for(var i = 0; i < entityInfo.Columns.length; i++){
-		entityInfo.Columns[i].SearchTypeAttribute = this._searchAbleType(entityInfo.Columns[i].Search);
-	}
-	this.templatedata = {};
-	this.templatedata.entityinfo = entityInfo;
-	this.templatedata.projectname = this.options.projectname;
-	this.templatedata.primarykey = entityInfo.PrimaryKey;
-	this.templatedata.columns =  entityInfo.Columns;
-	this.templatedata.TodaysDate = moment().format("YYYY-MM-DD, hh:mm A");
-	this.templatedata.Version = ibigenerator.currentVersion();
-	ibigenerator.log('Entity Scaffolding Data', this.templatedata);
+		var entityTemplateData = {};
+		for(var i = 0; i < entityInfo.Columns.length; i++){
+			entityInfo.Columns[i].SearchTypeAttribute = this._searchAbleType(entityInfo.Columns[i].Search);
+		}
+		entityTemplateData.entityinfo = entityInfo;
+		entityTemplateData.projectname = this.options.projectname;
+		entityTemplateData.primarykey = entityInfo.PrimaryKey;
+		entityTemplateData.columns =  entityInfo.Columns;
+		entityTemplateData.TodaysDate = moment().format("YYYY-MM-DD, hh:mm A");
+		entityTemplateData.Version = ibigenerator.currentVersion();
+		ibigenerator.log('Entity Scaffolding Data', entityTemplateData);
+		return entityTemplateData;
   }
   
-  _writeFile(templatePath, filePath, overwrite){
-	var that = this;
-	ibigenerator.checkoutoradd(filePath).then(function(result){
-		ibigenerator.log("Checked out or add" + filePath);
-		if(!globalfs.existsSync(filePath) || overwrite){
-			that.fs.copyTpl(templatePath, filePath, that.templatedata);
-		}
-		if(!globalfs.existsSync(filePath)){
-			newFiles.push(filePath);
-		}
-	});
+  _writeFile(templatePath, filePath, templateData, overwrite){
+		var that = this;
+		ibigenerator.checkoutoradd(filePath).then(function(result){
+			ibigenerator.log("Checked out or add" + filePath);
+			if(!globalfs.existsSync(filePath) || overwrite){
+				that.fs.copyTpl(templatePath, filePath, templateData);
+			}
+			if(!globalfs.existsSync(filePath)){
+				newFiles.push(filePath);
+			}
+		});
   }
   
   writing() {
@@ -103,34 +104,41 @@ module.exports = class extends Generator {
 	var entityInfo = JSON.parse(this.options.entityinfo);
 	ibigenerator.log("Entity Data After parsing the string", entityInfo);
 	for(var i = 0; i < entityInfo.length; i++){
-		this._buildTemplateData(entityInfo[i]);
+		var entityTemplateData = this._buildTemplateData(entityInfo[i]);
 		this._writeFile(path.join(this.templatePath(),"Entity", "Base", "EntityName.cs"),
-				path.join(this.options.location, "Entities", "Base", this.templatedata.entityinfo.PropertyName + '.cs'),
+				path.join(this.options.location, "Entities", "Base", entityTemplateData.entityinfo.PropertyName + '.cs'),
+				entityTemplateData,
 				true);		
 
 		this._writeFile(path.join(this.templatePath(),"Entity", "EntityName.cs"),
-						path.join(this.options.location, "Entities", this.templatedata.entityinfo.PropertyName + '.cs'),
+						path.join(this.options.location, "Entities", entityTemplateData.entityinfo.PropertyName + '.cs'),
+						entityTemplateData,
 						false);	
 
 		//create repository
 		this._writeFile(path.join(this.templatePath(),"Repositories", "EntityRepository.cs"),
-						path.join(this.options.location, "Repositories", this.templatedata.entityinfo.PropertyName + 'Repository.cs'),
+						path.join(this.options.location, "Repositories", entityTemplateData.entityinfo.PropertyName + 'Repository.cs'),
+						entityTemplateData,
 						false);			  
 
 		this._writeFile(path.join(this.templatePath(),"Repositories", "Interfaces", "RepositoryInterface.cs"),
-						path.join(this.options.location, "Repositories", "Interfaces" , "I" + this.templatedata.entityinfo.PropertyName + 'Repository.cs'),
+						path.join(this.options.location, "Repositories", "Interfaces" , "I" + entityTemplateData.entityinfo.PropertyName + 'Repository.cs'),
+						entityTemplateData,
 						false);		  
 			
 		this._writeFile(path.join(this.templatePath(),"Services", "Service.cs"),
-						path.join(this.options.location, "Services", this.templatedata.entityinfo.PropertyName + 'Service.cs'),
+						path.join(this.options.location, "Services", entityTemplateData.entityinfo.PropertyName + 'Service.cs'),
+						entityTemplateData,
 						false);	
 
 		this._writeFile(path.join(this.templatePath(),"Services", "Interfaces", "ServiceInterface.cs"),
-						path.join(this.options.location, "Services", "Interfaces" , "I" + this.templatedata.entityinfo.PropertyName + 'Service.cs'),
+						path.join(this.options.location, "Services", "Interfaces" , "I" + entityTemplateData.entityinfo.PropertyName + 'Service.cs'),
+						entityTemplateData,
 						false);	  
 		
 		this._writeFile(path.join(this.templatePath(),"Controllers", "Controller.cs"),
-						path.join(this.options.location, "Controllers", this.templatedata.entityinfo.PropertyName + 'Controller.cs'),
+						path.join(this.options.location, "Controllers", entityTemplateData.entityinfo.PropertyName + 'Controller.cs'),
+						entityTemplateData,
 						false);
 	}
 
