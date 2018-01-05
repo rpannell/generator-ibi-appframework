@@ -26,11 +26,20 @@ helper = {
 	log: function(extraData, object){
 		winston.info(extraData, object);
 	},
+	isFileWritable(filePath){
+		var stats = fs.statSync(filePath);
+		return (stats["mode"] & 2);
+	},
 	checkout: function(filePath){
-		console.log("Checkout");
-		var paths = [];
-		paths.push(filePath);
-		return tfs.checkout(paths);
+		helper.log("Checkout: " + filePath);
+		if(!helper.isFileWritable(filePath)){
+			helper.log("Check file is not writable");
+			var paths = [];
+			paths.push(filePath);
+			return tfs.checkout(paths);
+		}
+		helper.log("Check file is writable");
+		return new Promise(function(resolve){resolve()});
 	},
 	addfile: function(filePath){
 		return new Promise(function (resolve){
@@ -189,14 +198,28 @@ exports.checkout = function (filePath) {
 };
 
 exports.checkoutoradd = function (filePath) {
-	helper.log("Looking for: " + filePath);
-	if(fs.existsSync(filePath)){
-		return helper.checkout(filePath);
-	} else {
-		return helper.addfile(filePath);
+	try{
+		helper.log("Looking for: " + filePath);
+		if(fs.existsSync(filePath)){
+			helper.log("Checking out: " + filePath);
+			return helper.checkout(filePath);
+		} else {
+			helper.log("Adding: " + filePath);
+			return helper.addfile(filePath);
+		}
+	} catch (error){
+		helper.log("Check out error: " + error);
 	}
 };
-
+exports.canWriteFile = function(filePath, callbackFunction){
+	fs.filePath (file, function (error, stats){
+        if (error){
+			callbackFunctioncb (error, false);
+        }else{
+            callbackFunction (null, !!(mask & parseInt ((stats.mode & parseInt ("777", 8)).toString (8)[0])));
+        }
+    });
+}
 exports.writeScaffoldingToProj = function(sourceLocation, serviceFiles){
 	//find the prog file
 	glob("*.csproj", { cwd: sourceLocation }, function(er, files){
