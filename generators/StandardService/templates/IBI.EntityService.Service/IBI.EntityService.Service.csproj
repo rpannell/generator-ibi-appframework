@@ -37,6 +37,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\IBI.<%= Name %>.Service.Documentation.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -230,7 +231,8 @@
     <Compile Include="Core\Services\Interfaces\IBaseService.cs" />
     <Compile Include="<%= Name %>Logger.cs" />
     <Compile Include="Core\Config\AutoMapperProfile.cs" />
-	<Compile Include="Utils\SendTemplateEmail.cs" />
+	  <Compile Include="Utils\SendTemplateEmail.cs" />
+    <Compile Include="Utils\RestClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />

@@ -259,11 +259,11 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
                             switch (att.SearchType)
                             {
                                 case SearchAbleType.Equal:
-                                    addedExpression = Expression.Equal(key, value);
+                                    addedExpression = LambdaHelpers.NullableEqual(key, value);
                                     break;
 
                                 case SearchAbleType.NotEqual:
-                                    addedExpression = Expression.NotEqual(key, value);
+                                    addedExpression = LambdaHelpers.NullableNotEqual(key, value);
                                     break;
 
                                 case SearchAbleType.GreaterThan:
@@ -271,7 +271,7 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
                                     break;
 
                                 case SearchAbleType.GreaterThanEqual:
-                                    addedExpression = Expression.GreaterThanOrEqual(key, value);
+                                    addedExpression = LambdaHelpers.NullableGreaterThanOrEqualTo(key, value);
                                     break;
 
                                 case SearchAbleType.LessThan:
@@ -279,7 +279,7 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
                                     break;
 
                                 case SearchAbleType.LessThanEqual:
-                                    addedExpression = Expression.LessThanOrEqual(key, value);
+                                    addedExpression = LambdaHelpers.NullableLessThanOrEqualTo(key, value);
                                     break;
 
                                 case SearchAbleType.Contains:
@@ -361,12 +361,19 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
         /// <returns>List of entities</returns>
         private List<TEntity> GetSearchResults(Expression restrictions, int limit, int offset, string sortName, string sortOrder, ParameterExpression genericType, IQueryable<TEntity> query)
         {
-            return query.AsNoTracking()
-                        .WhereHelper(restrictions, genericType)
-                        .OrderByHelper(GetOrderBy(sortName), sortOrder == "desc")
-                        .Skip(offset)
-                        .Take(limit)
-                        .ToList();
+            if(limit > 0 && offset >= 0){
+                return query.AsNoTracking()
+                            .WhereHelper(restrictions, genericType)
+                            .OrderByHelper(GetOrderBy(sortName), sortOrder == "desc")
+                            .Skip(offset)
+                            .Take(limit)
+                            .ToList();
+            } else {
+                return query.AsNoTracking()
+                            .WhereHelper(restrictions, genericType)
+                            .OrderByHelper(GetOrderBy(sortName), sortOrder == "desc")
+                            .ToList();
+            }
         }
 
         #endregion Get Page
@@ -523,11 +530,11 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
                 switch (adv.TypeOfSearch)
                 {
                     case AdvancedSearchType.IsNull:
-                        addedExpression = Expression.Equal(key, Expression.Constant(null));
+                        addedExpression = LambdaHelpers.NullableEqual(key, Expression.Constant(null));
                         break;
 
                     case AdvancedSearchType.IsNotNull:
-                        addedExpression = Expression.NotEqual(key, Expression.Constant(null));
+                        addedExpression = LambdaHelpers.NullableNotEqual(key, Expression.Constant(null));
                         break;
 
                     case AdvancedSearchType.In:
@@ -535,11 +542,11 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
                         break;
 
                     case AdvancedSearchType.Equal:
-                        addedExpression = Expression.Equal(key, value);
+                        addedExpression = LambdaHelpers.NullableEqual(key, value);
                         break;
 
                     case AdvancedSearchType.NotEqual:
-                        addedExpression = Expression.NotEqual(key, value);
+                        addedExpression = LambdaHelpers.NullableNotEqual(key, value);
                         break;
 
                     case AdvancedSearchType.LessThan:

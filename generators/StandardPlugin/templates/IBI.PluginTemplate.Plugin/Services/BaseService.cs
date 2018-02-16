@@ -16,28 +16,39 @@ namespace IBI.<%= Name %>.Plugin.Services
     /// <typeparam name="TEntity"></typeparam>
     public class BaseService
     {
-        public string URL = string.Empty;
-        public string UserName = string.Empty;
-        public string Roles = string.Empty;
+        #region Fields
+
+        public string URL = string.Empty;        
 #if DEBUG
         public RedisCacheProvider ServiceCache = new RedisCacheProvider("<%= Name %>-Local");
 #else
         public RedisCacheProvider ServiceCache = new RedisCacheProvider("<%= Name %>");
 #endif		
+        public string UserName = string.Empty;
+        public string Roles = string.Empty;
+
+        #endregion Fields
+
+        #region Constructors
 
         public BaseService(IPluginSettings pluginSettings)
         {
             this.URL = pluginSettings["<%= Name %>ServiceURL"];
 			this.UserName = Impersonation.Instance.CurrentImpersonatedUser;
             //create the comma delimited list of roles
-            foreach (var pluginRole in <%= Name %>.PLUGINROLES.Split(','))
+            if (HttpContext.Current.User.Identity.IsAuthenticated)
             {
-                if (((InterlineBrands.Platform.Core.IPluginPrinciple)HttpContext.Current.User).IsInRole(pluginRole.Trim(), <%= Name %>.PLUGINNAME))
+                foreach (var pluginRole in <%= Name %>.PLUGINROLES.Split(','))
                 {
-                    if (this.Roles != string.Empty) Roles += ",";
-                    this.Roles += pluginRole.Trim();
+                    if (((InterlineBrands.Platform.Core.IPluginPrinciple)HttpContext.Current.User).IsInRole(pluginRole.Trim(), <%= Name %>.PLUGINNAME))
+                    {
+                        if (this.Roles != string.Empty) Roles += ",";
+                        this.Roles += pluginRole.Trim();
+                    }
                 }
             }
         }
+
+        #endregion Constructors
     }
 }

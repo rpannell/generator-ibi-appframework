@@ -112,6 +112,38 @@ namespace IBI.<%= Name %>.Service.Core.Utils
         }
 		
         /// <summary>
+        /// Ensures you check for the nullable value instead of the value null
+        /// for a equal Expression
+        /// </summary>
+        /// <param name="left">The left side of the Expression</param>
+        /// <param name="right">The right side of the Expression</param>
+        /// <returns>Expression</returns>
+        public static Expression NullableEqual(Expression left, Expression right)
+        {
+            if (IsNullableType(left.Type) && !IsNullableType(right.Type))
+                right = Expression.Convert(right, left.Type);
+            else if (!IsNullableType(left.Type) && IsNullableType(right.Type))
+                left = Expression.Convert(left, right.Type);
+            return Expression.Equal(left, right);
+        }
+
+        /// <summary>
+        /// Ensures you check for the nullable value instead of the value null
+        /// for a not equal to Expression
+        /// </summary>
+        /// <param name="left">The left side of the Expression</param>
+        /// <param name="right">The right side of the Expression</param>
+        /// <returns>Expression</returns>
+        public static Expression NullableNotEqual(Expression left, Expression right)
+        {
+            if (IsNullableType(left.Type) && !IsNullableType(right.Type))
+                right = Expression.Convert(right, left.Type);
+            else if (!IsNullableType(left.Type) && IsNullableType(right.Type))
+                left = Expression.Convert(left, right.Type);
+            return Expression.NotEqual(left, right);
+        }
+
+        /// <summary>
         /// Checks to see if a Property is a Virtual type or not
         /// </summary>
         /// <param name="self">The information on a property</param>

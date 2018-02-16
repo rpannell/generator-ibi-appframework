@@ -17,10 +17,10 @@ namespace IBI.<%= Name %>.Plugin
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             /*
-             * Need too add the services you would like to use within castle Windsor
+             * Need to add the services you would like to use within castle Windsor
              */
             container.Register(
-                Classes.FromThisAssembly().InSameNamespaceAs(typeof(IBI.<%= Name %>.Plugin.Services.BaseService)).WithService.DefaultInterfaces().LifestyleTransient()
+                Classes.FromThisAssembly().InSameNamespaceAs(typeof(Services.BaseService)).WithService.DefaultInterfaces().LifestyleTransient()
             );
         }
 

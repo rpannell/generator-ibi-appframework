@@ -18,11 +18,18 @@ using System.Web.Http;
 /// </summary>
 namespace IBI.<%= projectname %>.Service.Controllers
 {
+    /// <summary>
+    /// Controller for <see cref="<%= entityinfo.PropertyName %>"/>
+    /// </summary>
 	[RoutePrefix("api/<%= entityinfo.PropertyName %>")]
     public partial class <%= entityinfo.PropertyName %>Controller : BaseController<I<%= entityinfo.PropertyName %>Service, I<%= entityinfo.PropertyName %>Repository, <%= entityinfo.PropertyName %>, <%= entityinfo.PrimaryKey %>>
     {
         #region Constructors
 		
+        /// <summary>
+        /// Normal constructor for the <see cref="<%= entityinfo.PropertyName %>Controller"/> that sets up the service
+        /// </summary>
+        /// <param name="service"><see cref="I<%= entityinfo.PropertyName %>Service"/></param>
 		public <%= entityinfo.PropertyName %>Controller(I<%= entityinfo.PropertyName %>Service service)
         {
             this.CurrentService = service;

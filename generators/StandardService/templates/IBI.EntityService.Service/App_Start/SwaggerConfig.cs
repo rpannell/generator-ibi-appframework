@@ -105,7 +105,7 @@ namespace IBI.<%= Name %>.Service
                         // those comments into the generated docs and UI. You can enable this by providing the path to one or
                         // more Xml comment files.
                         //
-                        //c.IncludeXmlComments(GetXmlCommentsPath());
+                        c.IncludeXmlComments(string.Format(@"{0}\bin\IBI.<%= Name %>.Service.Documentation.xml", System.AppDomain.CurrentDomain.BaseDirectory));
 
                         // Swashbuckle makes a best attempt at generating Swagger compliant JSON schemas for the various types
                         // exposed in your API. However, there may be occasions when more control of the output is needed.
@@ -216,9 +216,12 @@ namespace IBI.<%= Name %>.Service
                         // it for all operations.
                         //
                         //c.SupportedSubmitMethods("GET", "HEAD");
-
+#if DEBUG
+                        c.SupportedSubmitMethods("GET", "HEAD", "POST", "PUT", "DELETE");
+#else
                         //REMOVE THE ABILITY OF THE UI TO SUBMIT REQUEST
                         c.SupportedSubmitMethods();
+#endif
                         // Use the CustomAsset option to provide your own version of assets used in the swagger-ui.
                         // It's typically used to instruct Swashbuckle to return your version instead of the default
                         // when a request is made for "index.html". As with all custom content, the file must be included

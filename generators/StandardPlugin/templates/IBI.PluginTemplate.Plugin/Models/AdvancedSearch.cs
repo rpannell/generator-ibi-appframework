@@ -22,7 +22,7 @@ namespace IBI.<%= Name %>.Plugin.Models
         /// <param name="type">How to query the data</param>
         /// <param name="valueA">The value to query</param>
         /// <param name="valueB">A second value to query for the "Between" filter</param>
-        public AdvancedSearch(string propertyName, AdvancedSearchType type, object valueA, object valueB)
+        private AdvancedSearch(string propertyName, AdvancedSearchType type, object valueA, object valueB)
         {
             this.PropertyName = propertyName;
             this.TypeOfSearch = type;
@@ -45,7 +45,7 @@ namespace IBI.<%= Name %>.Plugin.Models
         /// <param name="propertyName">The name of the entity property to query</param>
         /// <param name="type">How to query the data</param>
         /// <param name="values">The values to filter the property on</param>
-        public AdvancedSearch(string propertyName, AdvancedSearchType type, List<object> values)
+        private AdvancedSearch(string propertyName, AdvancedSearchType type, List<object> values)
         {
             this.PropertyName = propertyName;
             this.TypeOfSearch = type;
