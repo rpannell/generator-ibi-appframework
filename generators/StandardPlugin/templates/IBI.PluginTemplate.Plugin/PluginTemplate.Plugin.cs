@@ -3,6 +3,7 @@ using InterlineBrands.Platform.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
@@ -14,6 +15,8 @@ namespace IBI.<%= Name %>.Plugin
     [Serializable()]
     public class <%= Name %> : InterlinePlugIn
     {
+        #region Fields
+
         /// <summary>
         /// The path to the plugin in layout that can be used in this plugins
         /// views if the developer so chooses.
@@ -35,6 +38,10 @@ namespace IBI.<%= Name %>.Plugin
         /// more than 1 role for the plugin
         /// </summary>
         public const string PLUGINROLES = "<%= Name %>";
+
+        #endregion Fields
+
+        #region Properties
 
         /// <summary>
         /// This is the name of the plugin and shouldn’t include any spaces
@@ -139,6 +146,34 @@ namespace IBI.<%= Name %>.Plugin
         }
 
         /// <summary>
+        /// Used to setup the anonymous role if the
+        /// plugin chooses to have one
+        /// </summary>
+        public override string AnonymousRole
+        {
+            get
+            {
+                return base.AnonymousRole;
+            }
+        }
+
+        /// <summary>
+        /// Marks the plugin to be shown in the home screen
+        /// or not
+        /// </summary>
+        public override bool ShowInHome
+        {
+            get
+            {
+                return base.ShowInHome;
+            }
+        }
+
+        #endregion Properties
+
+        #region Methods
+
+        /// <summary>
         /// Registers the area and controllers into the application framework
         /// </summary>
         /// <param name="routes"></param>
@@ -166,28 +201,20 @@ namespace IBI.<%= Name %>.Plugin
             ConfigSettings.AutoMapperConfiguration.Configure();
         }
 
-        /// <summary>
-        /// Used to setup the anonymous role if the
-        /// plugin chooses to have one
-        /// </summary>
-        public override string AnonymousRole
+        #endregion Methods
+
+        #region Static Helpers
+
+        public static bool IsUserInRole(string roleName)
         {
-            get
+            if (HttpContext.Current.User.Identity.IsAuthenticated)
             {
-                return base.AnonymousRole;
+                return ((IPluginPrinciple)HttpContext.Current.User).IsInRole(roleName, PLUGINNAME);
             }
+
+            return false;
         }
 
-        /// <summary>
-        /// Marks the plugin to be shown in the home screen
-        /// or not
-        /// </summary>
-        public override bool ShowInHome
-        {
-            get
-            {
-                return base.ShowInHome;
-            }
-        }
+        #endregion Static Helpers
     }
 }
