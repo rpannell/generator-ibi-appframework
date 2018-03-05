@@ -1,6 +1,4 @@
-/// <summary>
-/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
-/// </summary>
+// Created by Genie <%= TodaysDate %> by verion <%= Version %>
 namespace IBI.<%= Name %>.Service.Core.Entities
 {
     /// <summary>

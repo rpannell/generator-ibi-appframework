@@ -1,9 +1,7 @@
 ﻿using IBI.Plugin.Utilities.Logging;
 using IBI.Plugin.Utilities.Logging.Interfaces;
 
-/// <summary>
-/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
-/// </summary>
+// Created by Genie <%= TodaysDate %> by verion <%= Version %>
 namespace IBI.<%= Name %>.Service
 {
     /// <summary>
@@ -11,9 +9,17 @@ namespace IBI.<%= Name %>.Service
     /// </summary>
     public class <%= Name %>Logger<T>
     {
+        #region Methods
+
+        /// <summary>
+        /// Gets <see cref="ILogAdapter"/> for the service
+        /// </summary>
+        /// <returns><see cref="ILogAdapter"/></returns>
         public static ILogAdapter GetLogger()
         {
             return ServiceLoggingManager.GetLogger<T>("<%= Name %>");
         }
+
+        #endregion Methods
     }
 }

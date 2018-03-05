@@ -4,11 +4,12 @@ using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using IBI.<%= Name %>.Service.Utils.Config;
 
-/// <summary>
-/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
-/// </summary>
+// Created by Genie <%= TodaysDate %> by verion <%= Version %>
 namespace IBI.<%= Name %>.Service.Core.Dependency
 {
+    /// <summary>
+    /// Installs the necessary dependencies to the windsor container
+    /// </summary>
     public class DependencyInstaller : IWindsorInstaller
     {
         /// <summary>

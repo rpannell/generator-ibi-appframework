@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Xml;
 
-/// <summary>
-/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
-/// </summary>
+// Created by Genie <%= TodaysDate %> by verion <%= Version %>
 namespace IBI.<%= Name %>.Service.Models
 {
+    /// <summary>
+    /// Model to handle the response from Kourier Rest Gateway
+    /// </summary>
     public class KoreReponseMessage
     {
         #region Constructors
@@ -80,16 +81,55 @@ namespace IBI.<%= Name %>.Service.Models
 
         #region Properties
 
-        public string HttpCode { get; set; }
-        public string HttpSubCode { get; set; }
-        public string Message { get; set; }
-        public string ResourceFile { get; set; }
-        public string ResourceId { get; set; }
-        public string RemoteId { get; set; }
-        public string HRef { get; set; }
-        public string Loaded { get; set; }
-        public string Operation { get; set; }
+        /// <summary>
+        /// list of errors (if any)
+        /// </summary>
         public List<string> Errors { get; set; }
+
+        /// <summary>
+        /// The url called
+        /// </summary>
+        public string HRef { get; set; }
+
+        /// <summary>
+        /// The main Http response code
+        /// </summary>
+        public string HttpCode { get; set; }
+
+        /// <summary>
+        /// The secondary http repsonse code that advises how the communication to ERP actually went
+        /// </summary>
+        public string HttpSubCode { get; set; }
+
+        /// <summary>
+        /// Loaded
+        /// </summary>
+        public string Loaded { get; set; }
+
+        /// <summary>
+        /// Any return messages
+        /// </summary>
+        public string Message { get; set; }
+
+        /// <summary>
+        /// What HTTP operation was performed
+        /// </summary>
+        public string Operation { get; set; }
+
+        /// <summary>
+        /// the Id of the object in erp
+        /// </summary>
+        public string RemoteId { get; set; }
+
+        /// <summary>
+        /// The file used on ERP
+        /// </summary>
+        public string ResourceFile { get; set; }
+
+        /// <summary>
+        /// ResourceId
+        /// </summary>
+        public string ResourceId { get; set; }
 
         #endregion Properties
     }

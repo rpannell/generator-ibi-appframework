@@ -8,11 +8,11 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 
-/// <summary>
-/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
-/// </summary>
 namespace IBI.<%= Name %>.Service
 {
+    /// <summary>
+    /// Created by Genie <%= TodaysDate %> by verion <%= Version %>
+    /// </summary>
     public class WebApiApplication : System.Web.HttpApplication
     {
         private static IWindsorContainer _container;
@@ -27,7 +27,6 @@ namespace IBI.<%= Name %>.Service
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-            BundleConfig.RegisterBundles(BundleTable.Bundles);
             //sets the application/json header for every request made, unless it already has another one set
             GlobalConfiguration.Configuration.Formatters.JsonFormatter.MediaTypeMappings.Add(new QueryStringMapping("json", "true", "application/json"));
             //configures the log4net based on the web.config settings

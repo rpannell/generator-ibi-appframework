@@ -1,15 +1,19 @@
 using System.Web.Mvc;
 using System.Web.Routing;
 
-/// <summary>
-/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
-/// </summary>
+// Created by Genie <%= TodaysDate %> by verion <%= Version %>
 namespace IBI.<%= Name %>.Service
 {
+    /// <summary>
+    /// Configure the routes
+    /// </summary>
     public class RouteConfig
     {
         #region Methods
 
+        /// <summary>
+        /// Configure the routes
+        /// </summary>
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");

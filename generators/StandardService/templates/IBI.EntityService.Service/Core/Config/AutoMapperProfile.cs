@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 
-/// <summary>
-/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
-/// </summary>
+// Created by Genie <%= TodaysDate %> by verion <%= Version %>
 namespace IBI.<%= Name %>.Service.Utils.Config
 {
     /// <summary>
@@ -10,6 +8,11 @@ namespace IBI.<%= Name %>.Service.Utils.Config
     /// </summary>
     public class AutoMapperProfile : Profile
     {
+        #region Constructors
+
+        /// <summary>
+        /// Create the maps
+        /// </summary>
         public AutoMapperProfile()
         {
             // http://automapper.readthedocs.io/en/latest/Configuration.html
@@ -19,5 +22,7 @@ namespace IBI.<%= Name %>.Service.Utils.Config
             /* GENIE HOOK */
             /* DO NOT DELETE THE ABOVE LINE */
         }
+
+        #endregion Constructors
     }
 }

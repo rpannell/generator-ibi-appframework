@@ -1,19 +1,28 @@
 using System;
 
-/// <summary>
-/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
-/// </summary>
+// Created by Genie <%= TodaysDate %> by verion <%= Version %>
 namespace IBI.<%= Name %>.Service.Core.Attributes
 {
-    ///
-    ///Advises the attribute what type of property
-    ///in the entity are we dealing with to join
-    ///correctly
-    ///
+    /// <summary>
+    /// Advises the attribute what type of property
+    /// in the entity are we dealing with to join
+    /// correctly
+    /// </summary>
     public enum AutoCompletePropertyType
     {
+        /// <summary>
+        /// Is the property an Int
+        /// </summary>
         Int,
+
+        /// <summary>
+        /// Is the property a string
+        /// </summary>
         String,
+
+        /// <summary>
+        /// Is the property a true false field
+        /// </summary>
         Bit
     }
 
@@ -91,8 +100,19 @@ namespace IBI.<%= Name %>.Service.Core.Attributes
 
         #region Properties
 
+        /// <summary>
+        /// Should the search team equal the value of the property
+        /// </summary>
         public bool IsEqual { get; set; }
+
+        /// <summary>
+        /// Name of the property to search
+        /// </summary>
         public string PropertyName { get; set; }
+
+        /// <summary>
+        /// The type of the property to auto complete on
+        /// </summary>
         public AutoCompletePropertyType PropertyType { get; set; }
 
         #endregion Properties

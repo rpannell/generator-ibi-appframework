@@ -6,9 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-/// <summary>
-/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
-/// </summary>
+// Created by Genie <%= TodaysDate %> by verion <%= Version %>
 namespace IBI.<%= Name %>.Service.Utils
 {
     /// <summary>
@@ -239,9 +237,10 @@ namespace IBI.<%= Name %>.Service.Utils
         /// <summary>
         /// Get the AutoComplete list for a specific entity based on the resource url
         /// </summary>
-        /// <param name="searchTerm">The search term from the UI</param>
-        /// <param name="length">Defaults to 20</param>
-        /// <returns></returns>
+        /// <param name="searchTerm">The search term</param>
+        /// <param name="length">The number of rows to return</param>
+        /// <param name="type">A type of search if needed</param>
+        /// <returns>List of entity</returns>
         public virtual List<T> GetAutoComplete(string searchTerm, int length = 20, int type = 0)
         {
             var response = this.CreateResponse(HttpMethod.Post, "GetAutoComplete", new { Length = length, SearchTerm = searchTerm }, type);
@@ -249,6 +248,12 @@ namespace IBI.<%= Name %>.Service.Utils
             return results;
         }
 
+        /// <summary>
+        /// Obsolete
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="extra"></param>
+        /// <returns>List of entity</returns>
         [Obsolete("Get extra is no longer supported, please use a custom get route")]
         public virtual List<T> GetExtra(int id, string extra)
         {
@@ -264,6 +269,12 @@ namespace IBI.<%= Name %>.Service.Utils
             }
         }
 
+        /// <summary>
+        /// Obsolete
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="extra"></param>
+        /// <returns>List of entity</returns>
         [Obsolete("Get extra is no longer supported, please use a custom get route")]
         public virtual List<T> GetExtra(string id, string extra)
         {
@@ -302,6 +313,12 @@ namespace IBI.<%= Name %>.Service.Utils
             this.HandleReturn(response);
         }
 
+        /// <summary>
+        /// Obsolete
+        /// </summary>
+        /// <param name="id">An id of the primary key</param>
+        /// <param name="extra">The string extra</param>
+        /// <param name="data">An object</param>
         [Obsolete("Post extra is no longer supported and should use a custom post route instead")]
         public virtual void Post(int id, string extra, object data)
         {

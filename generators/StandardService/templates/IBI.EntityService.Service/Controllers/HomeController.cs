@@ -1,11 +1,12 @@
 ﻿using System.Net;
 using System.Web.Mvc;
 
-/// <summary>
-/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
-/// </summary>
+// Created by Genie <%= TodaysDate %> by verion <%= Version %>
 namespace IBI.<%= Name %>.Service.Controllers
 {
+    /// <summary>
+    /// Default controller
+    /// </summary>
     [Route("")]
     public class HomeController : Controller
     {

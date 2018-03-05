@@ -1,25 +1,72 @@
 using System;
 
-/// <summary>
-/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
-/// </summary>
+// Created by Genie <%= TodaysDate %> by verion <%= Version %>
 namespace IBI.<%= Name %>.Service.Core.Attributes
 {
+    /// <summary>
+    /// Handles the Searchable attributes on entities
+    /// </summary>
     public class Searchable
     {
+        #region Enums
+
+        /// <summary>
+        /// Selector on how to search the database
+        /// </summary>
         public enum SearchAbleType
         {
+            /// <summary>
+            /// If equal
+            /// </summary>
             Equal,
+
+            /// <summary>
+            /// Not Equal
+            /// </summary>
             NotEqual,
+
+            /// <summary>
+            /// A like query
+            /// </summary>
             Contains,
+
+            /// <summary>
+            /// starts with
+            /// </summary>
             StartsWith,
+
+            /// <summary>
+            /// Ends with
+            /// </summary>
             EndsWith,
+
+            /// <summary>
+            /// Greater than
+            /// </summary>
             GreaterThan,
+
+            /// <summary>
+            /// Greater than or equal to
+            /// </summary>
             GreaterThanEqual,
+
+            /// <summary>
+            /// less than
+            /// </summary>
             LessThan,
+
+            /// <summary>
+            /// less than or equal to
+            /// </summary>
             LessThanEqual,
+
+            /// <summary>
+            /// Full Text search
+            /// </summary>
             FullText
         }
+
+        #endregion Enums
 
         /// <summary>
         /// Attribute used on a property with in an entity
@@ -76,7 +123,14 @@ namespace IBI.<%= Name %>.Service.Core.Attributes
 
             #region Properties
 
+            /// <summary>
+            /// The database alias name to the property
+            /// </summary>
             public string AliasName { get; set; }
+
+            /// <summary>
+            /// How to search the property
+            /// </summary>
             public SearchAbleType SearchType { get; set; }
 
             #endregion Properties

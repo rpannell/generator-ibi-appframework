@@ -15,9 +15,7 @@ using System.Linq.Expressions;
 using static IBI.<%= Name %>.Service.Core.Attributes.Searchable;
 using static IBI.<%= Name %>.Service.Core.Models.AdvancedSearch;
 
-/// <summary>
-/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
-/// </summary>
+// Created by Genie <%= TodaysDate %> by verion <%= Version %>
 namespace IBI.<%= Name %>.Service.Core.Repositories
 {
     /// <summary>
@@ -75,9 +73,9 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
 
         /// <summary>
         /// Delete an entity by the primary key
-        /// /// If it's ReadOnly, nothing is done
+        /// If it's ReadOnly, nothing is done
         /// </summary>
-        /// <param name="Id">The primary key</param>
+        /// <param name="id">The primary key</param>
         public virtual void Delete(TPrimaryKey id)
         {
             if (!typeof(TEntity).IsDefined(typeof(ReadOnlyAttribute), true))
@@ -100,7 +98,7 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
         /// <summary>
         /// Gets a single row of the entity by the value of the primary key
         /// </summary>
-        /// <param name="Id">The value of the primary key</param>
+        /// <param name="id">The value of the primary key</param>
         /// <returns>An Entity by the primary key</returns>
         public virtual TEntity Get(TPrimaryKey id)
         {
@@ -155,7 +153,7 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
         /// If it's ReadOnly nothing is done
         /// And InsertOnly properties are ignored
         /// </summary>
-        /// <param name="Entity">The Entity to update</param>
+        /// <param name="entity">The Entity to update</param>
         /// <returns>The Entity after the database update</returns>
         public virtual TEntity Update(TEntity entity)
         {
@@ -195,6 +193,7 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
         /// <param name="extraExpr">Any extra Linq.Expression to filter down in the database</param>
         /// <param name="query">Extra query to filter down the entity</param>
         /// <returns>A PaginationResult that contains the entities</returns>
+        [System.Obsolete("Uge GetAdvancedPage")]
         public virtual PaginationResult<TEntity> GetPage(int offSet, int limit, string searchCriteria = null, string sortName = null, string sortOrder = "desc",
                                                         ParameterExpression genericType = null, Expression extraExpr = null, IQueryable<TEntity> query = null)
         {
@@ -353,7 +352,7 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
         /// </summary>
         /// <param name="restrictions">The current Expression</param>
         /// <param name="limit">The number of records to return</param>
-        /// <param name="offset"The row offset on the database</param>
+        /// <param name="offset">The row offset on the database</param>
         /// <param name="sortName">The name of the property to sort on</param>
         /// <param name="sortOrder">The direction to sort (desc/asc)</param>
         /// <param name="genericType">The ParameterExpression that represents the Entity</param>
@@ -490,7 +489,9 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
                                             ? this.GetSearchRestrictions(searchCriteria, genericType)
                                             : null;
             var advRestrictions = this.GetAdvancedSearchRestrictions(model, genericType);
-            var expr = restrictions != null ? Expression.AndAlso(restrictions, advRestrictions) : advRestrictions;
+            var expr = restrictions != null && advRestrictions != null
+                                ? Expression.AndAlso(restrictions, advRestrictions)
+                                : restrictions ?? advRestrictions;
             //set the query
             if (query == null) query = this.GetFullEntity();
             //get the row count
@@ -514,6 +515,7 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
         public Expression GetAdvancedSearchRestrictions(AdvancedPageModel model, ParameterExpression genericType)
         {
             Expression restrictions = null;
+            if (model.AdvancedSearch == null) return restrictions;
             foreach (var adv in model.AdvancedSearch)
             {
                 var valueA = (object)(adv.IntValue.HasValue ? adv.IntValue.Value : adv.Value);

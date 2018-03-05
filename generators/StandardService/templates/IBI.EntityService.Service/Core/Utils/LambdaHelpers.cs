@@ -4,12 +4,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-/// <summary>
-/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
-/// </summary>
 namespace IBI.<%= Name %>.Service.Core.Utils
 {
     /// <summary>
+    /// Created by Genie <%= TodaysDate %> by verion <%= Version %>
     /// Helper functions for Linq lambda queries
     /// </summary>
     public static class LambdaHelpers

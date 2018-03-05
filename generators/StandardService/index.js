@@ -71,7 +71,7 @@ module.exports = class extends Generator {
 		this._createDirectory(path.join(this._serviceSourceLocation(), 'Models'));
 		this._createDirectory(path.join(this._serviceSourceLocation(), 'Repositories', 'Interfaces', 'Base'));
 		this._createDirectory(path.join(this._serviceSourceLocation(), 'Repositories', 'Base'));
-		this._runTemplateOnFolder('Scripts', this._serviceSourceLocation());
+		//this._runTemplateOnFolder('Scripts', this._serviceSourceLocation());
 		this._createDirectory(path.join(this._serviceSourceLocation(), 'Services', 'Interfaces', 'Base'));
 		this._createDirectory(path.join(this._serviceSourceLocation(), 'Services', 'Base'));
 		this._runTemplateOnFolder('Utils', this._serviceSourceLocation());

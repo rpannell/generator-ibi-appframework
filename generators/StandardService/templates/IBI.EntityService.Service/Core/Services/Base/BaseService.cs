@@ -6,9 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-/// <summary>
-/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
-/// </summary>
+// Created by Genie <%= TodaysDate %> by verion <%= Version %>
 namespace IBI.<%= Name %>.Service.Core.Services
 {
     /// <summary>
@@ -35,7 +33,7 @@ namespace IBI.<%= Name %>.Service.Core.Services
         /// <summary>
         /// Gets a single row of the entity by the value of the primary key
         /// </summary>
-        /// <param name="Id">The value of the primary key</param>
+        /// <param name="id">The value of the primary key</param>
         /// <returns>An Entity by the primary key</returns>
         public virtual TEntity Get(TPrimaryKey id)
         {
@@ -45,7 +43,7 @@ namespace IBI.<%= Name %>.Service.Core.Services
         /// <summary>
         /// Delete an entity by the primary key
         /// </summary>
-        /// <param name="Id">The primary key</param>
+        /// <param name="id">The primary key</param>
         public virtual void Delete(TPrimaryKey id)
         {
             this.Repository.Delete(id);
@@ -54,7 +52,7 @@ namespace IBI.<%= Name %>.Service.Core.Services
         /// <summary>
         /// Insert an entity in the database
         /// </summary>
-        /// <param name="Entity">The entity to insert</param>
+        /// <param name="entity">The entity to insert</param>
         /// <returns>The Entity after the database insert</returns>
         public virtual TEntity Insert(TEntity entity)
         {
@@ -74,7 +72,7 @@ namespace IBI.<%= Name %>.Service.Core.Services
         /// <summary>
         /// Updates the row in the database that represents the entity
         /// </summary>
-        /// <param name="Entity">The Entity to update</param>
+        /// <param name="entity">The Entity to update</param>
         /// <returns>The Entity after the database update</returns>
         public virtual TEntity Update(TEntity entity)
         {
@@ -92,9 +90,20 @@ namespace IBI.<%= Name %>.Service.Core.Services
         /// <param name="genericType">The parameter expression that represents the entity table</param>
         /// <param name="extraExpr">Any extra Linq.Expression to filter down in the database</param>
         /// <returns>A PaginationResult that contains the entities</returns>
+        [System.Obsolete("Use GetAdvancedPage instead")]
         public virtual PaginationResult<TEntity> GetPage(int offSet, int limit, string searchCriteria = null, string sortName = null, string sortOrder = "desc", ParameterExpression genericType = null, Expression extraExpr = null)
         {
-            return this.Repository.GetPage(offSet, limit, searchCriteria, sortName, sortOrder, genericType, extraExpr);
+            var query = (IQueryable<TEntity>)null;
+            var advancedPageModel = new AdvancedPageModel()
+            {
+                AdvancedSearch = new List<AdvancedSearch>(),
+                SearchLimit = limit,
+                SearchOffSet = offSet,
+                SearchString = searchCriteria,
+                SortOrder = sortOrder,
+                SortString = sortName
+            };
+            return this.Repository.GetAdvancedPage(offSet, limit, searchCriteria, sortName, sortOrder, advancedPageModel, query);
         }
 
         /// <summary>

@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 
-/// <summary>
-/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
-/// </summary>
+// Created by Genie <%= TodaysDate %> by verion <%= Version %>
 namespace IBI.<%= Name %>.Service.Core.Models
 {
+    /// <summary>
+    /// The return result of the paging functions
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class PaginationResult<T>
     {
         #region Properties

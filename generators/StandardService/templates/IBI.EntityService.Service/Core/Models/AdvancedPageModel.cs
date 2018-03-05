@@ -1,10 +1,9 @@
 using System.Collections.Generic;
-/// <summary>
-/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
-/// </summary>
+
 namespace IBI.<%= Name %>.Service.Core.Models
 {
     /// <summary>
+    /// Created by Genie <%= TodaysDate %> by verion <%= Version %>
     /// A model that represents the advanced paging information to filter
     /// the database information
     /// </summary>

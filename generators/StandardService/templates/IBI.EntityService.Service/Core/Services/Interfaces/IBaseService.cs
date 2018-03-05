@@ -5,11 +5,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-/// <summary>
-/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
-/// </summary>
+// Created by Genie <%= TodaysDate %> by verion <%= Version %>
 namespace IBI.<%= Name %>.Service.Core.Services.Interfaces
 {
+    /// <summary>
+    /// Generic Base Service
+    /// </summary>
     public interface IBaseService { }
 
     /// <summary>

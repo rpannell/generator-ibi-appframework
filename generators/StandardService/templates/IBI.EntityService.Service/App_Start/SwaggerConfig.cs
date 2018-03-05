@@ -4,9 +4,7 @@ using System.Linq;
 using System.Web.Http;
 using WebActivatorEx;
 
-/// <summary>
-/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
-/// </summary>
+// Created by Genie <%= TodaysDate %> by verion <%= Version %>
 [assembly: PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
 namespace IBI.<%= Name %>.Service
 {
@@ -17,6 +15,9 @@ namespace IBI.<%= Name %>.Service
     {
         #region Methods
 
+        /// <summary>
+        /// Registers swagger configuration
+        /// </summary>
         public static void Register()
         {
             var thisAssembly = typeof(SwaggerConfig).Assembly;

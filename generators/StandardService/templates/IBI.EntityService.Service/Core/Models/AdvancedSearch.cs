@@ -1,17 +1,75 @@
 using System.Collections.Generic;
-/// <summary>
-/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
-/// </summary>
+
 namespace IBI.<%= Name %>.Service.Core.Models
 {
     /// <summary>
+    /// Created by Genie <%= TodaysDate %> by verion <%= Version %>
     /// A model that represents how to filter the entity in Advanced Paging
     /// </summary>
     public class AdvancedSearch
     {
         #region Enums
 
-        public enum AdvancedSearchType { Between, NotEqual, Equal, LessThan, LessThanEqual, GreaterThan, GreaterThanEqual, Like, In, IsNull, IsNotNull };
+        /// <summary>
+        /// How to advanced search
+        /// </summary>
+        public enum AdvancedSearchType
+        {
+            /// <summary>
+            /// Between
+            /// </summary>
+            Between,
+
+            /// <summary>
+            /// Not Equal
+            /// </summary>
+            NotEqual,
+
+            /// <summary>
+            /// Equal
+            /// </summary>
+            Equal,
+
+            /// <summary>
+            /// Less than
+            /// </summary>
+            LessThan,
+
+            /// <summary>
+            /// Less than or equal
+            /// </summary>
+            LessThanEqual,
+
+            /// <summary>
+            /// Greater than
+            /// </summary>
+            GreaterThan,
+
+            /// <summary>
+            /// Greater than or equal
+            /// </summary>
+            GreaterThanEqual,
+
+            /// <summary>
+            /// Like query
+            /// </summary>
+            Like,
+
+            /// <summary>
+            /// In Clause
+            /// </summary>
+            In,
+
+            /// <summary>
+            /// Is Null
+            /// </summary>
+            IsNull,
+
+            /// <summary>
+            /// Is Not Null
+            /// </summary>
+            IsNotNull
+        };
 
         #endregion Enums
 
@@ -104,7 +162,7 @@ namespace IBI.<%= Name %>.Service.Core.Models
         /// </summary>
         /// <param name="propertyName">The name of the entity property to query</param>
         /// <param name="a">The value of the left side of the Between filter</param>
-        /// <param name="a">The value of the right side of the Between filter</param>
+        /// <param name="b">The value of the right side of the Between filter</param>
         /// <returns>AdvancedSearch</returns>
         public static AdvancedSearch Between(string propertyName, object a, object b)
         {
@@ -176,7 +234,7 @@ namespace IBI.<%= Name %>.Service.Core.Models
         }
 
         /// <summary>
-        /// Creates a "Less than (<)" filter
+        /// Creates a "Less than" filter
         /// </summary>
         /// <param name="propertyName">The name of the entity property to query</param>
         /// <param name="a">The value to filter</param>
@@ -187,7 +245,7 @@ namespace IBI.<%= Name %>.Service.Core.Models
         }
 
         /// <summary>
-        /// Creates a "Less than or equal (<=)" filter
+        /// Creates a "Less than or equal" filter
         /// </summary>
         /// <param name="propertyName">The name of the entity property to query</param>
         /// <param name="a">The value to filter</param>

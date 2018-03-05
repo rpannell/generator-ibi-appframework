@@ -2,13 +2,19 @@ using Castle.Windsor;
 using System.Web.Http;
 using System.Web.Http.Dispatcher;
 
-/// <summary>
-/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
-/// </summary>
 namespace IBI.<%= Name %>.Service
 {
+    /// <summary>
+    /// Configures the WebApi settings
+    /// Created by Genie <%= TodaysDate %> by verion <%= Version %>
+    /// </summary>
     public static class WebApiConfig
     {
+        /// <summary>
+        /// Configures the WebApi settings
+        /// </summary>
+        /// <param name="config"></param>
+        /// <param name="container"></param>
         public static void Register(HttpConfiguration config, IWindsorContainer container)
         {
             // Web API configuration and services

@@ -1,9 +1,7 @@
-using IBI.<%= Name %>.Service.Core.Authentication;
+using System.Security.Principal;
 using System.Web;
 
-/// <summary>
-/// Created by Genie <%= TodaysDate %> by verion <%= Version %>
-/// </summary>
+// Created by Genie <%= TodaysDate %> by verion <%= Version %>
 namespace IBI.<%= Name %>.Service.Utils
 {
     /// <summary>
@@ -18,11 +16,11 @@ namespace IBI.<%= Name %>.Service.Utils
         /// </summary>
         /// <param name="roleName">The name of the role</param>
         /// <returns>True if the user has the role, false if not</returns>
-        public bool IsUserInRole(string roleName)
+        public static bool IsUserInRole(string roleName)
         {
             if (HttpContext.Current.User.Identity.IsAuthenticated)
             {
-                return ((CustomPrincipal)(HttpContext.Current.User)).IsInRole(roleName);
+                return ((GenericPrincipal)(HttpContext.Current.User)).IsInRole(roleName);
             }
             return false;
         }
