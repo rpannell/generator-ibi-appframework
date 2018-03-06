@@ -80,11 +80,13 @@ module.exports = class extends Generator {
 
   _writeFile(filePath, contents) {
     try {
+      var that = this;
       ibigenerator.log('Writing', filePath);
-      ibigenerator.checkoutoradd(filePath);
-      if (globalfs.existsSync(filePath)) {
-        this.fs.write(filePath, contents);
-      }
+      ibigenerator.checkoutoradd(filePath).then(function(result){
+        if (globalfs.existsSync(filePath)) {
+          that.fs.write(filePath, contents);
+        }
+      });
     } catch (err) {
       ibigenerator.log(err);
     }
@@ -95,9 +97,7 @@ module.exports = class extends Generator {
     var currentFile = "";
     ejs.renderFile(templatePath, this.templatedata, {}, function (err, str) {
       try {
-        currentFile = that.fs.read(fileName, {
-          defaults: ""
-        });
+        currentFile = that.fs.read(fileName, { defaults: "" });
         if (currentFile != "") {
           currentFile = currentFile.replace(HOOKSTRING, str + "\n\t\t" + HOOKSTRING);
           that._writeFile(fileName, currentFile);
@@ -109,6 +109,7 @@ module.exports = class extends Generator {
     this._buildTemplateData();
 
     if (this.options.serviceLocation != undefined && this.options.serviceLocation != null && this.options.serviceLocation != "") {
+      var serviceGenerateVersion = ibigenerator.getGenieVersionFromProj(this.options.serviceLocation);
       ibigenerator.log("", "Has Service Location");
       this._templateFile(path.join(this.templatePath(), "Repositories", "Interfaces", "CustomFunction.ejs"),
         path.join(this.options.serviceLocation, "Repositories", "Interfaces", "I" + this.templatedata.entityname + "Repository.cs"));
@@ -121,9 +122,12 @@ module.exports = class extends Generator {
 
       this._templateFile(path.join(this.templatePath(), "Services", "CustomFunction.ejs"),
         path.join(this.options.serviceLocation, "Services", this.templatedata.entityname + "Service.cs"));
-
-      this._templateFile(path.join(this.templatePath(), "Controllers", "CustomFunction.ejs"),
-        path.join(this.options.serviceLocation, "Controllers", this.templatedata.entityname + "Controller.cs"));
+      
+      this._templateFile(path.join(this.templatePath(), "Controllers", serviceGenerateVersion != null && serviceGenerateVersion >= "1.1.24" 
+                                                                          ? "CustomFunction.ejs" 
+                                                                          : "OlderCustomFunction.ejs"),
+          path.join(this.options.serviceLocation, "Controllers", this.templatedata.entityname + "Controller.cs"));
+      
     }
 
     if (this.options.pluginLocation != undefined && this.options.pluginLocation != null && this.options.pluginLocation != "") {

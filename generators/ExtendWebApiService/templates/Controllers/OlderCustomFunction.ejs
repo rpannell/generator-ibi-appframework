@@ -1,14 +1,14 @@
 
         // Created by Genie on <%= TodaysDate %> by v<%= Version %> 
         [<%if(IsPost){%>HttpPost()<%}else{%>HttpGet()<%}%>, Route("<%= functionname %><%= ControllerPath %>")]
-        public <%- Return %> <%= functionname %>(<%= FunctionDefinition %>)
+        public IHttpActionResult <%= functionname %>(<%= FunctionDefinition %>)
         {
             try
             {
-                return this.CurrentService.<%= functionname %>(<%= FunctionCall %>);
+                return Ok(this.CurrentService.<%= functionname %>(<%= FunctionCall %>));
             }
             catch (System.Exception ex)
             {
-                throw ex;
+                return BadRequest(ex.Message);
             }
         }

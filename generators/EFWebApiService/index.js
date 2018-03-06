@@ -103,6 +103,7 @@ module.exports = class extends Generator {
 	ibigenerator.log("Entity Data Before parsing the string", this.options.entityinfo);
 	var entityInfo = JSON.parse(this.options.entityinfo);
 	ibigenerator.log("Entity Data After parsing the string", entityInfo);
+	var projectGenieVersion = ibigenerator.getGenieVersionFromProj(this.options.location);
 	for(var i = 0; i < entityInfo.length; i++){
 		var entityTemplateData = this._buildTemplateData(entityInfo[i]);
 		this._writeFile(path.join(this.templatePath(),"Entity", "Base", "EntityName.cs"),
@@ -136,10 +137,20 @@ module.exports = class extends Generator {
 						entityTemplateData,
 						false);	  
 		
-		this._writeFile(path.join(this.templatePath(),"Controllers", "Controller.cs"),
-						path.join(this.options.location, "Controllers", entityTemplateData.entityinfo.PropertyName + 'Controller.cs'),
-						entityTemplateData,
-						false);
+		if(projectGenieVersion != "" && projectGenieVersion >= "1.1.24"){
+			//after version 1.1.24 the controllers returned the entity instead of IHttpAction
+			this._writeFile(path.join(this.templatePath(),"Controllers", "Controller.cs"),
+							path.join(this.options.location, "Controllers", entityTemplateData.entityinfo.PropertyName + 'Controller.cs'),
+							entityTemplateData,
+							false);
+		} else {
+			//prior to version 1.1.24 the controller return IHttpAction instead of 
+			//the actual entity so use an older controller instead
+			this._writeFile(path.join(this.templatePath(),"Controllers", "OlderController.cs"),
+							path.join(this.options.location, "Controllers", entityTemplateData.entityinfo.PropertyName + 'Controller.cs'),
+							entityTemplateData,
+							false);
+		}
 	}
 
 	ibigenerator.writeScaffoldingToProj(this.options.location, newFiles);

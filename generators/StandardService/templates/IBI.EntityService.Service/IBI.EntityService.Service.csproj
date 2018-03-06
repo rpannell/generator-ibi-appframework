@@ -291,3 +291,10 @@
     <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props'))" />
   </Target>
 </Project>
+<!-- 
+  DO NOT DELETE THIS COMMENT
+  DATE: <%= TodaysDate %>
+  GENIE VERSION: <%= Version %> 
+  SERVICE VERSION: .NET 4.7 WEB API
+  DO NOT DELETE THIS COMMENT
+-->

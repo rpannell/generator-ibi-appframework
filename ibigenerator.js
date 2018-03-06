@@ -23,6 +23,10 @@ tfs.init({
 
 
 helper = { 
+	getProjectFile: function(sourceLocation){
+		var files = glob.sync("*.csproj", { cwd: sourceLocation });
+		return files != null && files.length > 0 ? files[0] : "";
+	},
 	log: function(extraData, object){
 		winston.info(extraData, object);
 	},
@@ -250,6 +254,39 @@ exports.writeScaffoldingToPluginProj = function(sourceLocation){
 		helper.checkout(path.join(sourceLocation, progFile));
 		helper.standardPluginProj(sourceLocation, progFile);
 	});
+}
+
+exports.getProjectVersionFromProj = function(sourceLocation){
+	var searchString = "PROJECT VERSION:";
+	var projectVersion = "";
+	var progFile = helper.getProjectFile(sourceLocation);
+	if(progFile == null || progFile == "") return "";
+	if(fs.existsSync(path.join(sourceLocation, progFile))){
+		var fileData = fs.readFileSync(path.join(sourceLocation, progFile));
+		var regex = new RegExp("^.*" + searchString + ".*$", 'm');
+		var matches = regex.exec(fileData);
+		projectVersion = matches != null && matches.length > 0 
+							? matches[0].trim().replace(searchString, "").trim()
+							: "";
+	}
+
+	return projectVersion;
+}
+
+exports.getGenieVersionFromProj = function(sourceLocation){
+	var genieVersion = "";
+	var progFile = helper.getProjectFile(sourceLocation);
+	if(progFile == null || progFile == "") return "";
+	if(fs.existsSync(path.join(sourceLocation, progFile))){
+		var fileData = fs.readFileSync(path.join(sourceLocation, progFile));
+		var regex = new RegExp('^.*GENIE VERSION:.*$', 'm');
+		var matches = regex.exec(fileData);
+		genieVersion = matches != null && matches.length > 0 
+							? matches[0].trim().replace("GENIE VERSION:", "").trim()
+							: "";
+	}
+
+	return genieVersion;
 }
 
 exports.addNewFolderToTFS = function(sourceLocation){
