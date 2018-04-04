@@ -123,6 +123,7 @@ module.exports = class extends Generator {
       this._templateFile(path.join(this.templatePath(), "Services", "CustomFunction.ejs"),
         path.join(this.options.serviceLocation, "Services", this.templatedata.entityname + "Service.cs"));
       
+      //create the controller based on the version of the scaffolding that created the project
       this._templateFile(path.join(this.templatePath(), "Controllers", serviceGenerateVersion != null && serviceGenerateVersion >= "1.1.24" 
                                                                           ? "CustomFunction.ejs" 
                                                                           : "OlderCustomFunction.ejs"),

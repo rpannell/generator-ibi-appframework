@@ -792,7 +792,7 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
             try
             {
                 var proc = this.StoredProcQueryString(storedProcName, args);
-                this.Database.ExecuteSqlCommand(proc, args);
+                this.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, proc, args);
             }
             catch (Exception ex)
             {
