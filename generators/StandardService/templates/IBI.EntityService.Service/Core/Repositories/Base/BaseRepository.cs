@@ -251,59 +251,64 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
                         foreach (var att in searchAtts)
                         {
                             var propertyName = string.IsNullOrEmpty(att.AliasName) ? sc.Name : att.AliasName;
-                            var key = typeof(TEntity).GetPropertyExpressionFromSubProperty(propertyName, genericType);
                             var propertyType = typeof(TEntity).FollowPropertyPath(propertyName).PropertyType;
-                            var value = Expression.Constant(LambdaHelpers.ChangeType(searchCriteria, propertyType));
-                            Expression addedExpression = null;
-                            switch (att.SearchType)
+
+                            //check for special cases where a string cannot be converted to the type specifically
+                            if (FieldCanBeSearch(propertyType, searchCriteria))
                             {
-                                case SearchAbleType.Equal:
-                                    addedExpression = LambdaHelpers.NullableEqual(key, value);
-                                    break;
+                                var key = typeof(TEntity).GetPropertyExpressionFromSubProperty(propertyName, genericType);
+                                var value = Expression.Constant(LambdaHelpers.ChangeType(searchCriteria, propertyType));
+                                Expression addedExpression = null;
+                                switch (att.SearchType)
+                                {
+                                    case SearchAbleType.Equal:
+                                        addedExpression = LambdaHelpers.NullableEqual(key, value);
+                                        break;
 
-                                case SearchAbleType.NotEqual:
-                                    addedExpression = LambdaHelpers.NullableNotEqual(key, value);
-                                    break;
+                                    case SearchAbleType.NotEqual:
+                                        addedExpression = LambdaHelpers.NullableNotEqual(key, value);
+                                        break;
 
-                                case SearchAbleType.GreaterThan:
-                                    addedExpression = LambdaHelpers.NullableGreaterThan(key, value);
-                                    break;
+                                    case SearchAbleType.GreaterThan:
+                                        addedExpression = LambdaHelpers.NullableGreaterThan(key, value);
+                                        break;
 
-                                case SearchAbleType.GreaterThanEqual:
-                                    addedExpression = LambdaHelpers.NullableGreaterThanOrEqualTo(key, value);
-                                    break;
+                                    case SearchAbleType.GreaterThanEqual:
+                                        addedExpression = LambdaHelpers.NullableGreaterThanOrEqualTo(key, value);
+                                        break;
 
-                                case SearchAbleType.LessThan:
-                                    addedExpression = LambdaHelpers.NullableLessThan(key, value);
-                                    break;
+                                    case SearchAbleType.LessThan:
+                                        addedExpression = LambdaHelpers.NullableLessThan(key, value);
+                                        break;
 
-                                case SearchAbleType.LessThanEqual:
-                                    addedExpression = LambdaHelpers.NullableLessThanOrEqualTo(key, value);
-                                    break;
+                                    case SearchAbleType.LessThanEqual:
+                                        addedExpression = LambdaHelpers.NullableLessThanOrEqualTo(key, value);
+                                        break;
 
-                                case SearchAbleType.Contains:
-                                    var method = typeof(string).GetMethod("Contains", new[] { typeof(string) });
-                                    var someValue = Expression.Constant(searchCriteria, typeof(string));
-                                    addedExpression = Expression.Call(key, method, someValue);
-                                    break;
+                                    case SearchAbleType.Contains:
+                                        var method = typeof(string).GetMethod("Contains", new[] { typeof(string) });
+                                        var someValue = Expression.Constant(searchCriteria, typeof(string));
+                                        addedExpression = Expression.Call(key, method, someValue);
+                                        break;
 
-                                case SearchAbleType.StartsWith:
-                                    var methodsw = typeof(string).GetMethod("StartsWith", new[] { typeof(string) });
-                                    var swValue = Expression.Constant(searchCriteria, typeof(string));
-                                    addedExpression = Expression.Call(key, methodsw, swValue);
-                                    break;
+                                    case SearchAbleType.StartsWith:
+                                        var methodsw = typeof(string).GetMethod("StartsWith", new[] { typeof(string) });
+                                        var swValue = Expression.Constant(searchCriteria, typeof(string));
+                                        addedExpression = Expression.Call(key, methodsw, swValue);
+                                        break;
 
-                                case SearchAbleType.EndsWith:
-                                    var methodew = typeof(string).GetMethod("EndsWith", new[] { typeof(string) });
-                                    var ewValue = Expression.Constant(searchCriteria, typeof(string));
-                                    addedExpression = Expression.Call(key, methodew, ewValue);
-                                    break;
+                                    case SearchAbleType.EndsWith:
+                                        var methodew = typeof(string).GetMethod("EndsWith", new[] { typeof(string) });
+                                        var ewValue = Expression.Constant(searchCriteria, typeof(string));
+                                        addedExpression = Expression.Call(key, methodew, ewValue);
+                                        break;
+                                }
+
+                                //add the new expression to the list of restrictions
+                                restrictions = restrictions == null
+                                                    ? addedExpression
+                                                    : Expression.OrElse(restrictions, addedExpression);
                             }
-
-                            //add the new expression to the list of restrictions
-                            restrictions = restrictions == null
-                                                ? addedExpression
-                                                : Expression.OrElse(restrictions, addedExpression);
                         }
                     }
                 }
@@ -392,9 +397,35 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
                                     ? this.GetAutoCompleteRestrictions(term, genericType)
                                     : null;
 
-            return GetFullEntity().WhereHelper(restrictions, genericType)
-                               .Take(length)
-                               .ToList();
+            return GetFullEntity().AsNoTracking()
+                                  .WhereHelper(restrictions, genericType)
+                                  .Take(length)
+                                  .ToList();
+        }
+
+        /// <summary>
+        /// Gets a set a records that are triggered by the AutoComplete search
+        /// </summary>
+        /// <param name="length">The number of records to return</param>
+        /// <param name="term">The search term of the AutoComplete properties</param>
+        /// <param name="query">Extra query to filter down the entity</param>
+        /// <returns>List of the Entity</returns>
+        public virtual List<TEntity> GetAutocomplete(int length, object term, IQueryable<TEntity> query = null)
+        {
+            var genericType = Expression.Parameter(typeof(TEntity));
+            var restrictions = term != null
+                                    ? this.GetAutoCompleteRestrictions(term, genericType)
+                                    : null;
+
+            if (query == null)
+            {
+                query = GetFullEntity();
+            }
+
+            return query.AsNoTracking()
+                        .WhereHelper(restrictions, genericType)
+                        .Take(length)
+                        .ToList();
         }
 
         /// <summary>
@@ -843,5 +874,27 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
         }
 
         #endregion Stored Proc Helpers
+
+        #region Private Functions
+
+        private bool FieldCanBeSearch(Type propertyType, object searchCriteria)
+        {
+            if (propertyType == typeof(int) && !searchCriteria.ToString().IsInt())
+            {
+                return false;
+            }
+            else if (propertyType == typeof(long) && !searchCriteria.ToString().IsLong())
+            {
+                return false;
+            }
+            else if ((propertyType == typeof(float) || propertyType == typeof(double)) && !searchCriteria.ToString().IsNumeric())
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        #endregion Private Functions
     }
 }

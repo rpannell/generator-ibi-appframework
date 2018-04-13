@@ -36,14 +36,32 @@ namespace IBI.<%= Name %>.Service.Core.Utils
         }
 
         /// <summary>
+        /// Test if a string is an integer
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns>Boolean</returns>
+        public static bool IsInt(this string str) => int.TryParse(str, out var _);
+
+        /// <summary>
+        /// Test if a string is a long
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static bool IsLong(this string str) => long.TryParse(str, out var _);
+
+        /// <summary>
         /// Checks to see if a type is nullable or not
         /// </summary>
         /// <param name="t">The Type to check</param>
         /// <returns>True if the type is nullable</returns>
-        public static bool IsNullableType(this Type t)
-        {
-            return t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>);
-        }
+        public static bool IsNullableType(this Type t) => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>);
+
+        /// <summary>
+        /// Test if a string is a numeric value
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns>bool</returns>
+        public static bool IsNumeric(this string str) => float.TryParse(str, out var _);
 
         /// <summary>
         /// Ensures you check for the nullable value instead of the value null 
@@ -215,10 +233,7 @@ namespace IBI.<%= Name %>.Service.Core.Utils
         /// <param name="genericType">The parameter expression that represents the entity table</param>
         /// <param name="propertyName">The name of the property</param>
         /// <returns>Linq.Expression</returns>
-        public static Expression Key<T>(this ParameterExpression genericType, string propertyName)
-        {
-            return typeof(T).GetPropertyExpressionFromSubProperty(propertyName, genericType);
-        }
+        public static Expression Key<T>(this ParameterExpression genericType, string propertyName) => typeof(T).GetPropertyExpressionFromSubProperty(propertyName, genericType);
 
         /// <summary>
         /// Creates a NotEqual to value expression on property by the name 
@@ -252,21 +267,15 @@ namespace IBI.<%= Name %>.Service.Core.Utils
         /// <param name="expr">The expression to add the AND expression to</param>
         /// <param name="newExpr">The new expression to AND</param>
         /// <returns>Linq.Expression</returns>
-        public static Expression AndExpression(this Expression expr, Expression newExpr)
-        {
-            return Expression.AndAlso(expr, newExpr);
-        }
+        public static Expression AndExpression(this Expression expr, Expression newExpr) => Expression.AndAlso(expr, newExpr);
 
         /// <summary>
         /// Gets the ParameterExpression of a Type.  This is used to create expressions to filter
-        /// data 
+        /// data
         /// </summary>
         /// <param name="type">The Type to create the ParameterExpression</param>
         /// <returns>Linq.ParameterExpression</returns>
-        public static ParameterExpression GetGenericType(this Type type)
-        {
-            return Expression.Parameter(type);
-        }
+        public static ParameterExpression GetGenericType(this Type type) => Expression.Parameter(type);
 
         /// <summary>
         /// Get the PropertyInfo of a property by the dot notation path

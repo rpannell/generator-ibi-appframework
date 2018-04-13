@@ -85,7 +85,7 @@ namespace IBI.<%= Name %>.Plugin.Utils
         /// <returns>TObject</returns>
         public TObject Custom<TObject>(HttpMethod method, string action = "", object data = null, params object[] args)
         {
-            var response = this.CreateResponse(HttpMethod.Get, action, data, args);
+            var response = this.CreateResponse(method, action, data, args);
             var results = this.HandleReturn<TObject>(response);
             return results;
         }
@@ -102,7 +102,7 @@ namespace IBI.<%= Name %>.Plugin.Utils
         /// <param name="args">The URL parameters in order to add to the url</param>
         public void Custom(HttpMethod method, string action = "", object data = null, params object[] args)
         {
-            var response = this.CreateResponse(HttpMethod.Get, action, data, args);
+            var response = this.CreateResponse(method, action, data, args);
             this.HandleReturn(response);
         }
 
