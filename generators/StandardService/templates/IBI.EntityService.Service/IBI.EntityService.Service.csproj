@@ -215,7 +215,7 @@
   <ItemGroup>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="scaffoldinginfo.json" />
+    <None Include="scaffoldinginfo.json" />
     <None Include="Properties\PublishProfiles\Prod.pubxml" />
     <None Include="Properties\PublishProfiles\Staging.pubxml" />
     <None Include="Properties\PublishProfiles\Test.pubxml" />
