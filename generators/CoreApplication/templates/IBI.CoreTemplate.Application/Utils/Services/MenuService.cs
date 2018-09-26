@@ -1,4 +1,5 @@
 ﻿using IBI.<%= Name %>.Application.Models;
+using IBI.<%= Name %>.Application.Utils.RestClient;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
@@ -12,8 +13,8 @@ namespace IBI.<%= Name %>.Application.Utils.Services
         #region Fields
 
         private readonly IHttpContextAccessor httpContextAccessor;
-        private readonly Utils.RestClient<string> menuClient;
-        private readonly Utils.RestClient<string> scriptClient;
+        private readonly RestClient<string> menuClient;
+        private readonly RestClient<string> scriptClient;
         private readonly PluginSettings settings;
 
         #endregion Fields

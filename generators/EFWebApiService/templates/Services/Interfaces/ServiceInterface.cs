@@ -27,7 +27,7 @@ namespace IBI.<%= projectname %>.Service.Services.Interfaces
         /// </summary>
         /// <param name="entity"><see cref="<%= entityinfo.PropertyName %>"/> to test</param>
         /// <returns>true if valid</returns>
-        bool IsValid(entityinfo.PropertyName entity)
+        bool IsValid(<%= entityinfo.PropertyName %> entity);
         
         #endregion Methods
         

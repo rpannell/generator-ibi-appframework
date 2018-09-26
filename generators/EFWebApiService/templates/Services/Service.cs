@@ -229,7 +229,7 @@ namespace IBI.<%= projectname %>.Service.Services
         /// </summary>
         /// <param name="entity"><see cref="<%= entityinfo.PropertyName %>"/> to test</param>
         /// <returns>true if valid</returns>
-        public bool IsValid(entityinfo.PropertyName entity)
+        public bool IsValid(<%= entityinfo.PropertyName %> entity)
         {
             return true;
         }

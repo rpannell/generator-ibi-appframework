@@ -1,6 +1,6 @@
 using IBI.<%= projectname %>.Application.Models;
 using IBI.<%= projectname %>.Application.Models.Entities;
-using IBI.<%= projectname %>.Application.Utils;
+using IBI.<%= projectname %>.Application.Utils.RestClient;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;

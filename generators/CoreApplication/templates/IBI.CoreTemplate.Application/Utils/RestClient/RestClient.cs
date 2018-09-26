@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IBI.<%= Name %>.Application.Utils
+namespace IBI.<%= Name %>.Application.Utils.RestClient
 {
     public class RestClient<T>
     {

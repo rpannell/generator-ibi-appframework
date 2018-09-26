@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace IBI.<%= Name %>.Plugin.Utils
+namespace IBI.<%= Name %>.Application.Utils.RestClient
 {
     [Serializable]
     public class APIException : Exception
