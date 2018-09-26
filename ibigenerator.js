@@ -440,6 +440,54 @@ exports.getProjectVersionFromProj = function (sourceLocation) {
 }
 
 /**
+ * Will get the version of project to
+ * so that the developer can template the correct file
+ * 
+ * @param  {string} sourceLocation - folder that contains the project file
+ */
+exports.getServiceVersionFromProj = function (sourceLocation) {
+  var searchString = "SERVICE VERSION:";
+  var serviceVersion = "";
+  var progFile = helper.getProjectFile(sourceLocation);
+  if (progFile == null || progFile == "") return "";
+  if (fs.existsSync(path.join(sourceLocation, progFile))) {
+    var fileData = fs.readFileSync(path.join(sourceLocation, progFile));
+    var regex = new RegExp("^.*" + searchString + ".*$", 'm');
+    var matches = regex.exec(fileData);
+    serviceVersion = matches != null && matches.length > 0 ?
+      matches[0].trim().replace(searchString, "").trim() :
+      "";
+  }
+
+  return serviceVersion;
+}
+
+
+/**
+ * Will get the version of project to
+ * so that the developer can template the correct file
+ * 
+ * @param  {string} sourceLocation - folder that contains the project file
+ */
+exports.getApplicationVersionFromProj = function (sourceLocation) {
+  var searchString = "APPLICATION VERSION:";
+  var serviceVersion = "";
+  var progFile = helper.getProjectFile(sourceLocation);
+  if (progFile == null || progFile == "") return "";
+  if (fs.existsSync(path.join(sourceLocation, progFile))) {
+    var fileData = fs.readFileSync(path.join(sourceLocation, progFile));
+    var regex = new RegExp("^.*" + searchString + ".*$", 'm');
+    var matches = regex.exec(fileData);
+    serviceVersion = matches != null && matches.length > 0 ?
+      matches[0].trim().replace(searchString, "").trim() :
+      "";
+  }
+
+  return serviceVersion;
+}
+
+
+/**
  * Will get the version of the Genie Generator that created the project file
  * so that the developer can template the correct file
  * 

@@ -97,13 +97,48 @@ module.exports = class extends Generator {
 		});
   }
   
-  writing() {
-	//walk each entity and running scaffolding for each entity
-	newFiles = [];
-	ibigenerator.log("Entity Data Before parsing the string", this.options.entityinfo);
-	var entityInfo = JSON.parse(this.options.entityinfo);
-	ibigenerator.log("Entity Data After parsing the string", entityInfo);
-	var projectGenieVersion = ibigenerator.getGenieVersionFromProj(this.options.location);
+  _netCoreVersion(entityInfo, projectGenieVersion){
+	  var coreTemplate = path.join(this.templatePath(), "Core");
+	for(var i = 0; i < entityInfo.length; i++){
+		var entityTemplateData = this._buildTemplateData(entityInfo[i]);
+		this._writeFile(path.join(coreTemplate,"Entities", "Base", "EntityName.cs"),
+				path.join(this.options.location, "Entities", "Base", entityTemplateData.entityinfo.PropertyName + '.cs'),
+				entityTemplateData,
+				true);	
+
+		this._writeFile(path.join(coreTemplate,"Entities", "EntityName.cs"),
+				path.join(this.options.location, "Entities", entityTemplateData.entityinfo.PropertyName + '.cs'),
+				entityTemplateData,
+				false);
+
+		this._writeFile(path.join(coreTemplate,"Repositories", "Interfaces", "RepositoryInterface.cs"),
+				path.join(this.options.location, "Repositories", "Interfaces" , "I" + entityTemplateData.entityinfo.PropertyName + 'Repository.cs'),
+				entityTemplateData,
+				false);	
+
+		this._writeFile(path.join(coreTemplate,"Repositories", "EntityRepository.cs"),
+				path.join(this.options.location, "Repositories", entityTemplateData.entityinfo.PropertyName + 'Repository.cs'),
+				entityTemplateData,
+				false);
+		
+		this._writeFile(path.join(coreTemplate,"Services", "EntityService.cs"),
+				path.join(this.options.location, "Services", entityTemplateData.entityinfo.PropertyName + 'Service.cs'),
+				entityTemplateData,
+				false);	
+
+		this._writeFile(path.join(coreTemplate,"Services", "Interfaces", "ServiceInterface.cs"),
+				path.join(this.options.location, "Services", "Interfaces" , "I" + entityTemplateData.entityinfo.PropertyName + 'Service.cs'),
+				entityTemplateData,
+				false);	
+		
+		this._writeFile(path.join(coreTemplate,"Controllers", "EntityController.cs"),
+				path.join(this.options.location, "Controllers", entityTemplateData.entityinfo.PropertyName + 'Controller.cs'),
+				entityTemplateData,
+				false);													  				
+	}
+  }
+
+  _netVersion(entityInfo, projectGenieVersion){
 	for(var i = 0; i < entityInfo.length; i++){
 		var entityTemplateData = this._buildTemplateData(entityInfo[i]);
 		this._writeFile(path.join(this.templatePath(),"Entity", "Base", "EntityName.cs"),
@@ -152,7 +187,21 @@ module.exports = class extends Generator {
 							false);
 		}
 	}
+  }
 
+  writing() {
+	//walk each entity and running scaffolding for each entity
+	newFiles = [];
+	ibigenerator.log("Entity Data Before parsing the string", this.options.entityinfo);
+	var entityInfo = JSON.parse(this.options.entityinfo);
+	ibigenerator.log("Entity Data After parsing the string", entityInfo);
+	var projectGenieVersion = ibigenerator.getGenieVersionFromProj(this.options.location);
+	var serviceVersion = ibigenerator.getServiceVersionFromProj(this.options.location);
+	if(serviceVersion.includes(".NET CORE WEB API")){
+		this._netCoreVersion(entityInfo, projectGenieVersion);
+	} else {
+		this._netVersion(entityInfo, projectGenieVersion);
+	}
 	ibigenerator.writeScaffoldingToProj(this.options.location, newFiles);
   }
 

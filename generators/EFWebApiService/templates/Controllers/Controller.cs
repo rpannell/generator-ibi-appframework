@@ -138,6 +138,21 @@ namespace IBI.<%= projectname %>.Service.Controllers
 
         #endregion Overrides
 
+        #region Methods
+
+        /// <summary>
+        /// Used to check if <see cref="<%= entityinfo.PropertyName %>"/> is valid
+        /// </summary>
+        /// <param name="entity"><see cref="<%= entityinfo.PropertyName %>"/></param>
+        /// <returns>bool true</returns>
+        [HttpPost(), Route("IsValid")]
+        public bool IsValid([FromBody] <%= entityinfo.PropertyName %> entity)
+        {
+            return this.CurrentService.IsValid(entity);
+        }
+
+        #endregion Methods
+
         /* GENIE HOOK */
         /* DO NOT DELETE THE ABOVE LINE */
     }

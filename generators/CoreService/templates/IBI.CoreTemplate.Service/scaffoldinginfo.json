@@ -1,0 +1,8 @@
+{
+  "CurrentEntitiesInfo": [ ],
+  "DatabaseName": "<%= DatabaseName %>",
+  "DatabaseUser": "Dwsvc",
+  "DatabaseUserPassword": "Pass@word1",
+  "IsWindowsAuth": false,
+  "ServerName": "azdbnp02.npcloud.interlinebrands.com"
+}

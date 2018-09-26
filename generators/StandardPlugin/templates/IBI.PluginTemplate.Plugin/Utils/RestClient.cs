@@ -289,6 +289,17 @@ namespace IBI.<%= Name %>.Plugin.Utils
         #region Post Actions
 
         /// <summary>
+        /// Check to see if something is valid and if not return the exception
+        /// </summary>
+        /// <param name="data">The entity to validatea</param>
+        /// <returns>true if valid</returns>
+        public virtual bool IsValid(T data)
+        {
+            var response = this.CreateResponse(HttpMethod.Post, "IsValid", data);
+            return this.HandleReturn<bool>(response);
+        }
+
+        /// <summary>
         /// Post an entity to the web service
         /// </summary>
         /// <param name="data">The entity</param>
@@ -472,6 +483,11 @@ namespace IBI.<%= Name %>.Plugin.Utils
             {
                 Log.Error(response.Result.Content.ReadAsStringAsync().Result);
             }
+            else if (response.Result.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+            {
+                var ex = (APIException)Newtonsoft.Json.JsonConvert.DeserializeObject(response.Result.Content.ReadAsStringAsync().Result, typeof(APIException));
+                throw ex;
+            }
             return results;
         }
 
@@ -488,6 +504,11 @@ namespace IBI.<%= Name %>.Plugin.Utils
             else if (response.Result.StatusCode == System.Net.HttpStatusCode.BadRequest)
             {
                 Log.Error(response.Result.Content.ReadAsStringAsync().Result);
+            }
+            else if (response.Result.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+            {
+                var ex = (APIException)Newtonsoft.Json.JsonConvert.DeserializeObject(response.Result.Content.ReadAsStringAsync().Result, typeof(APIException));
+                throw ex;
             }
         }
 

@@ -58,39 +58,75 @@ module.exports = class extends Generator {
     });
   }
 
+  _writeCoreApplicationFiles(entityInfo){
+    var coreTemplatePath = path.join(this.templatePath(), "CoreApplication");
+    for (var i = 0; i < entityInfo.length; i++) {
+      var entityTemplateData = this._buildTemplateData(entityInfo[i]);
+
+      this._writeFile(path.join(coreTemplatePath, "Entities", "Base", "Entity.cs"),
+          path.join(this.options.location, "Models", "Entities", "Base", entityTemplateData.entityinfo.PropertyName + '.cs'),
+          entityTemplateData,
+          true);
+
+      this._writeFile(path.join(coreTemplatePath, "Entities", "Entity.cs"),
+          path.join(this.options.location, "Models", "Entities", entityTemplateData.entityinfo.PropertyName + '.cs'),
+          entityTemplateData,
+          false);  
+          
+      this._writeFile(path.join(coreTemplatePath, "Services", "Interfaces", "ServiceInterface.cs"),
+          path.join(this.options.location, "Services", "Interfaces", "I" + entityTemplateData.entityinfo.PropertyName + 'Service.cs'),
+          entityTemplateData,
+          false);
+
+       this._writeFile(path.join(coreTemplatePath, "Services", "Service.cs"),
+          path.join(this.options.location, "Services", entityTemplateData.entityinfo.PropertyName + 'Service.cs'),
+          entityTemplateData,
+          false);          
+    }
+  }
 
   writing() {
     newFiles = []; //clear everything out
     var entityInfo = JSON.parse(this.options.entityinfo);
-    for (var i = 0; i < entityInfo.length; i++) {
-      var entityTemplateData = this._buildTemplateData(entityInfo[i]);
-      
-      this._writeFile(path.join(this.templatePath(), "Entities", "Base", "Entity.cs"),
-        path.join(this.options.location, "Models", "Entities", "Base", entityTemplateData.entityinfo.PropertyName + '.cs'),
-        entityTemplateData,
-        true);
+    var projectGenieVersion = ibigenerator.getGenieVersionFromProj(this.options.location);
+    var applicationVersion = ibigenerator.getApplicationVersionFromProj(this.options.location);
 
-      this._writeFile(path.join(this.templatePath(), "Entities", "Entity.cs"),
-        path.join(this.options.location, "Models", "Entities", entityTemplateData.entityinfo.PropertyName + '.cs'),
-        entityTemplateData,
-        false);
+    if(applicationVersion != null && applicationVersion != ""){
+      this._writeCoreApplicationFiles(entityInfo);
+    } else {
 
-      this._writeFile(path.join(this.templatePath(), "Services", "RestClient", "RestClient.cs"),
-        path.join(this.options.location, "Services", "RestClient", entityTemplateData.entityinfo.PropertyName + 'RestClient.cs'),
-        entityTemplateData,
-        false);
+      for (var i = 0; i < entityInfo.length; i++) {
+        var entityTemplateData = this._buildTemplateData(entityInfo[i]);
+        
+        this._writeFile(path.join(this.templatePath(), "Entities", "Base", "Entity.cs"),
+          path.join(this.options.location, "Models", "Entities", "Base", entityTemplateData.entityinfo.PropertyName + '.cs'),
+          entityTemplateData,
+          true);
 
-      this._writeFile(path.join(this.templatePath(), "Services", "Interfaces", "ServiceInterface.cs"),
-        path.join(this.options.location, "Services", "Interfaces", "I" + entityTemplateData.entityinfo.PropertyName + 'Service.cs'),
-        entityTemplateData,
-        false);
+        this._writeFile(path.join(this.templatePath(), "Entities", "Entity.cs"),
+          path.join(this.options.location, "Models", "Entities", entityTemplateData.entityinfo.PropertyName + '.cs'),
+          entityTemplateData,
+          false);
 
-      this._writeFile(path.join(this.templatePath(), "Services", "Service.cs"),
-        path.join(this.options.location, "Services", entityTemplateData.entityinfo.PropertyName + 'Service.cs'),
-        entityTemplateData,
-        false);
-      ibigenerator.writeScaffoldingToProj(this.options.location, newFiles);
+        this._writeFile(path.join(this.templatePath(), "Services", "RestClient", "RestClient.cs"),
+          path.join(this.options.location, "Services", "RestClient", entityTemplateData.entityinfo.PropertyName + 'RestClient.cs'),
+          entityTemplateData,
+          false);
+
+        this._writeFile(path.join(this.templatePath(), "Services", "Interfaces", "ServiceInterface.cs"),
+          path.join(this.options.location, "Services", "Interfaces", "I" + entityTemplateData.entityinfo.PropertyName + 'Service.cs'),
+          entityTemplateData,
+          false);
+
+        this._writeFile(path.join(this.templatePath(), "Services", "Service.cs"),
+          path.join(this.options.location, "Services", entityTemplateData.entityinfo.PropertyName + 'Service.cs'),
+          entityTemplateData,
+          false);
+        
+      }
     }
+
+    ibigenerator.writeScaffoldingToProj(this.options.location, newFiles);
   }
 
   install() {

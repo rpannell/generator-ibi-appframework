@@ -20,6 +20,17 @@ namespace IBI.<%= projectname %>.Service.Services.Interfaces
     /// </summary>
     public partial interface I<%= entityinfo.PropertyName %>Service : IBaseService<I<%= entityinfo.PropertyName %>Repository, <%= entityinfo.PropertyName %>, <%= entityinfo.PrimaryKey %>>
     {
+        #region Methods
+
+        /// <summary>
+        /// Test if <see cref="<%= entityinfo.PropertyName %>"/> is valid
+        /// </summary>
+        /// <param name="entity"><see cref="<%= entityinfo.PropertyName %>"/> to test</param>
+        /// <returns>true if valid</returns>
+        bool IsValid(entityinfo.PropertyName entity)
+        
+        #endregion Methods
+        
         /* GENIE HOOK */
         /* DO NOT DELETE THE ABOVE LINE */
     }

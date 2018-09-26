@@ -1,0 +1,101 @@
+﻿@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+@using Microsoft.AspNetCore.Http
+@using System.Security.Claims
+@{
+    var menu = Context.Session.GetString("Menu");
+    var menuScript = Context.Session.GetString("MenuScript");
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - IBI.<%= Name %>.Application</title>
+
+    <environment names="Development">
+        <link rel="stylesheet" href="~/lib/jquery-ui/themes/base/jquery-ui.css" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap-table/dist/bootstrap-table.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/smartadmin-production-plugins.css" />
+        <link rel="stylesheet" href="~/css/smartadmin-production.css" />
+        <link rel="stylesheet" href="~/css/smartadmin-skins.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="~/lib/jquery-ui/themes/base/jquery-ui.min.css" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap-table/dist/bootstrap-table.min.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/css/smartadmin-production-plugins.min.css" />
+        <link rel="stylesheet" href="~/css/smartadmin-production.min.css" />
+        <link rel="stylesheet" href="~/css/smartadmin-skins.min.css" />
+        <link rel="stylesheet" href="~/css/site.min.css" />
+    </environment>
+    @Html.Raw(JavaScriptSnippet.FullScript)
+</head>
+<body class="smart-style-0 fixed-ribbon menu-on-top">
+    @Html.Raw(menu)
+    <div id="main">
+        <div id="content" class="row">
+            @RenderBody()
+        </div>
+    </div>
+
+    <environment names="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="https://code.jquery.com/jquery-migrate-3.0.0.js"></script>
+        <script src="~/lib/jquery-ui/jquery-ui.js"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+        <script src="~/lib/jquery-validation/dist/additional-methods.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js"></script>
+        <script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/lib/respond/src/respond.js"></script>
+        <script src="~/lib/bootstrap-table/dist/bootstrap-table.js"></script>
+        <script src="~/lib/moment/min/moment-with-locales.min.js"></script>
+        <script src="~/js/IBI.js"></script>
+        <script src="~/js/app.config.seed.js"></script>
+        <script src="~/js/app.seed.js"></script>
+        <script src="~/js/SmartNotification.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="https://code.jquery.com/jquery-migrate-3.0.0.js"></script>
+        <script src="~/lib/jquery-ui/jquery-ui.min.js"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+        <script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+        <script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="~/lib/respond/dest/respond.min.js"></script>
+        <script src="~/lib/bootstrap-table/dist/bootstrap-table.min.js"></script>
+        <script src="~/lib/moment/min/moment-with-locales.min.js"></script>
+        <script src="~/js/IBI.min.js"></script>
+        <script src="~/js/app.config.seed.min.js"></script>
+        <script src="~/js/app.seed.min.js"></script>
+        <script src="~/js/SmartNotification.min.js"></script>
+    </environment>
+    <script src="~/js/bootstrap-table-serversideselection.js"></script>
+    @RenderSection("Scripts", required: false)
+    @Html.Raw(menuScript)
+    <script>
+        window.addEventListener("message", function (e) {
+            if (e.data.Event === "BackToUrl") {
+                window.location.href = e.data.RelativePath;
+            } else if (e.data.Event === "HiddenMenu") {
+                if (e.data.IsHidden) {
+                    $("body").addClass("hidden-menu");
+                } else {
+                    $("body").removeClass("hidden-menu");
+                }
+            }
+        });
+        $(document).ready(function () {
+            //pageSetUp();
+            IBI.External.SendUrl("@(ViewData["Title"])", window.location.pathname + window.location.search);
+            IBI.External.HiddenMenu();
+        });
+    </script>
+</body>
+</html>

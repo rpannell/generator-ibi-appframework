@@ -229,6 +229,7 @@
     <Compile Include="Services\RestClient\Base.cs" />
     <Compile Include="<%= Name %>.Installer.cs" />
     <Compile Include="Utils\RestClient.cs" />
+    <Compile Include="Utils\APIException.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\CSS\Site.css" />
@@ -321,6 +322,7 @@
     <StagingContentPath>..\..\..\..\Trunk\StartFramework\Codebase\InterlineBrands.Web.Shell\Content\PlugInContent\<%= Name %>\</StagingContentPath>
     <MasterJSPath>Scripts\</MasterJSPath>
     <MasterContentPath>Content\</MasterContentPath>
+    <MasterViewsPath>Views\</MasterViewsPath>
   </PropertyGroup>
   <Target Name="BeforeBuild">
     <RemoveDir Directories="$(StagingPath)" />
@@ -342,12 +344,16 @@
     <CreateItem Include="$(MasterContentPath)\**\*">
       <Output ItemName="ContentFilesToCopy" TaskParameter="Include" />
     </CreateItem>
+    <CreateItem Include="$(MasterViewsPath)\**\*">
+      <Output ItemName="ContentViewsToCopy" TaskParameter="Include" />
+    </CreateItem>
     <MakeDir Directories="$(StagingPath)" Condition="!Exists('$(StagingPath)')" />
     <MakeDir Directories="$(StagingJSPath)" Condition="!Exists('$(StagingJSPath)')" />
     <MakeDir Directories="$(StagingContentPath)" Condition="!Exists('$(StagingContentPath)')" />
     <Copy SourceFiles="@(FilesToCopy)" DestinationFolder="$(StagingPath)" />
     <Copy SourceFiles="@(JSFilesToCopy)" DestinationFolder="$(StagingPath)\Scripts\" />
     <Copy SourceFiles="@(ContentFilesToCopy)" DestinationFiles="@(ContentFilesToCopy->'$(StagingPath)\Content\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(ContentViewsToCopy)" DestinationFiles="@(ContentViewsToCopy->'$(StagingPath)\Views\%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>
   <Target Name="DeploymentCleanUp" AfterTargets="GatherAllFilesToPublish">
     <!-- First Move the Scripts and Content Folder to the bin folder-->
@@ -357,8 +363,12 @@
     <CreateItem Include="$(WebProjectOutputDir)\$(WPPAllFilesInSingleFolder)\Content\**\*">
       <Output ItemName="ContentFilesToPublish" TaskParameter="Include" />
     </CreateItem>
+    <CreateItem Include="$(WebProjectOutputDir)\$(WPPAllFilesInSingleFolder)\Views\**\*">
+      <Output ItemName="ViewFilesToPublish" TaskParameter="Include" />
+    </CreateItem>
     <Copy SourceFiles="@(JSFilesToPublish)" DestinationFolder="$(WebProjectOutputDir)\$(WPPAllFilesInSingleFolder)\bin\Scripts\" />
     <Copy SourceFiles="@(ContentFilesToPublish)" DestinationFiles="@(ContentFilesToPublish->'$(WebProjectOutputDir)\$(WPPAllFilesInSingleFolder)\bin\Content\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(ViewFilesToPublish)" DestinationFiles="@(ViewFilesToPublish->'$(WebProjectOutputDir)\$(WPPAllFilesInSingleFolder)\bin\Views\%(RecursiveDir)%(Filename)%(Extension)')" />
     <!-- Transform the Web.config and add to the bin folder-->
     <TransformXml Source="Web.config" Transform="Web.$(Configuration).config" Destination="$(WebProjectOutputDir)\$(WPPAllFilesInSingleFolder)\bin\IBI.<%= Name %>.Plugin.dll.config" />
     <!-- Delete the files that were created-->

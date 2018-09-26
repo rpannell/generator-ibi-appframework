@@ -222,6 +222,20 @@ namespace IBI.<%= projectname %>.Service.Services
 
         #endregion Overrides
 
+        #region Methods
+
+        /// <summary>
+        /// Test if <see cref="<%= entityinfo.PropertyName %>"/> is valid
+        /// </summary>
+        /// <param name="entity"><see cref="<%= entityinfo.PropertyName %>"/> to test</param>
+        /// <returns>true if valid</returns>
+        public bool IsValid(entityinfo.PropertyName entity)
+        {
+            return true;
+        }
+
+        #endregion Methods
+
         /* GENIE HOOK */
         /* DO NOT DELETE THE ABOVE LINE */
     }
