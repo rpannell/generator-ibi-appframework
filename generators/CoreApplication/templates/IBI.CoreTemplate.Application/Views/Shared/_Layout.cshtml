@@ -92,9 +92,11 @@
             }
         });
         $(document).ready(function () {
-            //pageSetUp();
+            pageSetUp();
             IBI.External.SendUrl("@(ViewData["Title"])", window.location.pathname + window.location.search);
             IBI.External.HiddenMenu();
+            //tells the framework that the application is loaded and is ready
+            IBI.External.Ready();
         });
     </script>
 </body>

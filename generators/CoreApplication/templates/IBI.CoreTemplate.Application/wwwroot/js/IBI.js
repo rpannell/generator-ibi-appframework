@@ -117,6 +117,12 @@ var IBI = (function () {
                 /// Sends message to hide the please wait window
                 /// </summary>
                 window.parent.postMessage({ Event: "HidePleaseWait" }, "*");
+            },
+            Ready: function () {
+                /// <summary>
+                /// Sends message to hide the please wait window
+                /// </summary>
+                window.parent.postMessage({ Event: "Ready" }, "*");
             }
         },
         Dates: {

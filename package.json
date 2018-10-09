@@ -1,6 +1,6 @@
 {
   "name": "generator-ibi-appframework",
-  "version": "1.1.28",
+  "version": "1.1.30",
   "description": "Used to help speed up the development for the Application Framework",
   "homepage": "",
   "author": {
@@ -44,7 +44,7 @@
     "testEnvironment": "node"
   },
   "scripts": {
-    "prepublish": "nsp check",
+    
     "pretest": "eslint . --fix",
     "test": "jest"
   },
