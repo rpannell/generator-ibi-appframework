@@ -60,6 +60,7 @@ module.exports = class extends Generator {
 		  path.join(this.templatedata.SourceLoc, 'Applications', this.templatedata.Name, 'Trunk', 'IBI.' + this.templatedata.Name + '.Application.sln'),
 		  this.templatedata
 		);
+		this._runTemplateOnFolder('.vscode', this._pluginSourceLocation());
 		this._runTemplateOnFolder('Controllers', this._pluginSourceLocation());
 		this._runTemplateOnFolder('Models', this._pluginSourceLocation());
 		this._runTemplateOnFolder('Properties', this._pluginSourceLocation());
