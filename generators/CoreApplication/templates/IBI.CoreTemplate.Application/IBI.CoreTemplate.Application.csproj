@@ -10,7 +10,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wp8+wpa81;</PackageTargetFallback>
+    <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
     <AssemblyName>IBI.<%= Name %>.Application</AssemblyName>
     <RootNamespace>IBI.<%= Name %>.Application</RootNamespace>
     <UserSecretsId>22af94cd-e089-407a-91cc-aa74fa99dc65</UserSecretsId>
