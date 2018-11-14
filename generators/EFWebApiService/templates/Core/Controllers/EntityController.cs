@@ -59,6 +59,7 @@ namespace IBI.<%= projectname %>.Service.Controllers
             }
             catch (Exception ex)
             {
+                logger.LogError(ex, null, null);
                 throw ex;
             }
         }
@@ -78,6 +79,7 @@ namespace IBI.<%= projectname %>.Service.Controllers
             }
             catch (Exception ex)
             {
+                logger.LogError(ex, null, null);
                 throw ex;
             }
         }
@@ -98,6 +100,7 @@ namespace IBI.<%= projectname %>.Service.Controllers
             }
             catch (Exception ex)
             {
+                logger.LogError(ex, null, null);
                 throw ex;
             }
         }
@@ -118,6 +121,7 @@ namespace IBI.<%= projectname %>.Service.Controllers
             }
             catch (Exception ex)
             {
+                logger.LogError(ex, null, null);
                 throw ex;
             }
         }
@@ -149,6 +153,7 @@ namespace IBI.<%= projectname %>.Service.Controllers
             }
             catch (Exception ex)
             {
+                logger.LogError(ex, null, null);
                 throw ex;
             }
         }
@@ -174,6 +179,7 @@ namespace IBI.<%= projectname %>.Service.Controllers
             }
             catch (Exception ex)
             {
+                logger.LogError(ex, null, null);
                 throw ex;
             }
         }
@@ -194,6 +200,7 @@ namespace IBI.<%= projectname %>.Service.Controllers
             }
             catch (Exception ex)
             {
+                logger.LogError(ex, null, null);
                 throw ex;
             }
         }
@@ -216,6 +223,7 @@ namespace IBI.<%= projectname %>.Service.Controllers
             }
             catch (Exception ex)
             {
+                logger.LogError(ex, null, null);
                 throw ex;
             }
         }
