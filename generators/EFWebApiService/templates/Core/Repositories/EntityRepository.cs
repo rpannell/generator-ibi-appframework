@@ -13,7 +13,7 @@ namespace IBI.<%= projectname %>.Service.Repositories
     /// <summary>
     /// Repository for the <see cref="<%= entityinfo.PropertyName %>"/> entity
     /// </summary>
-    public partial class <%= entityinfo.PropertyName %>Repository : BaseRepository<<%= entityinfo.PropertyName %>, int>, I<%= entityinfo.PropertyName %>Repository
+    public partial class <%= entityinfo.PropertyName %>Repository : BaseRepository<<%= entityinfo.PropertyName %>, <%= entityinfo.PrimaryKey %>>, I<%= entityinfo.PropertyName %>Repository
     {
         #region Constructors
 
@@ -129,7 +129,7 @@ namespace IBI.<%= projectname %>.Service.Repositories
         /// </summary>
         /// <param name="id">The value of <see cref="<%= entityinfo.PropertyName %>"/> primary key</param>
         /// <returns><see cref="<%= entityinfo.PropertyName %>"/></returns>
-        public override Task<<%= entityinfo.PropertyName %>> GetForUpdate(int id)
+        public override Task<<%= entityinfo.PropertyName %>> GetForUpdate(<%= entityinfo.PrimaryKey %> id)
         {
             return base.GetForUpdate(id);
         }
