@@ -2,5 +2,5 @@
         // Created by Genie on <%= TodaysDate %> by v<%= Version %> 
         public <%- Return %> <%= functionname %>(<%= FunctionDefinition %>)
         {
-            return this.Repository.<%= functionname %>(<%= FunctionCall %>);
+            <%if(HasReturnType){%>return<%}%> this.Repository.<%= functionname %>(<%= FunctionCall %>);
         }

@@ -60,9 +60,12 @@ module.exports = class extends Generator {
     this.templatedata.FunctionDefinition = "";
     this.templatedata.IsPost = this.options.isPost;
     this.templatedata.IsList = this.options.isList;
-    this.templatedata.Return = this.options.isList ?
-      "System.Collections.Generic.List<" + this.templatedata.entityname + ">" :
-      this.templatedata.entityname;
+    this.templatedata.HasReturnType = this.options.returnType === "V" ? false : true;
+    this.templatedata.Return = this.options.returnType === "L" 
+                                    ? "System.Collections.Generic.List<" + this.templatedata.entityname + ">" 
+                                    : this.options.returnType === "S" 
+                                        ? this.templatedata.entityname
+                                        : "void";
 
     if (this.options.functionInfo != undefined && this.options.functionInfo != null && this.options.functionInfo != "") {
       var functionParameters = JSON.parse(this.options.functionInfo);
@@ -105,39 +108,77 @@ module.exports = class extends Generator {
       } catch (err) { ibigenerator.log("Error Reading Existing File", err); }
     });
   }
+  _netVersion(serviceGenerateVersion){
+    this._templateFile(path.join(this.templatePath(), "Repositories", "Interfaces", "CustomFunction.ejs"),
+    path.join(this.options.serviceLocation, "Repositories", "Interfaces", "I" + this.templatedata.entityname + "Repository.cs"));
+
+    this._templateFile(path.join(this.templatePath(), "Repositories", "CustomFunction.ejs"),
+        path.join(this.options.serviceLocation, "Repositories", this.templatedata.entityname + "Repository.cs"));
+
+    this._templateFile(path.join(this.templatePath(), "Services", "Interfaces", "CustomFunction.ejs"),
+        path.join(this.options.serviceLocation, "Services", "Interfaces", "I" + this.templatedata.entityname + "Service.cs"));
+
+    this._templateFile(path.join(this.templatePath(), "Services", "CustomFunction.ejs"),
+        path.join(this.options.serviceLocation, "Services", this.templatedata.entityname + "Service.cs"));
+
+    //create the controller based on the version of the scaffolding that created the project
+    this._templateFile(path.join(this.templatePath(), "Controllers", serviceGenerateVersion != null && serviceGenerateVersion >= "1.1.24" 
+                                                        ? "CustomFunction.ejs" 
+                                                        : "OlderCustomFunction.ejs"),
+          path.join(this.options.serviceLocation, "Controllers", this.templatedata.entityname + "Controller.cs"));
+  }
+
+  _coreVersion(serviceGenerateVersion){
+    ibigenerator.log("", "The return: " + this.templatedata.Return);
+    if(this.templatedata.Return === "void"){
+      this.templatedata.Return = "System.Threading.Tasks.Task";
+    } else {
+      this.templatedata.Return = "System.Threading.Tasks.Task<" + this.templatedata.Return + ">";
+    }
+    ibigenerator.log("", "Now The return: " + this.templatedata.Return);
+    //create the controller based on the version of the scaffolding that created the project
+    this._templateFile(path.join(this.templatePath(), "Core", "Controllers", "CustomFunction.ejs"),
+                        path.join(this.options.serviceLocation, "Controllers", this.templatedata.entityname + "Controller.cs"));
+
+    this._templateFile(path.join(this.templatePath(), "Core", "Repositories", "Interfaces", "CustomFunction.ejs"),
+                        path.join(this.options.serviceLocation, "Repositories", "Interfaces", "I" + this.templatedata.entityname + "Repository.cs"));
+
+    this._templateFile(path.join(this.templatePath(), "Core", "Repositories", "CustomFunction.ejs"),
+                        path.join(this.options.serviceLocation, "Repositories", this.templatedata.entityname + "Repository.cs"));
+
+    this._templateFile(path.join(this.templatePath(), "Core", "Services", "Interfaces", "CustomFunction.ejs"),
+                        path.join(this.options.serviceLocation, "Services", "Interfaces", "I" + this.templatedata.entityname + "Service.cs"));
+
+    this._templateFile(path.join(this.templatePath(), "Core", "Services", "CustomFunction.ejs"),
+                        path.join(this.options.serviceLocation, "Services", this.templatedata.entityname + "Service.cs"));        
+
+  } 
+  
+  _pluginFiles(){
+    ibigenerator.log("", "Has Plugin Location");
+    this._templateFile(path.join(this.templatePath(), "Plugin", "Services", "Interfaces", "CustomFunction.ejs"),
+      path.join(this.options.pluginLocation, "Services", "Interfaces", "I" + this.templatedata.entityname + "Service.cs"));
+
+    this._templateFile(path.join(this.templatePath(), "Plugin", "Services", "CustomFunction.ejs"),
+      path.join(this.options.pluginLocation, "Services", this.templatedata.entityname + "Service.cs"));
+  }
   writing() {
     this._buildTemplateData();
 
     if (this.options.serviceLocation != undefined && this.options.serviceLocation != null && this.options.serviceLocation != "") {
       var serviceGenerateVersion = ibigenerator.getGenieVersionFromProj(this.options.serviceLocation);
+      var serviceVersion = ibigenerator.getServiceVersionFromProj(this.options.serviceLocation);
       ibigenerator.log("", "Has Service Location");
-      this._templateFile(path.join(this.templatePath(), "Repositories", "Interfaces", "CustomFunction.ejs"),
-        path.join(this.options.serviceLocation, "Repositories", "Interfaces", "I" + this.templatedata.entityname + "Repository.cs"));
-
-      this._templateFile(path.join(this.templatePath(), "Repositories", "CustomFunction.ejs"),
-        path.join(this.options.serviceLocation, "Repositories", this.templatedata.entityname + "Repository.cs"));
-
-      this._templateFile(path.join(this.templatePath(), "Services", "Interfaces", "CustomFunction.ejs"),
-        path.join(this.options.serviceLocation, "Services", "Interfaces", "I" + this.templatedata.entityname + "Service.cs"));
-
-      this._templateFile(path.join(this.templatePath(), "Services", "CustomFunction.ejs"),
-        path.join(this.options.serviceLocation, "Services", this.templatedata.entityname + "Service.cs"));
-      
-      //create the controller based on the version of the scaffolding that created the project
-      this._templateFile(path.join(this.templatePath(), "Controllers", serviceGenerateVersion != null && serviceGenerateVersion >= "1.1.24" 
-                                                                          ? "CustomFunction.ejs" 
-                                                                          : "OlderCustomFunction.ejs"),
-          path.join(this.options.serviceLocation, "Controllers", this.templatedata.entityname + "Controller.cs"));
-      
+      ibigenerator.log("", "Has Service Version: " + serviceGenerateVersion);
+      if(serviceVersion.includes(".NET CORE WEB API")){
+        this._coreVersion(serviceGenerateVersion);
+      } else {
+        this._netVersion(serviceGenerateVersion);
+      }
     }
 
     if (this.options.pluginLocation != undefined && this.options.pluginLocation != null && this.options.pluginLocation != "") {
-      ibigenerator.log("", "Has Plugin Location");
-      this._templateFile(path.join(this.templatePath(), "Plugin", "Services", "Interfaces", "CustomFunction.ejs"),
-        path.join(this.options.pluginLocation, "Services", "Interfaces", "I" + this.templatedata.entityname + "Service.cs"));
-
-      this._templateFile(path.join(this.templatePath(), "Plugin", "Services", "CustomFunction.ejs"),
-        path.join(this.options.pluginLocation, "Services", this.templatedata.entityname + "Service.cs"));
+      this._pluginFiles();
     }
   }
 

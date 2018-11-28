@@ -1,0 +1,14 @@
+
+        // Created by Genie on <%= TodaysDate %> by v<%= Version %> 
+        [<%if(IsPost){%>HttpPost()<%}else{%>HttpGet()<%}%>, Route("<%= functionname %><%= ControllerPath %>")]
+        public async <%- Return %> <%= functionname %>(<%= FunctionDefinition %>)
+        {
+            try
+            {
+                <%if(HasReturnType){%>return<%}%> await this.CurrentService.<%= functionname %>(<%= FunctionCall %>);
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }

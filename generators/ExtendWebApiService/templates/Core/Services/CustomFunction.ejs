@@ -1,0 +1,6 @@
+
+        // Created by Genie on <%= TodaysDate %> by v<%= Version %> 
+        public async <%- Return %> <%= functionname %>(<%= FunctionDefinition %>)
+        {
+            <%if(HasReturnType){%>return<%}%> await this.Repository.<%= functionname %>(<%= FunctionCall %>);
+        }
