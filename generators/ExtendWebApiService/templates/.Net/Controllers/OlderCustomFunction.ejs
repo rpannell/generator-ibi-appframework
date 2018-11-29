@@ -5,7 +5,7 @@
         {
             try
             {
-                <%if(HasReturnType){%>return<%}%> Ok(this.CurrentService.<%= functionname %>(<%= FunctionCall %>));
+                return Ok(this.CurrentService.<%= functionname %>(<%= FunctionCall %>));
             }
             catch (System.Exception ex)
             {

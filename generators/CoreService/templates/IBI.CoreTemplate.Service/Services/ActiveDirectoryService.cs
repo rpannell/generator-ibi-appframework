@@ -223,6 +223,29 @@ namespace IBI.<%= Name %>.Service.Services
 
         #endregion Overrides
 
+        #region Methods
+
+        /// <summary>
+        /// Get the active directory of the currently logged in user
+        /// </summary>
+        /// <returns><see cref="ActiveDirectory"/></returns>
+        public ActiveDirectory GetCurrentUser()
+        {
+            return this.Repository.GetCurrentUser();
+        }
+
+        /// <summary>
+        /// Get ActiveDirectory by the username
+        /// </summary>
+        /// <param name="userName">The user name</param>
+        /// <returns><see cref="ActiveDirectory"/></returns>
+        public ActiveDirectory GetUserByUserName(string userName)
+        {
+            return this.Repository.GetUserByUserName(userName);
+        }
+
+        #endregion Methods
+
         /* GENIE HOOK */
         /* DO NOT DELETE THE ABOVE LINE */
     }
