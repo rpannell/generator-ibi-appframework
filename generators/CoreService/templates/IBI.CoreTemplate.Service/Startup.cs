@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using IBI.<%= Name %>.Service.Core.Authentication.Basic;
 using IBI.<%= Name %>.Service.Core.Context;
 using IBI.<%= Name %>.Service.Core.Utils;
 using IdentityServer4.AccessTokenValidation;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -12,7 +14,9 @@ using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Security.Claims;
 
 namespace IBI.<%= Name %>.Service
 {
@@ -56,7 +60,27 @@ namespace IBI.<%= Name %>.Service
             {
                 c.SwaggerEndpoint("/swagger/v1.0/swagger.json", "<%= Name %> API v1.0");
             });
+#if DEBUG
+            app.Use(async (context, next) =>
+            {
+                if (!string.IsNullOrEmpty(context.Request.Headers["Authorization"]))
+                {
+                    var authHeader = context.Request.Headers["Authorization"].FirstOrDefault();
+                    if (authHeader.ToLower().StartsWith("basic"))
+                    {
+                        var result = await context.AuthenticateAsync("BasicAuthentication");
+                        if (result?.Principal != null)
+                        {
+                            var principal = new ClaimsPrincipal();
+                            principal.AddIdentities(result.Principal.Identities);
+                            context.User = principal;
+                        }
+                    }
+                }
 
+                await next();
+            });
+#endif
             app.UseMvc();
         }
 
@@ -77,6 +101,9 @@ namespace IBI.<%= Name %>.Service
 
             //add basic authentication if we are in debug mode, else all others will need to be using the token
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+#if DEBUG
+                    .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null)
+#endif
                     .AddIdentityServerAuthentication(options =>
                     {
                         // base-address of your identityserver
@@ -86,6 +113,16 @@ namespace IBI.<%= Name %>.Service
                         options.ApiName = Configuration["ApplicationSettings:IdentityServerAuthorityClient"];
                         options.ApiSecret = Configuration["ApplicationSettings:IdentityServerAuthorityPassword"];
                     });
+
+            /*
+             * Force the need to have a claim with one of these roles before the user is authorized to get
+             * from this service
+             */
+            var useableRoles = "Basic,Admin";
+            services.AddAuthorization(opts =>
+            {
+                opts.AddPolicy("<%= Name %>", policy => policy.RequireClaim("<%= Name %>", useableRoles.Split(',').ToArray()));
+            });
 
             //setup help page
             services.AddSwaggerGen(c =>

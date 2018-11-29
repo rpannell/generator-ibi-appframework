@@ -13,136 +13,85 @@ using System.Threading.Tasks;
 
 namespace IBI.<%= Name %>.Service.Core.Authentication.Basic
 {
-    internal class BasicAuthenticationHandler : AuthenticationHandler<BasicAuthenticationOptions>
+    /// <summary>
+    ///
+    /// </summary>
+    public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {
         #region Fields
 
-        private readonly IBasicCredentialVerifier _authenticationVerifier;
+        private readonly IActiveDirectoryService activeDirectoryService;
+
+        private class User
+        {
+            #region Properties
+
+            public string Password { get; set; }
+            public string Username { get; set; }
+
+            #endregion Properties
+        }
 
         #endregion Fields
 
         #region Constructors
 
         public BasicAuthenticationHandler(
-            IBasicCredentialVerifier authenticationVerifier,
-            IOptionsMonitor<BasicAuthenticationOptions> options,
+            IOptionsMonitor<AuthenticationSchemeOptions> options,
             ILoggerFactory logger,
             UrlEncoder encoder,
-            ISystemClock clock)
+            ISystemClock clock,
+            IActiveDirectoryService activeDirectoryService)
             : base(options, logger, encoder, clock)
-            => _authenticationVerifier = authenticationVerifier ?? throw new ArgumentNullException(nameof(authenticationVerifier));
+        {
+            this.activeDirectoryService = activeDirectoryService;
+        }
 
         #endregion Constructors
 
-        #region Properties
-
-        protected new BasicAuthenticationEvents Events
-        {
-            get => (BasicAuthenticationEvents)base.Events;
-            set => base.Events = value;
-        }
-
-        #endregion Properties
-
         #region Methods
 
-        protected override Task<object> CreateEventsAsync() => Task.FromResult<object>(new BasicAuthenticationEvents());
-
+        /// <summary>
+        /// Authenticate
+        /// </summary>
+        /// <returns><see cref="AuthenticateResult"/></returns>
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
+            if (!Request.Headers.ContainsKey("Authorization"))
+                return AuthenticateResult.Fail("Missing Authorization Header");
+            var user = new User();
+
             try
             {
-                string auth = Request.Headers["Authorization"];
-                if (string.IsNullOrEmpty(auth))
-                {
-                    return AuthenticateResult.NoResult();
-                }
+                var authHeader = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]);
+                var credentialBytes = Convert.FromBase64String(authHeader.Parameter);
+                var credentials = Encoding.UTF8.GetString(credentialBytes).Split(':');
+                var username = credentials[0];
+                var password = credentials[1];
+                user.Username = username;
+                user.Password = password;
+            }
+            catch
+            {
+                return AuthenticateResult.Fail("Invalid Authorization Header");
+            }
 
-                string encodedAuth = null;
-                if (auth.StartsWith("Basic ", StringComparison.OrdinalIgnoreCase))
-                {
-                    encodedAuth = auth.Substring("Basic ".Length).Trim();
-                }
-
-                if (string.IsNullOrEmpty(encodedAuth))
-                {
-                    return AuthenticateResult.NoResult();
-                }
-
-                var userpass = DecodeUserIdAndPassword(encodedAuth);
-
-                if (!await _authenticationVerifier.Authenticate(userpass.userid, userpass.password))
-                {
-                    Logger.LogInformation("Failed to validate {userid}.", userpass.userid);
-                    return AuthenticateResult.Fail("Failed to validate userid/password.");
-                }
-
-                Logger.LogInformation("Successfully validated credentials for {userid}.", userpass.userid);
-
-                var claims = new List<Claim> { new Claim(ClaimTypes.Name, userpass.userid, ClaimValueTypes.String, ClaimsIssuer) };
-                foreach (var role in userpass.password.Split(',')) { claims.Add(new Claim(ClaimTypes.Role, role.Trim())); }
-
-                var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, Scheme.Name));
-                var successContext = new AuthenticationSucceededContext(userpass.userid, Context, Scheme, Options)
-                {
-                    Principal = principal
+            var adUser = this.activeDirectoryService.GetUserByUserName(user.Username);
+            if (adUser != null)
+            {
+                var claims = new List<Claim> {
+                    new Claim(ClaimTypes.Name, adUser.ActiveDirectoryLogin),
+                    new Claim(ClaimTypes.GivenName, adUser.ActiveDirectoryFriendlyName),
+                    new Claim(ClaimTypes.Email, adUser.EmailAddress),
+                    new Claim("UserId", adUser.ActiveDirectoryID.ToString()),
                 };
-
-                await Events.CredentialsValidated(successContext);
-                if (successContext.Result != null)
-                {
-                    return successContext.Result;
-                }
-
-                successContext.Success();
-                return successContext.Result;
+                foreach (var role in user.Password.Split(',')) { claims.Add(new Claim("<%= Name %>", role.Trim())); }
+                var identity = new ClaimsIdentity(claims, Scheme.Name);
+                var principal = new ClaimsPrincipal(identity);
+                var ticket = new AuthenticationTicket(principal, Scheme.Name);
+                return AuthenticateResult.Success(ticket);
             }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex, "Exception occurred while processing message.");
-
-                var authenticationFailedContext = new AuthenticationFailedContext(Context, Scheme, Options)
-                {
-                    Exception = ex
-                };
-
-                await Events.AuthenticationFailed(authenticationFailedContext);
-                if (authenticationFailedContext.Result != null)
-                {
-                    return authenticationFailedContext.Result;
-                }
-
-                throw;
-            }
-        }
-
-        protected override async Task HandleChallengeAsync(AuthenticationProperties properties)
-        {
-            var authResult = await HandleAuthenticateOnceSafeAsync();
-            var eventContext = new BasicAuthenticationChallengeContext(Context, Scheme, Options, properties)
-            {
-                AuthenticateFailure = authResult?.Failure
-            };
-
-            await Events.Challenge(eventContext);
-            if (eventContext.Handled)
-            {
-                return;
-            }
-
-            Response.StatusCode = 401;
-            Response.Headers.Append(HeaderNames.WWWAuthenticate, Options.Challenge);
-        }
-
-        // https://tools.ietf.org/html/rfc2617#section-2
-        private static (string userid, string password) DecodeUserIdAndPassword(string encodedAuth)
-        {
-            var userpass = Encoding.UTF8.GetString(Convert.FromBase64String(encodedAuth));
-
-            var separator = userpass.IndexOf(':');
-            if (separator == -1) throw new InvalidOperationException("Invalid Authorization header: Missing separator character ':'. See RFC2617.");
-
-            return (userpass.Substring(0, separator), userpass.Substring(separator + 1));
+            return AuthenticateResult.NoResult();
         }
 
         #endregion Methods

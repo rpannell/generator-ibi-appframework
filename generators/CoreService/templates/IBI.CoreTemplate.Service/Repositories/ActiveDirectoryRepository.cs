@@ -15,14 +15,21 @@ namespace IBI.<%= Name %>.Service.Repositories
     /// </summary>
     public partial class ActiveDirectoryRepository : BaseRepository<ActiveDirectory, int>, IActiveDirectoryRepository
     {
+        #region Fields
+
+        private readonly IHttpContextAccessor httpContextAccessor;
+
+        #endregion Fields
+
         #region Constructors
 
         /// <summary>
         /// Default constructor for the <see cref="ActiveDirectory"/> repository
         /// </summary>
-        public ActiveDirectoryRepository(MainContext mainContext) : base(mainContext)
+        public ActiveDirectoryRepository(MainContext mainContext, IHttpContextAccessor httpContextAccessor) : base(mainContext)
         {
             base.Entity = base.mainContext.Set<ActiveDirectory>();
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         #endregion Constructors
@@ -146,6 +153,31 @@ namespace IBI.<%= Name %>.Service.Repositories
         #endregion Read-Only Methods
 
         #endregion Overrides
+
+        #region Methods
+
+        /// <summary>
+        /// Get the active directory of the currently logged in user
+        /// </summary>
+        /// <returns><see cref="ActiveDirectory"/></returns>
+        public ActiveDirectory GetCurrentUser()
+        {
+            var userName = this.httpContextAccessor.HttpContext.User.Identity.Name;
+            return this.GetUserByUserName(userName);
+        }
+
+        /// <summary>
+        /// Get ActiveDirectory by the username
+        /// </summary>
+        /// <param name="userName">The user name</param>
+        /// <returns><see cref="ActiveDirectory"/></returns>
+        public ActiveDirectory GetUserByUserName(string userName)
+        {
+            if (!userName.StartsWith("MOORESTOWN\\")) userName = string.Format("MOORESTOWN\\{0}", userName);
+            return this.Entity.FirstOrDefault(x => x.ActiveDirectoryLogin == userName);
+        }
+
+        #endregion Methods
 
         /* GENIE HOOK */
         /* DO NOT DELETE THE ABOVE LINE */
