@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
+﻿using IBI.<%= Name %>.Service.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.Net.Http.Headers;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -76,7 +75,7 @@ namespace IBI.<%= Name %>.Service.Core.Authentication.Basic
                 return AuthenticateResult.Fail("Invalid Authorization Header");
             }
 
-            var adUser = this.activeDirectoryService.GetUserByUserName(user.Username);
+            var adUser = await this.activeDirectoryService.GetUserByUserName(user.Username);
             if (adUser != null)
             {
                 var claims = new List<Claim> {

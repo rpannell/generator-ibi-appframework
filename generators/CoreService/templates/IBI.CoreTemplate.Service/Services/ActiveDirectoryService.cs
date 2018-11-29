@@ -229,9 +229,9 @@ namespace IBI.<%= Name %>.Service.Services
         /// Get the active directory of the currently logged in user
         /// </summary>
         /// <returns><see cref="ActiveDirectory"/></returns>
-        public ActiveDirectory GetCurrentUser()
+        public async Task<ActiveDirectory> GetCurrentUser()
         {
-            return this.Repository.GetCurrentUser();
+            return await this.Repository.GetCurrentUser();
         }
 
         /// <summary>
@@ -239,9 +239,9 @@ namespace IBI.<%= Name %>.Service.Services
         /// </summary>
         /// <param name="userName">The user name</param>
         /// <returns><see cref="ActiveDirectory"/></returns>
-        public ActiveDirectory GetUserByUserName(string userName)
+        public async Task<ActiveDirectory> GetUserByUserName(string userName)
         {
-            return this.Repository.GetUserByUserName(userName);
+            return await this.Repository.GetUserByUserName(userName);
         }
 
         #endregion Methods

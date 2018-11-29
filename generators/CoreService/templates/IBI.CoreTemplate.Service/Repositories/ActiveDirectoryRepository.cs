@@ -4,6 +4,8 @@ using IBI.<%= Name %>.Service.Core.Models;
 using IBI.<%= Name %>.Service.Core.Repositories;
 using IBI.<%= Name %>.Service.Entities;
 using IBI.<%= Name %>.Service.Repositories.Interfaces;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -160,10 +162,10 @@ namespace IBI.<%= Name %>.Service.Repositories
         /// Get the active directory of the currently logged in user
         /// </summary>
         /// <returns><see cref="ActiveDirectory"/></returns>
-        public ActiveDirectory GetCurrentUser()
+        public async Task<ActiveDirectory> GetCurrentUser()
         {
             var userName = this.httpContextAccessor.HttpContext.User.Identity.Name;
-            return this.GetUserByUserName(userName);
+            return await this.GetUserByUserName(userName);
         }
 
         /// <summary>
@@ -171,10 +173,10 @@ namespace IBI.<%= Name %>.Service.Repositories
         /// </summary>
         /// <param name="userName">The user name</param>
         /// <returns><see cref="ActiveDirectory"/></returns>
-        public ActiveDirectory GetUserByUserName(string userName)
+        public async Task<ActiveDirectory> GetUserByUserName(string userName)
         {
             if (!userName.StartsWith("MOORESTOWN\\")) userName = string.Format("MOORESTOWN\\{0}", userName);
-            return this.Entity.FirstOrDefault(x => x.ActiveDirectoryLogin == userName);
+            return await this.Entity.FirstOrDefaultAsync(x => x.ActiveDirectoryLogin == userName);
         }
 
         #endregion Methods
