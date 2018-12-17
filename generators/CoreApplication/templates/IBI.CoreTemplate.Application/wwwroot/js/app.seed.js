@@ -1279,6 +1279,8 @@ function pageSetUp() {
             trigger: "hover"
         });
     }
+
+    runAllForms();
 }
 /* ~ END: PAGE SETUP */
 

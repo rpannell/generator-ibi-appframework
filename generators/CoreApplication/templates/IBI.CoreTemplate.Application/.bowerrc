@@ -1,5 +1,0 @@
-{ 
-    "directory": "wwwroot/lib", 
-    "proxy": "http://JAXWEBFILTER:8080", 
-    "https-proxy": "http://JAXWEBFILTER:8080" 
-}

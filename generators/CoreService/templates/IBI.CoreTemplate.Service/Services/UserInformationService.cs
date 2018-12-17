@@ -6,7 +6,7 @@ namespace IBI.<%= Name %>.Service.Services
     /// <summary>
     /// Service to get the information of the currently logged in user
     /// </summary>
-    public class UserInformationService
+    public class UserInformationService : Interfaces.IUserInformationService
     {
         #region Fields
 

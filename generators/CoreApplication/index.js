@@ -77,7 +77,6 @@ module.exports = class extends Generator {
 		this.fs.copyTpl(this.templatePath('IBI.CoreTemplate.Application/*.json'),path.join(this._pluginSourceLocation()),this.templatedata);
 		this.fs.copyTpl(this.templatePath('IBI.CoreTemplate.Application/Program.cs'),path.join(this._pluginSourceLocation(), 'Program.cs'),this.templatedata);
 		this.fs.copyTpl(this.templatePath('IBI.CoreTemplate.Application/Startup.cs'),path.join(this._pluginSourceLocation(), 'Startup.cs'),this.templatedata);
-		this.fs.copyTpl(this.templatePath('IBI.CoreTemplate.Application/.bowerrc'),path.join(this._pluginSourceLocation(), '.bowerrc'));
 		this.fs.copyTpl(this.templatePath('IBI.CoreTemplate.Application/CoreTemplateTemplate.cs'), path.join(this._pluginSourceLocation(), this.templatedata.Name + 'Template.cs'), this.templatedata);
 		this.fs.copyTpl(this.templatePath('IBI.CoreTemplate.Application/IBI.CoreTemplate.Application.csproj'),path.join(this._pluginSourceLocation(), 'IBI.' + this.templatedata.Name + '.Application.csproj'),this.templatedata);	
 	}

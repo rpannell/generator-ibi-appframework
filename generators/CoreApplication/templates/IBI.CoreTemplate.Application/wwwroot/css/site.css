@@ -68,3 +68,30 @@ body {
 .dl-horizontal dt {
     white-space: normal;
 }
+
+/* styles for validation helpers */
+.field-validation-error {
+   color: #b94a48;
+}
+
+.field-validation-valid {
+   display: none;
+}
+
+select.input-validation-error,
+textarea.input-validation-error,
+input.input-validation-error {
+   border: 1px solid #b94a48;
+}
+
+input[type="checkbox"].input-validation-error {
+   border: 0 none;
+}
+
+.validation-summary-errors {
+   color: #b94a48;
+}
+
+.validation-summary-valid {
+   display: none;
+}
