@@ -42,7 +42,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Logs\" />
     <Folder Include="Models\Enums\" />
 	  <Folder Include="Models\Entities\" />
 	  <Folder Include="Models\Entities\Base" />

@@ -67,6 +67,13 @@ namespace IBI.<%= Name %>.Application
 
             app.UseMvc(routes =>
             {
+                /*
+                    Used for converting pluing to applications 
+                    ensuring the old links in emails, etc will work
+                 */
+                routes.MapRoute("old",
+                                "<%= Name %>/{action=Index}/{id?}",
+                                defaults: new { controller = "Home" });
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
