@@ -78,6 +78,18 @@ namespace IBI.<%= Name %>.Application
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            app.Use(async (context, next) =>
+            {
+                context.Response.Headers.Add("Content-Security-Policy",
+                                            "default-src 'self' 'unsafe-eval' 'unsafe-inline' data: *; ");
+
+                await next();
+            });
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<NotificationHub>("/notificationHub");
+            });
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -139,7 +151,7 @@ namespace IBI.<%= Name %>.Application
                             RoleClaimType = JwtClaimTypes.Role,
                         };
                     });
-
+            services.AddAntiforgery(o => o.SuppressXFrameOptionsHeader = true);
             services.AddSession(opts =>
                     {
                         opts.Cookie.Name = ".<%= Name %>.Session";
