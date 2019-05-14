@@ -112,11 +112,11 @@ namespace IBI.<%= Name %>.Application.Utils.Session
             return string.Empty;
         }
 
-        private string Renew(string key, AuthenticationTicket source)
+private string Renew(string key, AuthenticationTicket source)
         {
             var value = Convert.ToBase64String(SerializeToBytes(source));
             var response = this.httpClient.PutAsync(string.Format("{0}{1}", Resource, key),
-                                                new StringContent(JsonConvert.SerializeObject(new { InstanceName = this.InstanceName, Value = value }), Encoding.UTF8, "application/json"));
+                                                new StringContent(JsonConvert.SerializeObject(new { InstanceName = this.InstanceName, Value = value, CacheTime = TimeSpan.FromHours(10) }), Encoding.UTF8, "application/json"));
             if (response.Result.IsSuccessStatusCode)
             {
                 var item = response.Result.Content.ReadAsStringAsync().Result;
@@ -128,7 +128,7 @@ namespace IBI.<%= Name %>.Application.Utils.Session
         private string Set(int userId, Guid guid, AuthenticationTicket source)
         {
             var value = Convert.ToBase64String(SerializeToBytes(source));
-            var response = this.httpClient.PostAsync(string.Format("{0}", Resource), new StringContent(JsonConvert.SerializeObject(new { InstanceName = this.InstanceName, UserId = userId, Guid = guid, Value = value }), Encoding.UTF8, "application/json"));
+            var response = this.httpClient.PostAsync(string.Format("{0}", Resource), new StringContent(JsonConvert.SerializeObject(new { InstanceName = this.InstanceName, UserId = userId, Guid = guid, Value = value, CacheTime = TimeSpan.FromHours(10) }), Encoding.UTF8, "application/json"));
             if (response.Result.IsSuccessStatusCode)
             {
                 var item = response.Result.Content.ReadAsStringAsync().Result;
