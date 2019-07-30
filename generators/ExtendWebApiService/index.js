@@ -66,7 +66,11 @@ module.exports = class extends Generator {
                                     : this.options.returnType === "S" 
                                         ? this.templatedata.entityname
                                         : "void";
-
+    this.templatedata.ServiceReturn = this.options.returnType === "L" 
+                                           ? "System.Collections.Generic.List<" + this.templatedata.entityname + ">" 
+                                           : this.options.returnType === "S" 
+                                                ? this.templatedata.entityname
+                                                : "void";
     if (this.options.functionInfo != undefined && this.options.functionInfo != null && this.options.functionInfo != "") {
       var functionParameters = JSON.parse(this.options.functionInfo);
       for (var i = 0; i < functionParameters.length; i++) {
@@ -109,16 +113,18 @@ module.exports = class extends Generator {
     });
   }
   _netVersion(serviceGenerateVersion){
-    this._templateFile(path.join(this.templatePath(), "Repositories", "Interfaces", "CustomFunction.ejs"),
+    ibigenerator.log("", "The return: " + this.templatedata.Return);
+  
+    this._templateFile(path.join(this.templatePath(), ".Net", "Repositories", "Interfaces", "CustomFunction.ejs"),
     path.join(this.options.serviceLocation, "Repositories", "Interfaces", "I" + this.templatedata.entityname + "Repository.cs"));
-
-    this._templateFile(path.join(this.templatePath(), "Repositories", "CustomFunction.ejs"),
+    
+    this._templateFile(path.join(this.templatePath(),".Net", "Repositories", "CustomFunction.ejs"),
         path.join(this.options.serviceLocation, "Repositories", this.templatedata.entityname + "Repository.cs"));
 
-    this._templateFile(path.join(this.templatePath(), "Services", "Interfaces", "CustomFunction.ejs"),
+    this._templateFile(path.join(this.templatePath(), ".Net", "Services", "Interfaces", "CustomFunction.ejs"),
         path.join(this.options.serviceLocation, "Services", "Interfaces", "I" + this.templatedata.entityname + "Service.cs"));
 
-    this._templateFile(path.join(this.templatePath(), "Services", "CustomFunction.ejs"),
+    this._templateFile(path.join(this.templatePath(), ".Net", "Services", "CustomFunction.ejs"),
         path.join(this.options.serviceLocation, "Services", this.templatedata.entityname + "Service.cs"));
 
     //create the controller based on the version of the scaffolding that created the project
@@ -130,10 +136,10 @@ module.exports = class extends Generator {
 
   _coreVersion(serviceGenerateVersion){
     ibigenerator.log("", "The return: " + this.templatedata.Return);
-    if(this.templatedata.Return === "void"){
-      this.templatedata.Return = "System.Threading.Tasks.Task";
+    if(this.templatedata.ServiceReturn === "void"){
+      this.templatedata.ServiceReturn = "System.Threading.Tasks.Task";
     } else {
-      this.templatedata.Return = "System.Threading.Tasks.Task<" + this.templatedata.Return + ">";
+      this.templatedata.ServiceReturn = "System.Threading.Tasks.Task<" + this.templatedata.Return + ">";
     }
     ibigenerator.log("", "Now The return: " + this.templatedata.Return);
     //create the controller based on the version of the scaffolding that created the project
@@ -172,8 +178,10 @@ module.exports = class extends Generator {
       ibigenerator.log("", "Has Service Version: " + serviceGenerateVersion);
       if(serviceVersion.includes(".NET CORE WEB API")){
         this._coreVersion(serviceGenerateVersion);
+        ibigenerator.log("","Used Core Version.");
       } else {
         this._netVersion(serviceGenerateVersion);
+        ibigenerator.log("", "Used .Net Version.");
       }
     }
 
