@@ -21,7 +21,7 @@ const winston = require('winston');
 
 /** initials the TFS as 2017 */
 tfs.init({
-  "visualStudioPath": tfs.vs2017.bit64
+
 });
 
 /**

@@ -68,6 +68,7 @@ module.exports = class extends Generator {
 		this._runTemplateOnFolder('Utils', this._pluginSourceLocation());
 		this._runTemplateOnFolder('Views', this._pluginSourceLocation());
 		this.fs.copy(this.templatePath('IBI.CoreTemplate.Application/wwwroot/**/*'),path.join(this._pluginSourceLocation(), 'wwwroot'));
+		this.fs.copyTpl(this.templatePath('IBI.CoreTemplate.Application/wwwroot/js/IBI.js'),path.join(this._pluginSourceLocation(), 'wwwroot', 'js', 'IBI.js'),this.templatedata);
 		this._createDirectory(path.join(this._pluginSourceLocation(), 'Models', 'Entities'));
 		this._createDirectory(path.join(this._pluginSourceLocation(), 'Models', 'Entities', 'Base'));
 		this._createDirectory(path.join(this._pluginSourceLocation(), 'Models', 'Enums'));

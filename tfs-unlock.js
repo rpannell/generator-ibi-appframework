@@ -170,7 +170,23 @@ exports.init = function (param) {
 	};
 
 	shellCallback = param.callback;
-	workingDirectory = param.visualStudioPath;
+	if(param.visualStudioPath == undefined || param.visualStudioPath == null || !fs.existsSync(param.visualStudioPath)){
+		if(fs.existsSync(this.vs2019.bit64)){
+			workingDirectory = this.vs2019.bit64;
+		} else if(fs.existsSync(this.vs2019.bit32)){
+			workingDirectory = this.vs2019.bit32;
+		} else if(fs.existsSync(this.vs2017.bit64)){
+			workingDirectory = this.vs2017.bit64;
+		} else if(fs.existsSync(this.vs2017.bit32)){
+			workingDirectory = this.vs2017.bit32;
+		}else if(fs.existsSync(this.vs2015.bit64)){
+			workingDirectory = path.vs2015.bit64;
+		} else if(fs.existsSync(this.vs2015.bit32)){
+			workingDirectory = this.vs2015.bit32;
+		}
+	} else {
+		workingDirectory = param.visualStudioPath;
+	}
 	if (!workingDirectory || !fs.existsSync(workingDirectory)) {
 		workingDirectory = findVisualStudioPath();
 	}
@@ -215,6 +231,10 @@ paths = {
     vs2017: {
         "bit32": 'C:\\Program Files\\Microsoft Visual Studio\\2017\\Professional\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\',
         "bit64": 'C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Professional\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\'
+	},
+    vs2019: {
+        "bit32": 'C:\\Program Files\\Microsoft Visual Studio\\2019\\Professional\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\',
+        "bit64": 'C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Professional\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\'
 	}
 };
 
@@ -224,6 +244,7 @@ exports.vs2012 = paths.vs2012;
 exports.vs2013 = paths.vs2013;
 exports.vs2015 = paths.vs2015;
 exports.vs2017 = paths.vs2017;
+exports.vs2019 = paths.vs2019;
 
 // for test suite
 exports.shell = shell;
