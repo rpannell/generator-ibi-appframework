@@ -1,4 +1,4 @@
-﻿using IBI.<%= Name %>.Application.Models;
+using IBI.<%= Name %>.Application.Models;
 using IBI.<%= Name %>.Application.Utils.Core.Results;
 using IBI.<%= Name %>.Application.Utils.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;

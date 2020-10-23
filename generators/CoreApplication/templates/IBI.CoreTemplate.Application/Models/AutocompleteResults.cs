@@ -1,4 +1,4 @@
-﻿namespace IBI.<%= Name %>.Application.Models
+namespace IBI.<%= Name %>.Application.Models
 {
     public class AutocompleteResults
     {

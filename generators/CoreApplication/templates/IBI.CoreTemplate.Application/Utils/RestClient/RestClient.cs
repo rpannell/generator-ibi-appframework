@@ -1,4 +1,5 @@
-﻿using IBI.<%= Name %>.Application.Models;
+using IBI.<%= Name %>.Application.Models;
+using IdentityModel.Client;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,13 +9,17 @@ using System.Threading.Tasks;
 
 namespace IBI.<%= Name %>.Application.Utils.RestClient
 {
-    public class RestClient<T>
+    /// <summary>
+    /// Generic Rest Client
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class RestClient<T> : IDisposable
     {
         #region Private Variables
 
-        private HttpClient httpClient;
-        private string resourceUrl = string.Empty;
-        private string url = string.Empty;
+        private readonly HttpClient httpClient;
+        private readonly string resourceUrl = string.Empty;
+        private readonly string url = string.Empty;
 
         #endregion Private Variables
 
@@ -30,12 +35,15 @@ namespace IBI.<%= Name %>.Application.Utils.RestClient
             //ensure the resource is setup correctly
             //resource = !resource.StartsWith("api/") ? string.Format("api/{0}", resource) : resource;
             //resource = !resource.EndsWith("/") ? string.Format("{0}/", resource) : resource;
-            resourceUrl = resource;
+            this.resourceUrl = resource;
 
             this.url = url;
             this.httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri(this.url);
-            httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+            if (!string.IsNullOrEmpty(url))
+            {
+                this.httpClient.BaseAddress = new Uri(this.url);
+            }
+            this.httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
         }
 
         /// <summary>
@@ -49,7 +57,7 @@ namespace IBI.<%= Name %>.Application.Utils.RestClient
         public RestClient(string url, string resource, string username, string role) : this(url, resource)
         {
             //ensure the resource is setup correctly
-            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(UTF8Encoding.UTF8.GetBytes(string.Format("{0}:{1}", username, role))));
+            this.httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(UTF8Encoding.UTF8.GetBytes(string.Format("{0}:{1}", username, role))));
         }
 
         /// <summary>
@@ -82,7 +90,7 @@ namespace IBI.<%= Name %>.Application.Utils.RestClient
         /// <returns>TObject</returns>
         public TObject Custom<TObject>(HttpMethod method, string action = "", object data = null, params object[] args)
         {
-            var response = this.CreateResponse(HttpMethod.Get, action, data, args);
+            var response = this.CreateResponse(method, action, data, args);
             var results = this.HandleReturn<TObject>(response);
             return results;
         }
@@ -99,7 +107,7 @@ namespace IBI.<%= Name %>.Application.Utils.RestClient
         /// <param name="args">The URL parameters in order to add to the url</param>
         public void Custom(HttpMethod method, string action = "", object data = null, params object[] args)
         {
-            var response = this.CreateResponse(HttpMethod.Get, action, data, args);
+            var response = this.CreateResponse(method, action, data, args);
             this.HandleReturn(response);
         }
 
@@ -117,6 +125,19 @@ namespace IBI.<%= Name %>.Application.Utils.RestClient
         }
 
         /// <summary>
+        /// Get an entity from an action name and list of url parameters
+        /// </summary>
+        /// <param name="action">The action name</param>
+        /// <param name="args">List of url parameters</param>
+        /// <returns>T</returns>
+        public async Task<T> GetFromActionAsync(string action, params object[] args)
+        {
+            var response = await this.CreateResponse(HttpMethod.Get, action, null, args);
+            var results = this.HandleReturnAsync<T>(response);
+            return results;
+        }
+
+        /// <summary>
         /// Get a list of entities from an action name and list of url parameters
         /// </summary>
         /// <param name="action">The action name</param>
@@ -126,6 +147,19 @@ namespace IBI.<%= Name %>.Application.Utils.RestClient
         {
             var response = this.CreateResponse(HttpMethod.Get, action, null, args);
             var results = this.HandleReturn<List<T>>(response);
+            return results;
+        }
+
+        /// <summary>
+        /// Get a list of entities from an action name and list of url parameters
+        /// </summary>
+        /// <param name="action">The action name</param>
+        /// <param name="args">List of url parameters</param>
+        /// <returns>List of entities</returns>
+        public async Task<List<T>> GetListFromActionAsync(string action, params object[] args)
+        {
+            var response = await this.CreateResponse(HttpMethod.Get, action, null, args);
+            var results = this.HandleReturnAsync<List<T>>(response);
             return results;
         }
 
@@ -169,6 +203,18 @@ namespace IBI.<%= Name %>.Application.Utils.RestClient
             this.HandleReturn(response);
         }
 
+        /// <summary>
+        /// Post to an action name with some url parameters and doesn't return anything
+        /// </summary>
+        /// <param name="action">The action name</param>
+        /// /// <param name="obj">The object to send to the controller</param>
+        /// <param name="args">List of url parameters</param>
+        public async Task PutToActionAsync(string action, object obj, params object[] args)
+        {
+            var response = await this.CreateResponse(HttpMethod.Put, action, obj, args);
+            this.HandleReturnAsync(response);
+        }
+
         #endregion Methods
 
         #region Get Actions
@@ -182,6 +228,18 @@ namespace IBI.<%= Name %>.Application.Utils.RestClient
         {
             var response = this.CreateResponse(HttpMethod.Get, string.Empty, null, id);
             var results = this.HandleReturn<T>(response);
+            return results;
+        }
+
+        /// <summary>
+        /// Get the entity by the primary key when the key is an int
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>The entity</returns>
+        public virtual async Task<T> GetAsync(int id)
+        {
+            var response = await this.CreateResponse(HttpMethod.Get, string.Empty, null, id);
+            var results = this.HandleReturnAsync<T>(response);
             return results;
         }
 
@@ -209,6 +267,17 @@ namespace IBI.<%= Name %>.Application.Utils.RestClient
         }
 
         /// <summary>
+        /// Get all of the records for that entity
+        /// </summary>
+        /// <returns>List of the entity</returns>
+        public virtual async Task<List<T>> GetAsync()
+        {
+            var response = await this.CreateResponse(HttpMethod.Get);
+            var results = this.HandleReturnAsync<List<T>>(response);
+            return results;
+        }
+
+        /// <summary>
         /// Get a page from an List of AdvancedSearch model
         /// </summary>
         /// <param name="advancedSearch"></param>
@@ -223,9 +292,28 @@ namespace IBI.<%= Name %>.Application.Utils.RestClient
         {
             var response = this.CreateResponse(HttpMethod.Post,
                                         "AdvancedPage",
-                                        new { SearchLimit = limit, SearchOffSet = offset, SearchString = search, SortString = sort, SortOrder = order, AdvancedSearch = advancedSearch },
-                                        type);
+                                        new { SearchLimit = limit, SearchOffSet = offset, SearchString = search, SortString = sort, SortOrder = order, AdvancedSearch = advancedSearch });
             var results = this.HandleReturn<PaginationResult<T>>(response);
+            return results;
+        }
+
+        /// <summary>
+        /// Get a page from an List of AdvancedSearch model
+        /// </summary>
+        /// <param name="advancedSearch"></param>
+        /// <param name="limit">The size of the page</param>
+        /// <param name="offset">The row number of the offset</param>
+        /// <param name="search">The search string</param>
+        /// <param name="sort">The sort string</param>
+        /// <param name="order">The order direction</param>
+        /// <param name="type">Used to help filter the type of advanced search if needed else it's just 0</param>
+        /// <returns>PaginationResult T></returns>
+        public virtual async Task<PaginationResult<T>> GetAdvancedPageAsync(List<AdvancedSearch> advancedSearch, int limit, int offset, string search = null, string sort = null, string order = null, int type = 0)
+        {
+            var response = await this.CreateResponse(HttpMethod.Post,
+                                        "AdvancedPage",
+                                        new { SearchLimit = limit, SearchOffSet = offset, SearchString = search, SortString = sort, SortOrder = order, AdvancedSearch = advancedSearch });
+            var results = this.HandleReturnAsync<PaginationResult<T>>(response);
             return results;
         }
 
@@ -302,6 +390,16 @@ namespace IBI.<%= Name %>.Application.Utils.RestClient
             this.HandleReturn(response);
         }
 
+        /// <summary>
+        /// Post an entity to the web service
+        /// </summary>
+        /// <param name="data">The entity</param>
+        public virtual async Task PostAsync(T data)
+        {
+            var response = await this.CreateResponse(HttpMethod.Post, string.Empty, data);
+            this.HandleReturnAsync(response);
+        }
+
         [Obsolete("Post extra is no longer supported and should use a custom post route instead")]
         public virtual void Post(int id, string extra, object data)
         {
@@ -333,6 +431,18 @@ namespace IBI.<%= Name %>.Application.Utils.RestClient
             return results;
         }
 
+        /// <summary>
+        /// Post an entity to the service and return the entity back
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns>T</returns>
+        public virtual async Task<T> PostReturnIdAsync(T data)
+        {
+            var response = await this.CreateResponse(HttpMethod.Post, string.Empty, data);
+            var results = this.HandleReturnAsync<T>(response);
+            return results;
+        }
+
         #endregion Post Actions
 
         #region Put Actions
@@ -346,6 +456,17 @@ namespace IBI.<%= Name %>.Application.Utils.RestClient
         {
             var response = this.CreateResponse(HttpMethod.Put, string.Empty, data, id);
             this.HandleReturn(response);
+        }
+
+        /// <summary>
+        /// Send an entity to be updated to the service
+        /// </summary>
+        /// <param name="id">The primary key of the entity</param>
+        /// <param name="data">The entity to update</param>
+        public virtual async Task PutAsync(int id, T data)
+        {
+            var response = await this.CreateResponse(HttpMethod.Put, string.Empty, data, id);
+            this.HandleReturnAsync(response);
         }
 
         /// <summary>
@@ -399,6 +520,16 @@ namespace IBI.<%= Name %>.Application.Utils.RestClient
         /// Call the delete action on an entity by the primary key
         /// </summary>
         /// <param name="id">The primary key of the entity</param>
+        public virtual async Task DeleteAsync(int id)
+        {
+            var response = await this.CreateResponse(HttpMethod.Delete, string.Empty, null, id);
+            this.HandleReturnAsync(response);
+        }
+
+        /// <summary>
+        /// Call the delete action on an entity by the primary key
+        /// </summary>
+        /// <param name="id">The primary key of the entity</param>
         public virtual void Delete(long id)
         {
             var response = this.CreateResponse(HttpMethod.Delete, string.Empty, null, id);
@@ -442,7 +573,11 @@ namespace IBI.<%= Name %>.Application.Utils.RestClient
         public string GetActionName(string actionName, params object[] args)
         {
             var actionurl = this.resourceUrl.EndsWith("/") ? this.resourceUrl : string.Format("{0}/", this.resourceUrl);
-            if (actionName != string.Empty) actionurl = string.Format("{0}{1}/", actionurl, actionName);
+            if (actionName != string.Empty)
+            {
+                actionurl = string.Format("{0}{1}/", actionurl, actionName);
+            }
+
             if (args != null && args.Length > 0)
             {
                 foreach (var arg in args)
@@ -450,10 +585,10 @@ namespace IBI.<%= Name %>.Application.Utils.RestClient
                     actionurl = string.Format("{0}{1}/", actionurl, arg);
                 }
             }
-            else
-            {
-                actionurl = actionurl.Substring(0, actionurl.Length - 1);
-            }
+            //else
+            //{
+            actionurl = actionurl.Substring(0, actionurl.Length - 1);
+            //}
 
             return actionurl;
         }
@@ -469,7 +604,7 @@ namespace IBI.<%= Name %>.Application.Utils.RestClient
         /// <param name="data">The data to serialize as a json and add to the body</param>
         /// <param name="args">The list of url parameters</param>
         /// <returns>Task of HttpResponseMessage</returns>
-        private Task<HttpResponseMessage> CreateResponse(HttpMethod method, string action = "", object data = null, params object[] args)
+        private async Task<HttpResponseMessage> CreateResponse(HttpMethod method, string action = "", object data = null, params object[] args)
         {
             var actionName = this.GetActionName(action, args);
             var requestMessage = new HttpRequestMessage(method, actionName);
@@ -477,7 +612,7 @@ namespace IBI.<%= Name %>.Application.Utils.RestClient
             {
                 requestMessage.Content = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
             }
-            return this.httpClient.SendAsync(requestMessage);
+            return await this.httpClient.SendAsync(requestMessage);
         }
 
         /// <summary>
@@ -501,6 +636,37 @@ namespace IBI.<%= Name %>.Application.Utils.RestClient
             return results;
         }
 
+        private TObject HandleReturnAsync<TObject>(HttpResponseMessage response)
+        {
+            var results = default(TObject);
+            if (response.IsSuccessStatusCode)
+            {
+                var item = response.Content.ReadAsStringAsync();
+                results = (TObject)Newtonsoft.Json.JsonConvert.DeserializeObject(item.Result, typeof(TObject));
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                //Log.Error(response.Result.Content.ReadAsStringAsync().Result);
+            }
+            return results;
+        }
+
+        /// <summary>
+        /// Handle a response that doesn't return anything
+        /// </summary>
+        /// <param name="response"></param>
+        private void HandleReturnAsync(HttpResponseMessage response)
+        {
+            if (response.IsSuccessStatusCode)
+            {
+                var item = response.Content.ReadAsStringAsync();
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                //Log.Error(response.Result.Content.ReadAsStringAsync().Result);
+            }
+        }
+
         /// <summary>
         /// Handle a response that doesn't return anything
         /// </summary>
@@ -519,6 +685,12 @@ namespace IBI.<%= Name %>.Application.Utils.RestClient
 
         #endregion Private functions
 
+        /// <summary>
+        /// GEt the URL Action by name and url args
+        /// </summary>
+        /// <param name="actionName"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public string GetUrlActionName(string actionName, params UrlParameters[] args)
         {
             var actionUrl = Path.Combine(this.resourceUrl, actionName);
@@ -535,6 +707,14 @@ namespace IBI.<%= Name %>.Application.Utils.RestClient
             }
 
             return string.Format("{0}{1}", actionUrl, urlParams);
+        }
+
+        /// <summary>
+        /// Dispose the class
+        /// </summary>
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
         }
 
         #region Classes

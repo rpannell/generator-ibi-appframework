@@ -74,6 +74,7 @@ module.exports = class extends Generator {
 		this._createDirectory(path.join(this._pluginSourceLocation(), 'Models', 'Enums'));
 		this._createDirectory(path.join(this._pluginSourceLocation(), 'Models', 'ViewModels'));
 		this._createDirectory(path.join(this._pluginSourceLocation(), 'Services', 'Interfaces'));
+		this.fs.copyTpl(this.templatePath('IBI.CoreTemplate.Application/.tfignore'),path.join(this._pluginSourceLocation(), '.tfignore'),this.templatedata);
 		this.fs.copyTpl(this.templatePath('IBI.CoreTemplate.Application/*.config'),path.join(this._pluginSourceLocation()),this.templatedata);
 		this.fs.copyTpl(this.templatePath('IBI.CoreTemplate.Application/*.json'),path.join(this._pluginSourceLocation()),this.templatedata);
 		this.fs.copyTpl(this.templatePath('IBI.CoreTemplate.Application/Program.cs'),path.join(this._pluginSourceLocation(), 'Program.cs'),this.templatedata);

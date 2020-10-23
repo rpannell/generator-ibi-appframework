@@ -1,4 +1,4 @@
-﻿/*         ______________________________________
+/*         ______________________________________
   ________|                                      |_______
   \       |             JarvisWidget             |      /
    \      |      Copyright © 2014 MyOrange       |     /
@@ -35,7 +35,7 @@
 	 * Check for touch support and set right click events.
 	 **/
     var clickEvent = (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch ?
-		'clickEvent' : 'click') + '.' + pluginName;
+        'clickEvent' : 'click') + '.' + pluginName;
 
     function Plugin(element, options) {
         /**
@@ -211,22 +211,22 @@
             self._loadKeys();
 
             var storeSettings = self.obj.find(self.o.widgets)
-				.map(function () {
-				    var storeSettingsStr = {};
-				    storeSettingsStr.id = $(this)
-						.attr('id');
-				    storeSettingsStr.style = $(this)
-						.attr('data-widget-attstyle');
-				    storeSettingsStr.title = $(this)
-						.children('header')
-						.children('h2')
-						.text();
-				    storeSettingsStr.hidden = ($(this)
-						.css('display') == 'none' ? 1 : 0);
-				    storeSettingsStr.collapsed = ($(this)
-						.hasClass('jarviswidget-collapsed') ? 1 : 0);
-				    return storeSettingsStr;
-				}).get();
+                .map(function () {
+                    var storeSettingsStr = {};
+                    storeSettingsStr.id = $(this)
+                        .attr('id');
+                    storeSettingsStr.style = $(this)
+                        .attr('data-widget-attstyle');
+                    storeSettingsStr.title = $(this)
+                        .children('header')
+                        .children('h2')
+                        .text();
+                    storeSettingsStr.hidden = ($(this)
+                        .css('display') == 'none' ? 1 : 0);
+                    storeSettingsStr.collapsed = ($(this)
+                        .hasClass('jarviswidget-collapsed') ? 1 : 0);
+                    return storeSettingsStr;
+                }).get();
 
             var storeSettingsObj = JSON.stringify({
                 'widget': storeSettings
@@ -259,18 +259,18 @@
             self._loadKeys();
 
             var mainArr = self.obj.find(self.o.grid + '.sortable-grid')
-				.map(function () {
-				    var subArr = $(this)
-						.children(self.o.widgets)
-						.map(function () {
-						    return {
-						        'id': $(this).attr('id')
-						    };
-						}).get();
-				    return {
-				        'section': subArr
-				    };
-				}).get();
+                .map(function () {
+                    var subArr = $(this)
+                        .children(self.o.widgets)
+                        .map(function () {
+                            return {
+                                'id': $(this).attr('id')
+                            };
+                        }).get();
+                    return {
+                        'section': subArr
+                    };
+                }).get();
 
             var storePositionObj = JSON.stringify({
                 'grid': mainArr
@@ -424,15 +424,15 @@
              **/
             self.widget.each(function () {
                 var tWidget = $(this),
-                	thisHeader = $(this).children('header'),
-                	customBtn,
-                	deleteBtn,
-                	editBtn,
-                	fullscreenBtn,
-                	widgetcolorBtn,
-                	toggleBtn,
-                	toggleSettings,
-                  	refreshBtn;
+                    thisHeader = $(this).children('header'),
+                    customBtn,
+                    deleteBtn,
+                    editBtn,
+                    fullscreenBtn,
+                    widgetcolorBtn,
+                    toggleBtn,
+                    toggleSettings,
+                    refreshBtn;
 
                 /**
                  * Dont double wrap(check).
@@ -737,12 +737,12 @@
                             .stop(true, true)
                             .fadeTo(100, 1.0);
                     })
-					.on('mouseleave.' + pluginName, function () {
-					    $(this)
+                    .on('mouseleave.' + pluginName, function () {
+                        $(this)
                             .children(self.o.pwCtrls)
                             .stop(true, true)
                             .fadeTo(100, 0.0);
-					});
+                    });
             }
 
             //*****************************************************************//
@@ -760,24 +760,24 @@
 				 * Delete the settings key.
 				 **/
                 $(self.o.deleteSettingsKey)
-					.on(clickEvent, this, function (e) {
-					    var cleared = confirm(self.o.settingsKeyLabel);
-					    if (cleared) {
-					        localStorage.removeItem(keySettings);
-					    }
-					    e.preventDefault();
-					});
+                    .on(clickEvent, this, function (e) {
+                        var cleared = confirm(self.o.settingsKeyLabel);
+                        if (cleared) {
+                            localStorage.removeItem(keySettings);
+                        }
+                        e.preventDefault();
+                    });
                 /**
 				 * Delete the position key.
 				 **/
                 $(self.o.deletePositionKey)
-					.on(clickEvent, this, function (e) {
-					    var cleared = confirm(self.o.positionKeyLabel);
-					    if (cleared) {
-					        localStorage.removeItem(keyPosition);
-					    }
-					    e.preventDefault();
-					});
+                    .on(clickEvent, this, function (e) {
+                        var cleared = confirm(self.o.positionKeyLabel);
+                        if (cleared) {
+                            localStorage.removeItem(keyPosition);
+                        }
+                        e.preventDefault();
+                    });
             }
 
             initialized = true;
@@ -994,28 +994,25 @@
                 }
 
                 e.preventDefault();
-            /*Check to see if widget contains a plotly grpah and then Resize the Plotly Graph after the Widget enters and exits Fullscreen mode.*/
-            if (thisWidget[0].id.split('-')[0] == "plotly") {
-                if (thisWidget.parent()[0].id == "jarviswidget-fullscreen-mode") {
-                    var w = $(thisWidget[0]).width() - 20;
-                    var h = $(thisWidget[0]).height() - 20;
-                } else {
-                    var w = 500;
-                    var h = 400;
+                /*Check to see if widget contains a plotly grpah and then Resize the Plotly Graph after the Widget enters and exits Fullscreen mode.*/
+                if (thisWidget[0].id.split('-')[0] == "plotly") {
+                    if (thisWidget.parent()[0].id == "jarviswidget-fullscreen-mode") {
+                        var w = $(thisWidget[0]).width() - 20;
+                        var h = $(thisWidget[0]).height() - 20;
+                    } else {
+                        var w = 500;
+                        var h = 400;
+                    }
+                    var graph = thisWidget[0].id.split('-')[1];
+                    Plotly.relayout(graph, { width: w, height: h });
                 }
-                var graph = thisWidget[0].id.split('-')[1];
-                Plotly.relayout(graph, { width: w, height: h });
-            }
 
-            //resize any Highcharts found on the page.
-            $.each(Highcharts.charts,function(index,value){
-                value.reflow();
-            });
+                //resize any Highcharts found on the page.
+                $.each(Highcharts.charts, function (index, value) {
+                    value.reflow();
+                });
             });
 
-           
-            
-           
             /**
              * Run the set fullscreen height function when the screen resizes.
              **/
@@ -1209,7 +1206,7 @@
                 if ($.SmartMessageBox) {
                     $.SmartMessageBox({
                         title: "<i class='fa fa-times' style='color:#ed1c24'></i> " + self.o.labelDelete +
-	                        ' "' + widTitle + '"',
+                            ' "' + widTitle + '"',
                         content: self.o.deleteMsg,
                         buttons: '[No][Yes]'
                     }, function (ButtonPressed) {
@@ -1224,17 +1221,17 @@
 	                         * Delete the right widget.
 	                         **/
                             $('#' + removeId)
-	                            .fadeOut(self.o.deleteSpeed, function () {
-	                                $(this)
-	                                    .remove();
+                                .fadeOut(self.o.deleteSpeed, function () {
+                                    $(this)
+                                        .remove();
 
 	                                /**
 	                                 * Run the callback function.
 	                                 **/
-	                                if (typeof self.o.onDelete == 'function') {
-	                                    self.o.onDelete.call(this, tWidget);
-	                                }
-	                            });
+                                    if (typeof self.o.onDelete == 'function') {
+                                        self.o.onDelete.call(this, tWidget);
+                                    }
+                                });
                         }
                     });
                 } else {
@@ -1242,17 +1239,17 @@
                      * Delete the right widget.
                      **/
                     $('#' + removeId)
-                    .fadeOut(self.o.deleteSpeed, function () {
-                        $(this)
-                            .remove();
+                        .fadeOut(self.o.deleteSpeed, function () {
+                            $(this)
+                                .remove();
 
-                        /**
-                         * Run the callback function.
-                         **/
-                        if (typeof self.o.onDelete == 'function') {
-                            self.o.onDelete.call(this, tWidget);
-                        }
-                    });
+                            /**
+                             * Run the callback function.
+                             **/
+                            if (typeof self.o.onDelete == 'function') {
+                                self.o.onDelete.call(this, tWidget);
+                            }
+                        });
                 }
 
                 e.preventDefault();
@@ -1299,8 +1296,8 @@
          **/
         destroy: function () {
             var self = this,
-            namespace = '.' + pluginName,
-            sortItem = self.obj.find(self.o.grid + '.sortable-grid').not('[data-widget-excludegrid]');
+                namespace = '.' + pluginName,
+                sortItem = self.obj.find(self.o.grid + '.sortable-grid').not('[data-widget-excludegrid]');
 
             sortItem.sortable('destroy');
             self.widget.children('header').off(namespace);

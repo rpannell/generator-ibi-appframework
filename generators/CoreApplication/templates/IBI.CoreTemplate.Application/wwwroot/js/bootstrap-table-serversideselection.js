@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Used to have a selection column (be it checkbox or radio) and deal with
  * server side pagination at the same time.  The developer will need to set the
  * option "serverSideSelection" to true and set at least the "idField" option or the
@@ -12,7 +12,7 @@
  *
  * The data-field in the column that contains the checkbox or radio buttom must contain
  * the same string as what's in the "serverSideCheckboxProperty"
- * 
+ *
  * @author: Rodney Pannell
  * @version: v1.0.0
  */

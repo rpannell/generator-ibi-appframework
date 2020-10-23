@@ -73,6 +73,7 @@ module.exports = class extends Generator {
 		this.fs.copyTpl(this.templatePath('IBI.CoreTemplate.Service/IBI.CoreTemplate.Service.csproj'),path.join(this._serviceSourceLocation(), 'IBI.' + this.templatedata.Name + '.Service.csproj'),this.templatedata);
 		this.fs.copyTpl(this.templatePath('IBI.CoreTemplate.Service/*.cs'),path.join(this._serviceSourceLocation()),this.templatedata);
 		this.fs.copyTpl(this.templatePath('IBI.CoreTemplate.Service/*.json'),path.join(this._serviceSourceLocation()),this.templatedata);
+		this.fs.copyTpl(this.templatePath('IBI.CoreTemplate.Service/.tfignore'),path.join(this._serviceSourceLocation(), '.tfignore'),this.templatedata);
 	}
 	install() {
 		//ibigenerator.addfolder(path.join(this._serviceSourceLocation(), 'Entities', 'Base'));

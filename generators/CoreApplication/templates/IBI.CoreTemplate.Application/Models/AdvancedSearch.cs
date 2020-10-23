@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 /// <summary>
 /// Created by Genie 2018-02-28, 01:09 PM by verion 1.1.23

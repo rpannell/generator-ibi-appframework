@@ -1,4 +1,4 @@
-﻿namespace IBI.<%= Name %>.Application.Utils.Core.Models
+namespace IBI.<%= Name %>.Application.Utils.Core.Models
 {
     public static class SipHash
     {

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.DataProtection.Repositories;
+using Microsoft.AspNetCore.DataProtection.Repositories;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

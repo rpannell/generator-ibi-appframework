@@ -1,4 +1,4 @@
-﻿using IBI.<%= Name %>.Application.Utils.Core.Models;
+using IBI.<%= Name %>.Application.Utils.Core.Models;
 using IBI.<%= Name %>.Application.Utils.Session.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;

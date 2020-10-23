@@ -6,6 +6,9 @@ using System.Reflection;
 
 namespace IBI.<%= Name %>.Service.Core.Utils
 {
+    /// <summary>
+    /// Extensions for the base repository
+    /// </summary>
     public static class RepositoryExtensions
     {
         #region Enums
@@ -52,6 +55,12 @@ namespace IBI.<%= Name %>.Service.Core.Utils
             return Expression.Call(property, method, someValue);
         }
 
+        /// <summary>
+        /// Follow the property path of the dots
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public static PropertyInfo FollowPropertyPath(this Type type, string path)
         {
             PropertyInfo property = null;
@@ -72,6 +81,13 @@ namespace IBI.<%= Name %>.Service.Core.Utils
         /// <returns>Linq.ParameterExpression</returns>
         public static ParameterExpression GetGenericType(this Type type) => Expression.Parameter(type);
 
+        /// <summary>
+        /// Create property expression based on a sub property
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="orderByProperty"></param>
+        /// <param name="parameter"></param>
+        /// <returns></returns>
         public static Expression GetPropertyExpressionFromSubProperty(this Type type, string orderByProperty, ParameterExpression parameter)
         {
             //var parameter = Expression.Parameter(type, "p");
@@ -141,6 +157,11 @@ namespace IBI.<%= Name %>.Service.Core.Utils
         /// <returns>bool</returns>
         public static bool IsNumeric(this string str) => float.TryParse(str, out var _);
 
+        /// <summary>
+        /// Checks a property to see if it's virutal
+        /// </summary>
+        /// <param name="self"><see cref="PropertyInfo">Information about a property</see></param>
+        /// <returns></returns>
         public static bool? IsVirtual(this PropertyInfo self)
         {
             if (self == null)
@@ -235,6 +256,14 @@ namespace IBI.<%= Name %>.Service.Core.Utils
         /// <returns>Expression</returns>
         public static Expression NullableNotEqual(Expression left, Expression right) => NullableExpression(left, right, ExpressionType.NotEqual);
 
+        /// <summary>
+        /// Order helper by a string version of the property
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="orderByProperty"></param>
+        /// <param name="desc"></param>
+        /// <returns></returns>
         public static IQueryable<TEntity> OrderByHelper<TEntity>(this IQueryable<TEntity> source, string orderByProperty, bool desc)
         {
             string command = desc ? "OrderByDescending" : "OrderBy";
@@ -253,6 +282,14 @@ namespace IBI.<%= Name %>.Service.Core.Utils
             return source.Provider.CreateQuery<TEntity>(resultExpression);
         }
 
+        /// <summary>
+        /// Helper function to create the where close using expression
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="expression"></param>
+        /// <param name="genericType"></param>
+        /// <returns></returns>
         public static IQueryable<TEntity> WhereHelper<TEntity>(this IQueryable<TEntity> source, Expression expression, ParameterExpression genericType)
         {
             if (expression == null) return source;

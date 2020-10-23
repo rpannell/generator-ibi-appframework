@@ -1,4 +1,4 @@
-﻿using System.Threading;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace IBI.<%= Name %>.Application.Utils.Session.Interfaces

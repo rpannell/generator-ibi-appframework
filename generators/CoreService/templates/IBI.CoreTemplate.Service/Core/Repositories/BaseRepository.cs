@@ -152,9 +152,9 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
         /// </summary>
         /// <param name="id">The primary key value of the entity</param>
         /// <returns>TEntity</returns>
-        public virtual Task<TEntity> GetForUpdate(TPrimaryKey id)
+        public virtual async Task<TEntity> GetForUpdate(TPrimaryKey id)
         {
-            return this.Entity.FindAsync(id);
+            return await this.Entity.FindAsync(id);
         }
 
         /// <summary>
@@ -216,6 +216,10 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
 
         #region Expression
 
+        /// <summary>
+        /// Returns the generic type that is used in the linq expression helpers
+        /// </summary>
+        /// <returns><see cref="ParameterExpression">The expression</see></returns>
         public ParameterExpression GetGenericType()
         {
             return Expression.Parameter(typeof(TEntity));
@@ -359,22 +363,8 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
         public TEntity RunEntityStoredProc(string storedProcName, params SqlParameter[] args)
         {
             var proc = this.StoredProcQueryString(storedProcName, args);
-            return this.Entity.FromSql(proc, args).FirstOrDefault();
+            return this.Entity.FromSqlRaw(proc, args).FirstOrDefault();
         }
-
-        /// <summary>
-        /// Run a stored procedure with multiple parameters that returns a single row
-        /// of a specific type
-        /// </summary>
-        /// <typeparam name="T">The type of the return</typeparam>
-        /// <param name="storedProcName">The name of the stored proc</param>
-        /// <param name="args">The parameters</param>
-        /// <returns>T</returns>
-        //public T RunEntityStoredProc<T>(string storedProcName, params SqlParameter[] args)
-        //{
-        //    var proc = this.StoredProcQueryString(storedProcName, args);
-        //    return this.Database.SqlQuery<T>(proc, args).FirstOrDefault();
-        //}
 
         /// <summary>
         /// Run a stored procedure with multiple parameters that returns a list
@@ -385,7 +375,7 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
         public List<TEntity> RunListEntityStoredProc(string storedProcName, params SqlParameter[] args)
         {
             var proc = this.StoredProcQueryString(storedProcName, args);
-            return this.Entity.FromSql(proc, args).ToList();
+            return this.Entity.FromSqlRaw(proc, args).ToList();
         }
 
         /// <summary>
@@ -398,7 +388,7 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
             try
             {
                 var proc = this.StoredProcQueryString(storedProcName, args);
-                this.mainContext.Database.ExecuteSqlCommand(proc, args);
+                this.mainContext.Database.ExecuteSqlRaw(proc, args);
             }
             catch (Exception ex)
             {

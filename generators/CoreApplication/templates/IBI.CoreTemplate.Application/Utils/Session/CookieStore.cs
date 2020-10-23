@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Newtonsoft.Json;
 using System;
@@ -112,7 +112,7 @@ namespace IBI.<%= Name %>.Application.Utils.Session
             return string.Empty;
         }
 
-private string Renew(string key, AuthenticationTicket source)
+        private string Renew(string key, AuthenticationTicket source)
         {
             var value = Convert.ToBase64String(SerializeToBytes(source));
             var response = this.httpClient.PutAsync(string.Format("{0}{1}", Resource, key),

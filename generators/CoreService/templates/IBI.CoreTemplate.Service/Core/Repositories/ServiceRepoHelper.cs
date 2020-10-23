@@ -62,6 +62,13 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
             return serviceCollection;
         }
 
+        /// <summary>
+        /// Add the dbcontext for all of the repositories
+        /// </summary>
+        /// <param name="serviceCollection"></param>
+        /// <param name="repositoryType"></param>
+        /// <param name="contextLifetime"></param>
+        /// <returns></returns>
         public static IServiceCollection AddDbContext(this IServiceCollection serviceCollection, Type repositoryType, ServiceLifetime contextLifetime)
         {
             try
@@ -75,6 +82,14 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
             return serviceCollection;
         }
 
+        /// <summary>
+        /// Add the dbcontext for all of the repositories
+        /// </summary>
+        /// <param name="serviceCollection"></param>
+        /// <param name="repositoryType"></param>
+        /// <param name="optionsAction"></param>
+        /// <param name="contextLifetime"></param>
+        /// <returns></returns>
         public static IServiceCollection AddDbContext(this IServiceCollection serviceCollection, Type repositoryType, Action<IServiceProvider, DbContextOptionsBuilder> optionsAction, ServiceLifetime contextLifetime = ServiceLifetime.Scoped)
         {
             try
@@ -88,6 +103,11 @@ namespace IBI.<%= Name %>.Service.Core.Repositories
             return serviceCollection;
         }
 
+        /// <summary>
+        /// Returns the base class and interfaces based on a type
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public static List<Type> GetBaseClassesAndInterfaces(this Type type)
         {
             return type.GetTypeInfo().BaseType == null || type.GetTypeInfo().BaseType == typeof(object)

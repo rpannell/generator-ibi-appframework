@@ -96,9 +96,21 @@ namespace IBI.<%= Name %>.Application.Utils.UI
         /// <returns>MvcHtmlString</returns>
         private static IHtmlContent BootstrapCheckBoxFor<TModel>(this IHtmlHelper<TModel> htmlHelper, Expression<Func<TModel, bool>> expression, string labelText, IDictionary<string, object> htmlAttributes, bool isReadOnly = false)
         {
-            if (htmlAttributes == null) htmlAttributes = new Dictionary<string, object>();
-            if (!htmlAttributes.ContainsKey("class")) htmlAttributes.Add("class", string.Empty);
-            if (isReadOnly) htmlAttributes.Add("disabled", "disabled");
+            if (htmlAttributes == null)
+            {
+                htmlAttributes = new Dictionary<string, object>();
+            }
+
+            if (!htmlAttributes.ContainsKey("class"))
+            {
+                htmlAttributes.Add("class", string.Empty);
+            }
+
+            if (isReadOnly)
+            {
+                htmlAttributes.Add("disabled", "disabled");
+            }
+
             var checkBoxString = Utils.GetString(htmlHelper.CheckBoxFor<TModel>(expression));
             return new HtmlString(string.Format("<div class=\"checkbox {2}\"><label>{0} {1}</label></div>", checkBoxString, labelText, isReadOnly ? "disabled" : string.Empty));
         }

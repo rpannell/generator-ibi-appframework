@@ -1,8 +1,7 @@
-﻿using IBI.<%= Name %>.Application.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
 
 namespace IBI.<%= Name %>.Application.Services
@@ -17,15 +16,16 @@ namespace IBI.<%= Name %>.Application.Services
         public string URL = string.Empty;
         public string UserName = string.Empty;
         private readonly IHttpContextAccessor httpContextAccessor;
-        private readonly PluginSettings pluginSettings;
+        private readonly IConfiguration configuration;
 
         #endregion Fields
 
         #region Constructors
 
-        public BaseService(IDistributedCache cache, IOptions<PluginSettings> settings, IHttpContextAccessor httpContextAccessor)
+        public BaseService(IDistributedCache cache, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             this.httpContextAccessor = httpContextAccessor;
+            this.configuration = configuration;
 
             //this.UserName = Impersonation.Instance.CurrentImpersonatedUser;
             //create the comma delimited list of roles
@@ -33,8 +33,7 @@ namespace IBI.<%= Name %>.Application.Services
             {
                 var user = httpContextAccessor.HttpContext.User;
                 this.cache = cache;
-                this.pluginSettings = settings.Value;
-                this.URL = this.pluginSettings.WebServiceURL;
+                this.URL = configuration["Webservice:<%= Name %>"];
                 this.UserName = this.GetUserName();
                 this.Roles = this.GetUserRoles();
                 this.Token = this.GetApiToken();

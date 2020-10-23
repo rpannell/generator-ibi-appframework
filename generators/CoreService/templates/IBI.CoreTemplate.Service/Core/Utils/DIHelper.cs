@@ -4,10 +4,21 @@ using System.Reflection;
 
 namespace IBI.<%= Name %>.Service.Core.Utils
 {
+    /// <summary>
+    /// Dependency injection helper class
+    /// </summary>
     public static class DIHelper
     {
         #region Methods
 
+        /// <summary>
+        /// Setup the transient service based on the namespace of service and service/interface
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <param name="interfaceNamespace"></param>
+        /// <param name="mainNamespace"></param>
+        /// <param name="endingKey"></param>
+        /// <returns></returns>
         public static IServiceCollection AddNamespaceServices(this IServiceCollection builder, string interfaceNamespace, string mainNamespace, string endingKey = "Service")
         {
             var currentInterfaces = Assembly.GetEntryAssembly().GetTypes()

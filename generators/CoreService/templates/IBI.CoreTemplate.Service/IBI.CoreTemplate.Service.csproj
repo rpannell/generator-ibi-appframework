@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>dbbca186-431e-48a0-b864-003f20710587</UserSecretsId>
   </PropertyGroup>
 
@@ -15,32 +15,39 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\Enum\" />
-    <Folder Include="Models\" />
-    <Folder Include="Properties\PublishProfiles\" />
-    <Folder Include="wwwroot\" />
+    <Folder Include="Entities\Enum\"/>
+    <Folder Include="Models\"/>
+    <Folder Include="Properties\PublishProfiles\"/>
+    <Folder Include="wwwroot\"/>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="7.0.1" />
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="5.0.1" />
-    <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="2.6.0" />
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="2.3.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="2.2.0" />
-    <PackageReference Include="Serilog.Extensions.Logging.File" Version="1.1.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="3.0.0" />
+    <PackageReference Include="AutoMapper" Version="10.1.1"/>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0"/>
+    <PackageReference Include="Azure.Identity" Version="1.2.3"/>
+    <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.1"/>
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.15.0"/>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="4.1.1"/>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="4.1.1"/>
+    <PackageReference Include="Microsoft.Azure.AppConfiguration.AspNetCore" Version="4.0.0"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.9"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.9"/>
+    <PackageReference Include="Serilog.AspNetCore" Version="3.4.0"/>
+    <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0"/>
+    <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="3.1.0"/>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3"/>
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2"/>
   </ItemGroup>
 
   <ItemGroup>
-    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.3" />
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.3"/>
   </ItemGroup>
 
 </Project>
 <!-- 
   DO NOT DELETE THIS COMMENT
-  DATE: <%= TodaysDate %>
-  GENIE VERSION: <%= Version %> 
+  DATE: 2020-10-20, 12:31 PM
+  GENIE VERSION: 1.1.37 
   SERVICE VERSION: .NET CORE WEB API V1
   DO NOT DELETE THIS COMMENT
 -->

@@ -76,6 +76,10 @@
         "fonts/fontawesome-webfont.woff",
         "fonts/FontAwesome.otf"
       ]
+    },
+    {
+      "library": "select2@4.0.13",
+      "destination": "wwwroot/lib/select2/"
     }
   ]
 }

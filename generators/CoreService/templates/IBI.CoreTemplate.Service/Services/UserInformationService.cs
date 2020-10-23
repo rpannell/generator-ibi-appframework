@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
+using System.Security.Claims;
 
 namespace IBI.<%= Name %>.Service.Services
 {
@@ -35,9 +36,23 @@ namespace IBI.<%= Name %>.Service.Services
         /// <returns>int</returns>
         public int GetCurrentUserActiveDirectoryId()
         {
-            return this.httpContextAccessor.HttpContext.User.Identity.IsAuthenticated && this.httpContextAccessor.HttpContext.User.HasClaim(x => x.Type == "UserId")
-                ? Convert.ToInt32(this.httpContextAccessor.HttpContext.User.FindFirst("UserId").Value)
-                : 0;
+            var user = httpContextAccessor.HttpContext.User;
+            var userId = "";
+            if (!(user.Identity != null && user.HasClaim(x => x.Type == "UserId")))
+            {
+                return 0;
+            }
+
+            if (user.HasClaim(x => x.Type == "ImpersonatingUserId"))
+            {
+                userId = user.FindFirstValue("ImpersonatingUserId");
+            }
+            if (string.IsNullOrEmpty(userId))
+            {
+                userId = user.FindFirstValue("UserId");
+            }
+
+            return !string.IsNullOrEmpty(userId) ? Convert.ToInt32(userId) : -1;
         }
 
         /// <summary>
@@ -58,6 +73,32 @@ namespace IBI.<%= Name %>.Service.Services
         public bool IsInRole(string role, string plugin = "<%= Name %>")
         {
             return this.httpContextAccessor.HttpContext.User.Identity.IsAuthenticated && this.httpContextAccessor.HttpContext.User.HasClaim(x => x.Type.ToLower() == plugin.ToLower() && x.Value.ToLower() == role.ToLower());
+        }
+
+        /// <summary>
+        /// Returns current user email address
+        /// </summary>
+        /// <returns>string</returns>
+        public string GetCurrentUserEmailAddress()
+        {
+            var user = httpContextAccessor.HttpContext.User;
+            var emailAddress = string.Empty;
+            if (!(user.Identity != null && user.HasClaim(x => x.Type == "UserId")))
+            {
+                return string.Empty;
+            }
+
+            if (user.HasClaim(x => x.Type == "ImpersonatingEmail"))
+            {
+                emailAddress = user.FindFirstValue("ImpersonatingEmail");
+            }
+
+            if (string.IsNullOrEmpty(emailAddress))
+            {
+                emailAddress = user.FindFirstValue("email");
+            }
+
+            return !string.IsNullOrEmpty(emailAddress) ? emailAddress : string.Empty;
         }
 
         #endregion Methods

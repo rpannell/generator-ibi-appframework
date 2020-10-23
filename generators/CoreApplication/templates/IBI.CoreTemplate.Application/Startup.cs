@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using IBI.<%= Name %>.Application.Models;
+using AutoMapper;
 using IBI.<%= Name %>.Application.Utils.Cache;
 using IBI.<%= Name %>.Application.Utils.Core;
 using IBI.<%= Name %>.Application.Utils.DataProtection;
@@ -13,7 +12,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Linq;
@@ -24,59 +23,54 @@ namespace IBI.<%= Name %>.Application
     {
         #region Constructors
 
-        public Startup(IHostingEnvironment env)
+        /// <summary>
+        /// Startup constructor
+        /// </summary>
+        /// <param name="configuration"><see cref="IConfiguration"/></param>
+        public Startup(IConfiguration configuration)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
-            Configuration = builder.Build();
+            this.Configuration = configuration;
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public IConfigurationRoot Configuration { get; }
+        public IConfiguration Configuration { get; }
 
         #endregion Properties
 
         #region Methods
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"))
-                         .AddFile("Logs/<%= Name %>-{Date}.txt"); ;
-            loggerFactory.AddDebug();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+                app.UseAzureAppConfiguration();
             }
 
             app.UseStaticFiles();
             app.UseSession();
+            app.UseRouting();
+            app.UseCors();
             app.UseAuthentication();
-
-            app.UseMvc(routes =>
+            app.UseAuthorization();
+            app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllers();
                 /*
-                    Used for converting pluing to applications 
+                    Used for converting pluing to applications
                     ensuring the old links in emails, etc will work
                  */
-                routes.MapRoute("old",
-                                "<%= Name %>/{action=Index}/{id?}",
-                                defaults: new { controller = "Home" });
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapAreaControllerRoute("old", "<%= Name %>", "<%= Name %>/{action=Index}/{id?}");
+                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapHub<Utils.Hubs.NotificationHub>("/notificationHub");
             });
 
             app.Use(async (context, next) =>
@@ -86,28 +80,27 @@ namespace IBI.<%= Name %>.Application
 
                 await next();
             });
-            app.UseSignalR(routes =>
-            {
-                routes.MapHub<NotificationHub>("/notificationHub");
-            });
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddOptions();
-            services.Configure<PluginSettings>(Configuration.GetSection("PluginSettings"));
+            services.AddControllersWithViews()
+                    .AddRazorRuntimeCompilation();
+            services.AddAzureAppConfiguration();
+            services.AddOptions()
+                    .AddSignalR();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>()
                     .AddTransient<IMenuService, MenuService>()
                     .AddWebserviceSession(opts =>
                     {
                         opts.InstanceName = "<%= Name %>";
-                        opts.WebServiceURL = Configuration["PluginSettings:RedisServiceURL"];
+                        opts.WebServiceURL = Configuration["Webservice:Redis"];
                     })
                     .AddDistributedWebserviceCache(opts =>
                     {
                         opts.InstanceName = "<%= Name %>";
-                        opts.WebServiceURL = Configuration["PluginSettings:RedisServiceURL"];
+                        opts.WebServiceURL = Configuration["Webservice:Redis"];
                     })
                     .AddNamespaceServices("IBI.<%= Name %>.Application.Services.Interfaces", "IBI.<%= Name %>.Application.Services", "Service");
 
@@ -125,16 +118,16 @@ namespace IBI.<%= Name %>.Application
                         options.Cookie.SameSite = SameSiteMode.None;
                         options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
                         options.Cookie.Name = "Cookies-<%= Name %>";
-                        options.SessionStore = new CookieStore(Configuration["PluginSettings:RedisServiceURL"], "<%= Name %>");
+                        options.SessionStore = new CookieStore(Configuration["Webservice:Redis"], "<%= Name %>");
                         options.AccessDeniedPath = "/Home/AccessDenied";
                     })
                     .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, o =>
                     {
                         o.SignInScheme = "Cookies-<%= Name %>";
-                        o.Authority = Configuration["ApplicationSettings:IdentityServerAuthority"];
-                        o.SignedOutRedirectUri = Configuration["ApplicationSettings:IdentityServerPostLogoutRedirectUri"];
-                        o.ClientId = Configuration["ApplicationSettings:IdentityServerAuthorityClient"];
-                        o.ClientSecret = Configuration["ApplicationSettings:IdentityServerAuthorityPassword"];
+                        o.Authority = this.Configuration["Authorization:Authority"];
+                        o.SignedOutRedirectUri = this.Configuration["ApplicationSettings:IdentityServerPostLogoutRedirectUri"];
+                        o.ClientId = this.Configuration["Authorization:MainAuthorityClient"];
+                        o.ClientSecret = this.Configuration["Authorization:MainAuthorityPassword"];
                         o.Resource = "openid profile api1";
                         o.ResponseType = "code id_token token";
                         o.Scope.Clear();
@@ -157,17 +150,18 @@ namespace IBI.<%= Name %>.Application
                         opts.Cookie.Name = ".<%= Name %>.Session";
                         opts.IdleTimeout = TimeSpan.FromHours(10);
                     })
-                    .AddAutoMapper()
+                    .AddAutoMapper(typeof(Startup))
                     .AddAuthorization(opts =>
                     {
                         opts.AddPolicy("<%= Name %>", policy => policy.RequireClaim("<%= Name %>", <%= Name %>Template.PLUGINROLES.Split(',').ToArray()));
                     })
                     .AddMvc()
-                    .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
+                    .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 
             //needs to be after AddMvc to work correctly
             services.AddDataProtection()
-                    .PersistKeyToWebService(Configuration["PluginSettings:RedisServiceURL"], "<%= Name %>-Keys");
+                    .PersistKeyToWebService(Configuration["Webservice:Redis"], "<%= Name %>-Keys");
+            services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
         }
 
         #endregion Methods

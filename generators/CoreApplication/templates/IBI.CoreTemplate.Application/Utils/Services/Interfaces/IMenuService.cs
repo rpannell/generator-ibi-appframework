@@ -1,4 +1,4 @@
-﻿namespace IBI.<%= Name %>.Application.Utils.Services.Interfaces
+namespace IBI.<%= Name %>.Application.Utils.Services.Interfaces
 {
     public interface IMenuService
     {

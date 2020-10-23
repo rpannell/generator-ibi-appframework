@@ -18,6 +18,10 @@ namespace IBI.<%= Name %>.Service.Core.Context
 
         #region Constructors
 
+        /// <summary>
+        /// The main context representing all of the entities
+        /// </summary>
+        /// <param name="options"></param>
         public MainContext(DbContextOptions options) : base(options)
         {
         }
@@ -44,14 +48,12 @@ namespace IBI.<%= Name %>.Service.Core.Context
             this.Transaction = null;
         }
 
-        public int SaveChanges() => base.SaveChanges();
-
         /// <summary>
         /// Creates a db Transaction to run the updates in
         /// </summary>
         public void StartTransaction()
         {
-            if (this.Transaction != null) this.Transaction = this.Database.BeginTransaction();
+            if (this.Transaction == null) this.Transaction = this.Database.BeginTransaction(System.Data.IsolationLevel.Snapshot);
         }
 
         #endregion Transaction

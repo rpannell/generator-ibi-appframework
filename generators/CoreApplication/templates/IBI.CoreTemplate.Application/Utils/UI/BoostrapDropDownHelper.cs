@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.AspNetCore.Mvc.ViewFeatures.Internal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -29,7 +29,7 @@ namespace IBI.<%= Name %>.Application.Utils.UI
             return value.ToString();
         }
 
-        private static Type GetNonNullableModelType(ModelExplorer modelMetadata)
+        private static Type GetNonNullableModelType(ModelMetadata modelMetadata)
         {
             Type realModelType = modelMetadata.ModelType;
 
@@ -64,8 +64,16 @@ namespace IBI.<%= Name %>.Application.Utils.UI
         public static IHtmlContent BootstrapDropDownFor<TModel, TProperty>(this IHtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression, IEnumerable<SelectListItem> selectList, object htmlAttributes = null, string emptyText = "", bool isReadonly = false)
         {
             var attributes = HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes);
-            if (isReadonly) attributes.Add("disabled", "disabled");
-            if (!attributes.ContainsKey("class")) attributes.Add("class", string.Empty);
+            if (isReadonly)
+            {
+                attributes.Add("disabled", "disabled");
+            }
+
+            if (!attributes.ContainsKey("class"))
+            {
+                attributes.Add("class", string.Empty);
+            }
+
             attributes["class"] += " form-control ";
             var dropDownString = htmlHelper.DropDownListFor(expression, selectList, emptyText, attributes);
             if (isReadonly)
@@ -97,7 +105,10 @@ namespace IBI.<%= Name %>.Application.Utils.UI
         /// <returns></returns>
         public static IHtmlContent BootstrapEnumDropDownFor<TModel, TEnum>(this IHtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TEnum>> expression, object htmlAttributes, string emptyText = "", bool isReadonly = false)
         {
-            var metadata = ExpressionMetadataProvider.FromLambdaExpression(expression, htmlHelper.ViewData, htmlHelper.MetadataProvider);
+            var modelExpressionProvider = (ModelExpressionProvider)htmlHelper.ViewContext.HttpContext.RequestServices.GetService(typeof(IModelExpressionProvider));
+            var modelExplorer = modelExpressionProvider.CreateModelExpression(htmlHelper.ViewData, expression);
+            var metadata = modelExplorer.Metadata;
+
             var enumType = GetNonNullableModelType(metadata);
             var values = Enum.GetValues(enumType).Cast<TEnum>();
 
@@ -108,7 +119,7 @@ namespace IBI.<%= Name %>.Application.Utils.UI
                    {
                        Text = GetEnumDescription(value),
                        Value = value.ToString(),
-                       Selected = value.Equals(metadata.Model)
+                       Selected = value.Equals(metadata.ModelType)
                    });
 
             return BootstrapDropDownFor(htmlHelper, expression, items, htmlAttributes, emptyText, isReadonly);
@@ -127,7 +138,10 @@ namespace IBI.<%= Name %>.Application.Utils.UI
         /// <returns></returns>
         public static IHtmlContent BootstrapEnumIntDropDownFor<TModel, TEnum>(this IHtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TEnum>> expression, object htmlAttributes, string emptyText = "", bool isReadonly = false)
         {
-            var metadata = ExpressionMetadataProvider.FromLambdaExpression(expression, htmlHelper.ViewData, htmlHelper.MetadataProvider);
+            var modelExpressionProvider = (ModelExpressionProvider)htmlHelper.ViewContext.HttpContext.RequestServices.GetService(typeof(IModelExpressionProvider));
+            var modelExplorer = modelExpressionProvider.CreateModelExpression(htmlHelper.ViewData, expression);
+            var metadata = modelExplorer.Metadata;
+
             var enumType = GetNonNullableModelType(metadata);
             var values = Enum.GetValues(enumType).Cast<TEnum>();
             var items =
@@ -137,7 +151,7 @@ namespace IBI.<%= Name %>.Application.Utils.UI
                    {
                        Text = GetEnumDescription(value),
                        Value = GetEnumValue(value),
-                       Selected = value.Equals(metadata.Model)
+                       Selected = value.Equals(metadata.ModelType)
                    });
 
             return BootstrapDropDownFor(htmlHelper, expression, items, htmlAttributes, emptyText, isReadonly);
@@ -157,18 +171,23 @@ namespace IBI.<%= Name %>.Application.Utils.UI
         public static IHtmlContent BootstrapYesNoDropDownListFor<TModel, TProperty>(this IHtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression, object htmlAttributes, string emptyStringText = "", bool isReadonly = false)
         {
             var items = new List<SelectListItem>();
-            var metadata = ExpressionMetadataProvider.FromLambdaExpression(expression, htmlHelper.ViewData, htmlHelper.MetadataProvider);
+            //var metadata = ExpressionMetadataProvider.FromLambdaExpression(expression, htmlHelper.ViewData, htmlHelper.MetadataProvider);
+
+            var modelExpressionProvider = (ModelExpressionProvider)htmlHelper.ViewContext.HttpContext.RequestServices.GetService(typeof(IModelExpressionProvider));
+            var modelExplorer = modelExpressionProvider.CreateModelExpression(htmlHelper.ViewData, expression);
+            var metadata = modelExplorer.Metadata;
+
             items.Add(new SelectListItem()
             {
                 Text = "Yes",
                 Value = "true",
-                Selected = true.Equals(metadata.Model)
+                Selected = true.Equals(metadata.ModelType)
             });
             items.Add(new SelectListItem()
             {
                 Text = "No",
                 Value = "false",
-                Selected = false.Equals(metadata.Model)
+                Selected = false.Equals(metadata.ModelType)
             });
             return BootstrapDropDownFor(htmlHelper, expression, items, htmlAttributes, emptyStringText, isReadonly);
         }

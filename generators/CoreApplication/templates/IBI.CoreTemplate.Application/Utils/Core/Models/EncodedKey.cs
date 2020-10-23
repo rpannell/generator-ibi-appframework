@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 
 namespace IBI.<%= Name %>.Application.Utils.Core.Models
 {

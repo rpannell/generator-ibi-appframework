@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace IBI.<%= Name %>.Service.Core.Authentication.Basic
 {
     /// <summary>
-    ///
+    /// Handler for Basic Authentication
     /// </summary>
     public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {
@@ -35,6 +35,14 @@ namespace IBI.<%= Name %>.Service.Core.Authentication.Basic
 
         #region Constructors
 
+        /// <summary>
+        /// Handler to work with the basic authentication if needed
+        /// </summary>
+        /// <param name="options"></param>
+        /// <param name="logger"></param>
+        /// <param name="encoder"></param>
+        /// <param name="clock"></param>
+        /// <param name="activeDirectoryService"></param>
         public BasicAuthenticationHandler(
             IOptionsMonitor<AuthenticationSchemeOptions> options,
             ILoggerFactory logger,

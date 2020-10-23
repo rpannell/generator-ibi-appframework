@@ -1,4 +1,4 @@
-﻿namespace IBI.<%= Name %>.Application.Utils.Session
+namespace IBI.<%= Name %>.Application.Utils.Session
 {
     public class WebserviceSessionOptions
     {

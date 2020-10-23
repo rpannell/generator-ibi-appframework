@@ -1,4 +1,4 @@
-﻿using IBI.<%= Name %>.Application.Models;
+using IBI.<%= Name %>.Application.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 

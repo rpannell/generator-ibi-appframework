@@ -122,7 +122,7 @@ namespace IBI.<%= Name %>.Service.Repositories
 
         /// <summary>
         /// Does a search on <see cref="ActiveDirectory"/> by any property that
-        /// has the <see cref="AutoComplete"/> attribute
+        /// has the <see cref="Core.Models.AutoComplete"/> attribute
         /// </summary>
         /// <param name="length">The number of results</param>
         /// <param name="term">search term</param>

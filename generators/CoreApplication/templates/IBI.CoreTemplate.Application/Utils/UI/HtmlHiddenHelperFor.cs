@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.ViewFeatures.Internal;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System;
 using System.Linq.Expressions;
 
@@ -25,8 +25,10 @@ namespace IBI.<%= Name %>.Application.Utils.UI
         /// <returns>MvcHtmlString for the view</returns>
         public static IHtmlContent CleanHiddenFor<TModel, TProperty>(this IHtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression)
         {
-            var metadata = ExpressionMetadataProvider.FromLambdaExpression(expression, htmlHelper.ViewData, htmlHelper.MetadataProvider);
-            if (metadata.Model == null || (metadata.ModelType == typeof(string) && metadata.Model.ToString() == string.Empty))
+            var modelExpressionProvider = (ModelExpressionProvider)htmlHelper.ViewContext.HttpContext.RequestServices.GetService(typeof(IModelExpressionProvider));
+            var modelExplorer = modelExpressionProvider.CreateModelExpression(htmlHelper.ViewData, expression);
+            var metadata = modelExplorer.Metadata;
+            if (metadata.ModelType == null || (metadata.ModelType == typeof(string) && metadata.ModelType.ToString() == string.Empty))
             {
                 return htmlHelper.HiddenFor(expression, new { @Value = "" });
             }

@@ -13,7 +13,7 @@ namespace IBI.<%= Name %>.Service.Controllers
     /// <summary>
     /// Controller for <see cref="ActiveDirectory"/>
     /// </summary>
-	[Route("api/ActiveDirectory"), Authorize()]
+	[Route("api/ActiveDirectory"), Authorize(Policy = "Authenticated")]
     public partial class ActiveDirectoryController : Controller
     {
         #region Fields

@@ -65,7 +65,6 @@ namespace IBI.<%= Name %>.Service.Core.Services.Interfaces
         /// <returns>Queryable of Entity</returns>
         IQueryable<TEntity> GetAll();
 
-        /// </summary>
         /// <summary>
         /// Gets a set a records that are triggered by the AutoComplete search
         /// </summary>
