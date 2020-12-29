@@ -51,7 +51,7 @@ namespace IBI.<%= Name %>.Application
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Error");
                 app.UseAzureAppConfiguration();
             }
 
@@ -92,17 +92,28 @@ namespace IBI.<%= Name %>.Application
                     .AddSignalR();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>()
                     .AddTransient<IMenuService, MenuService>()
+                    .AddNamespaceServices("IBI.<%= Name %>.Application.Services.Interfaces", "IBI.<%= Name %>.Application.Services", "Service");
+
+#if DEBUG
+            services.AddDistributedWebserviceCache(opts =>
+                    {
+                        opts.InstanceName = "<%= Name %>";
+                        opts.WebServiceURL = this.Configuration["Webservice:Redis"];
+                    })
                     .AddWebserviceSession(opts =>
                     {
                         opts.InstanceName = "<%= Name %>";
-                        opts.WebServiceURL = Configuration["Webservice:Redis"];
-                    })
-                    .AddDistributedWebserviceCache(opts =>
+                        opts.WebServiceURL = this.Configuration["Webservice:Redis"];
+                    });
+#else
+            services.AddStackExchangeRedisCache(options =>
                     {
-                        opts.InstanceName = "<%= Name %>";
-                        opts.WebServiceURL = Configuration["Webservice:Redis"];
+                        options.Configuration = Configuration["Redis:Cache"];
+                        options.InstanceName = "<%= Name %>";
                     })
-                    .AddNamespaceServices("IBI.<%= Name %>.Application.Services.Interfaces", "IBI.<%= Name %>.Application.Services", "Service");
+                    .AddSingleton<ITicketStore, RedisCookieStore>()
+                    .AddTransient<Microsoft.AspNetCore.Session.ISessionStore, RedisSessionStore>();
+#endif
 
             services.AddAuthentication(o =>
                     {
@@ -118,14 +129,13 @@ namespace IBI.<%= Name %>.Application
                         options.Cookie.SameSite = SameSiteMode.None;
                         options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
                         options.Cookie.Name = "Cookies-<%= Name %>";
-                        options.SessionStore = new CookieStore(Configuration["Webservice:Redis"], "<%= Name %>");
                         options.AccessDeniedPath = "/Home/AccessDenied";
                     })
                     .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, o =>
                     {
                         o.SignInScheme = "Cookies-<%= Name %>";
                         o.Authority = this.Configuration["Authorization:Authority"];
-                        o.SignedOutRedirectUri = this.Configuration["ApplicationSettings:IdentityServerPostLogoutRedirectUri"];
+                        o.SignedOutRedirectUri = this.Configuration["<%= Name %>:IdentityServerPostLogoutRedirectUri"];
                         o.ClientId = this.Configuration["Authorization:MainAuthorityClient"];
                         o.ClientSecret = this.Configuration["Authorization:MainAuthorityPassword"];
                         o.Resource = "openid profile api1";

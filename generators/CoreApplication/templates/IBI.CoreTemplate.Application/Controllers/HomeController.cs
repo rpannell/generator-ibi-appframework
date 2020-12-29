@@ -1,4 +1,5 @@
 using IBI.<%= Name %>.Application.Utils.Core.Controllers;
+using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,7 @@ namespace IBI.<%= Name %>.Application.Controllers
     {
         #region Fields
 
+        private readonly TelemetryClient telemetryClient;
         private readonly IHttpContextAccessor httpContext;
         private readonly ILogger logger;
 
@@ -17,10 +19,11 @@ namespace IBI.<%= Name %>.Application.Controllers
 
         #region Constructors
 
-        public HomeController(IHttpContextAccessor httpContext, ILogger<HomeController> logger) : base(httpContext)
+        public HomeController(IHttpContextAccessor httpContext, ILogger<HomeController> logger, TelemetryClient telemetryClient) : base(httpContext)
         {
             this.logger = logger;
             this.httpContext = httpContext;
+            this.telemetryClient = telemetryClient;
         }
 
         #endregion Constructors
@@ -39,5 +42,26 @@ namespace IBI.<%= Name %>.Application.Controllers
         }
 
         #endregion Methods
+
+        #region Error Page
+
+        /// <summary>
+        /// Page to handle uncaught exceptions
+        /// </summary>
+        /// <returns></returns>
+        [Route("Error")]
+        public IActionResult Error()
+        {
+            var exceptionHandlerPathFeature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+            this.telemetryClient.TrackException(exceptionHandlerPathFeature.Error);
+            this.telemetryClient.TrackEvent("Error.ServerError", new Dictionary<string, string>
+            {
+                ["originalPath"] = exceptionHandlerPathFeature.Path,
+                ["error"] = exceptionHandlerPathFeature.Error.Message
+            });
+            return View();
+        }
+
+        #endregion Error Page
     }
 }

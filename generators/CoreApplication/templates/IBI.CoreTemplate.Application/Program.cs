@@ -67,7 +67,7 @@ namespace IBI.<%= Name %>.Application
                            config.AddUserSecrets(appAssembly, optional: true);
                        }
                    }
-                   else if (context.HostingEnvironment.IsEnvironment("Test"))
+                   else if (context.HostingEnvironment.IsEnvironment("Test") || context.HostingEnvironment.IsProduction())
                    {
                        config.AddAzureAppConfiguration(options =>
                        {
@@ -79,7 +79,7 @@ namespace IBI.<%= Name %>.Application
                            .ConfigureRefresh(configuration =>
                            {
                                configuration.Register(KeyFilter.Any, "Authority", true);
-                               configuration.Register(KeyFilter.Any, "ProToGo", true);
+                               configuration.Register(KeyFilter.Any, "<%= Name %>", true);
                                configuration.Register(KeyFilter.Any, "Redis", true);
                                configuration.Register(KeyFilter.Any, "WebFramework", true);
                                configuration.SetCacheExpiration(TimeSpan.FromMinutes(30));
@@ -87,25 +87,26 @@ namespace IBI.<%= Name %>.Application
                            .Select(KeyFilter.Any, "Authority")
                            .Select(KeyFilter.Any, "WebFramework")
                            .Select(KeyFilter.Any, "Redis")
-                           .Select(KeyFilter.Any, "ProToGo");
+                           .Select(KeyFilter.Any, "<%= Name %>");
                        });
                    }
-                   else if (context.HostingEnvironment.IsProduction())
-                   {
-                       //get the config data from the configured azure key vault
-                       var azureServiceTokenProvider = new AzureServiceTokenProvider();
-                       var keyVaultClient = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback));
+                   //if need, the keyvault version of the configuration
+                //    else if (context.HostingEnvironment.IsProduction())
+                //    {
+                //        //get the config data from the configured azure key vault
+                //        var azureServiceTokenProvider = new AzureServiceTokenProvider();
+                //        var keyVaultClient = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback));
 
-                       Console.WriteLine($"KeyVault: {builtConfig["KeyVaultName"]}");
+                //        Console.WriteLine($"KeyVault: {builtConfig["KeyVaultName"]}");
 
-                       config.AddAzureKeyVault(new AzureKeyVaultConfigurationOptions()
-                       {
-                           Vault = $"https://{builtConfig["KeyVaultName"]}.vault.azure.net/",
-                           Client = keyVaultClient,
-                           Manager = new DefaultKeyVaultSecretManager(),
-                           //ReloadInterval = System.TimeSpan.FromMinutes(30)
-                       });
-                   }
+                //        config.AddAzureKeyVault(new AzureKeyVaultConfigurationOptions()
+                //        {
+                //            Vault = $"https://{builtConfig["KeyVaultName"]}.vault.azure.net/",
+                //            Client = keyVaultClient,
+                //            Manager = new DefaultKeyVaultSecretManager(),
+                //            //ReloadInterval = System.TimeSpan.FromMinutes(30)
+                //        });
+                //    }
 
                    config.AddEnvironmentVariables();
                });
