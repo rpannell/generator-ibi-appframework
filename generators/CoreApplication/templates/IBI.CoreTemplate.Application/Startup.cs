@@ -104,6 +104,7 @@ namespace IBI.<%= Name %>.Application
             services.AddOptions()
                     .AddSignalR();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>()
+                    .AddSingleton<Microsoft.ApplicationInsights.Extensibility.ITelemetryInitializer, IBI.<%= Name %>.Application.Utils.TelemetryEnrichment>()
                     .AddTransient<IMenuService, MenuService>()
                     .AddNamespaceServices("IBI.<%= Name %>.Application.Services.Interfaces", "IBI.<%= Name %>.Application.Services", "Service");
 

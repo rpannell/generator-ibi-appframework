@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -89,12 +90,14 @@ namespace IBI.<%= Name %>.Service
         /// <param name="services">Current service collection</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers()
+                    .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
             //setup the repositories
             services
                 .AddAutoMapper(typeof(Startup))
                 .AddEntityFrameworkSqlServer()
                 .AddSingleton<IHttpContextAccessor, HttpContextAccessor>()
+                .AddSingleton<Microsoft.ApplicationInsights.Extensibility.ITelemetryInitializer, Core.Utils.TelemetryEnrichment>()
                 .AddScoped<MainContext>()
                 .AddDbContext<MainContext>(options => options.UseSqlServer(Configuration["Database:<%= Name %>"]))
                 //add DI for services and Repo

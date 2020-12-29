@@ -26,6 +26,12 @@ namespace IBI.<%= Name %>.Service.Core.Context
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            //deal with any entity modeling that needs to be done
+            base.OnModelCreating(modelBuilder);
+        }
+        
         #endregion Constructors
 
         #region Transaction
