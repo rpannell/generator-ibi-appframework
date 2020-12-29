@@ -82,11 +82,13 @@ namespace IBI.<%= Name %>.Application
                                configuration.Register(KeyFilter.Any, "<%= Name %>", true);
                                configuration.Register(KeyFilter.Any, "Redis", true);
                                configuration.Register(KeyFilter.Any, "WebFramework", true);
+                               configuration.Register(KeyFilter.Any, "DataProtection", true);
                                configuration.SetCacheExpiration(TimeSpan.FromMinutes(30));
                            })
                            .Select(KeyFilter.Any, "Authority")
                            .Select(KeyFilter.Any, "WebFramework")
                            .Select(KeyFilter.Any, "Redis")
+                           .Select(KeyFilter.Any, "DataProtection")
                            .Select(KeyFilter.Any, "<%= Name %>");
                        });
                    }

@@ -1,5 +1,11 @@
 using AutoMapper;
+
+#if DEBUG
+
 using IBI.<%= Name %>.Application.Utils.Cache;
+
+#endif
+
 using IBI.<%= Name %>.Application.Utils.Core;
 using IBI.<%= Name %>.Application.Utils.DataProtection;
 using IBI.<%= Name %>.Application.Utils.Services;
@@ -8,6 +14,13 @@ using IBI.<%= Name %>.Application.Utils.Session;
 using IdentityModel;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
+
+#if !DEBUG
+
+using Microsoft.AspNetCore.DataProtection;
+
+#endif
+
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -111,7 +124,7 @@ namespace IBI.<%= Name %>.Application
                         options.Configuration = Configuration["Redis:Cache"];
                         options.InstanceName = "<%= Name %>";
                     })
-                    .AddSingleton<ITicketStore, RedisCookieStore>()
+                    .AddSingleton<Microsoft.AspNetCore.Authentication.Cookies.ITicketStore, RedisCookieStore>()
                     .AddTransient<Microsoft.AspNetCore.Session.ISessionStore, RedisSessionStore>();
 #endif
 
@@ -130,6 +143,9 @@ namespace IBI.<%= Name %>.Application
                         options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
                         options.Cookie.Name = "Cookies-<%= Name %>";
                         options.AccessDeniedPath = "/Home/AccessDenied";
+#if DEBUG
+                        options.SessionStore = new CookieStore(this.Configuration["Webservice:Redis"], "<%= Name %>");
+#endif
                     })
                     .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, o =>
                     {
@@ -169,8 +185,14 @@ namespace IBI.<%= Name %>.Application
                     .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 
             //needs to be after AddMvc to work correctly
+#if !DEBUG
             services.AddDataProtection()
-                    .PersistKeyToWebService(Configuration["Webservice:Redis"], "<%= Name %>-Keys");
+                    .SetApplicationName("<%= Name %>")
+                    .PersistKeysToAzureBlobStorage(this.Configuration["Storage:AppFrameworkFiles"], "persistedkeys", "<%= Name %>.xml")
+                    .ProtectKeysWithAzureKeyVault(new Uri(this.Configuration["DataProtectionKey:<%= Name %>"]), new Azure.Identity.DefaultAzureCredential());
+
+#endif
+
             services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
         }
 
