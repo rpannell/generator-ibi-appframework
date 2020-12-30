@@ -181,6 +181,19 @@ namespace IBI.<%= Name %>.Application.Utils.RestClient
         /// Post to an action name with some url parameters and return a list of entities
         /// </summary>
         /// <param name="action">The action name</param>
+        /// <param name="obj">The object to send to the controller</param>
+        /// <param name="args">List of url parameters</param>
+        /// <returns>T</returns>
+        public async System.Threading.Tasks.Task<T> PostGetFromActionAsync(string action, object obj, params object[] args)
+        {
+            var response = await this.CreateResponse(HttpMethod.Post, action, obj, args);
+            return this.HandleReturnAsync<T>(response);
+        }
+
+        /// <summary>
+        /// Post to an action name with some url parameters and return a list of entities
+        /// </summary>
+        /// <param name="action">The action name</param>
         /// /// <param name="obj">The object to send to the controller</param>
         /// <param name="args">List of url parameters</param>
         /// <returns>List of entities</returns>
@@ -188,6 +201,20 @@ namespace IBI.<%= Name %>.Application.Utils.RestClient
         {
             var response = this.CreateResponse(HttpMethod.Post, action, obj, args);
             var results = this.HandleReturn<List<T>>(response);
+            return results;
+        }
+
+        /// <summary>
+        /// Post to an action name with some url parameters and return a list of entities
+        /// </summary>
+        /// <param name="action">The action name</param>
+        /// /// <param name="obj">The object to send to the controller</param>
+        /// <param name="args">List of url parameters</param>
+        /// <returns>List of entities</returns>
+        public async System.Threading.Tasks.Task<List<T>> PostGetListFromActionAsync(string action, object obj, params object[] args)
+        {
+            var response = await this.CreateResponse(HttpMethod.Post, action, obj, args);
+            var results = this.HandleReturnAsync<List<T>>(response);
             return results;
         }
 
@@ -330,6 +357,19 @@ namespace IBI.<%= Name %>.Application.Utils.RestClient
             return results;
         }
 
+        /// <summary>
+        /// Get the AutoComplete list for a specific entity based on the resource url
+        /// </summary>
+        /// <param name="searchTerm">The search term from the UI</param>
+        /// <param name="length">Defaults to 20</param>
+        /// <returns></returns>
+        public virtual async Task<List<T>> GetAutoCompleteAsync(string searchTerm, int length = 20, int type = 0)
+        {
+            var response = await this.CreateResponse(HttpMethod.Post, "GetAutoComplete", new { Length = length, SearchTerm = searchTerm }, type);
+            var results = this.HandleReturnAsync<List<T>>(response);
+            return results;
+        }
+
         [Obsolete("Get extra is no longer supported, please use a custom get route")]
         public virtual List<T> GetExtra(int id, string extra)
         {
@@ -376,6 +416,22 @@ namespace IBI.<%= Name %>.Application.Utils.RestClient
             return results;
         }
 
+        /// <summary>
+        /// Get a page of data from an entity
+        /// </summary>
+        /// <param name="limit">The size of a page</param>
+        /// <param name="offset">The row number to offset a page</param>
+        /// <param name="search">The search string</param>
+        /// <param name="sort">The sort Property</param>
+        /// <param name="order">The sort direction</param>
+        /// <returns>PaginationResult T</returns>
+        public virtual async Task<PaginationResult<T>> GetPageAsync(int limit, int offset, string search = null, string sort = null, string order = null)
+        {
+            var response = await this.CreateResponse(HttpMethod.Get, string.Format("GetPage?limit={0}&offset={1}&search={2}&sort={3}&sortOrder={4}", limit, offset, search, sort, order));
+            var results = this.HandleReturnAsync<PaginationResult<T>>(response);
+            return results;
+        }
+        
         #endregion Get Actions
 
         #region Post Actions

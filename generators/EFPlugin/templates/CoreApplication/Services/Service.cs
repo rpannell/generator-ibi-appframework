@@ -35,8 +35,21 @@ namespace IBI.<%= projectname %>.Application.Services
         /// <summary>
         /// Creates a(n) <%= entityinfo.PropertyName %>Service with the help of the IPluginSettings
         /// </summary>
-        public <%= entityinfo.PropertyName %>Service(IDistributedCache cache, IOptions<PluginSettings> settings, IHttpContextAccessor httpContextAccessor)
-            : base(cache, settings, httpContextAccessor)
+        //public <%= entityinfo.PropertyName %>Service(IDistributedCache cache, Microsoft.Extensions.Options.IOptions<PluginSettings> settings, IHttpContextAccessor httpContextAccessor)
+        //    : base(cache, settings, httpContextAccessor)
+        //{
+        //    //this.serviceClient = new RestClient<<%= entityinfo.PropertyName %>>(this.URL, "api/<%= entityinfo.PropertyName %>/", this.UserName, this.Roles);
+        //    this.serviceClient = new RestClient<<%= entityinfo.PropertyName %>> (this.URL, "api/<%= entityinfo.PropertyName %>/", this.Token);
+        //}
+
+        /// <summary>
+        /// Creates a(n) <%= entityinfo.PropertyName %>Service
+        /// </summary>
+        /// <param name="cache">The local cache</param>
+        /// <param name="configuration">The full configuration</param>
+        /// <param name="httpContextAccessor">HttpContext accessor</param>
+        public <%= entityinfo.PropertyName %>Service(IDistributedCache cache, Microsoft.Extensions.Configuration.IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+            : base(cache, configuration, httpContextAccessor)
         {
             //this.serviceClient = new RestClient<<%= entityinfo.PropertyName %>>(this.URL, "api/<%= entityinfo.PropertyName %>/", this.UserName, this.Roles);
             this.serviceClient = new RestClient<<%= entityinfo.PropertyName %>>(this.URL, "api/<%= entityinfo.PropertyName %>/", this.Token);
@@ -49,12 +62,22 @@ namespace IBI.<%= projectname %>.Application.Services
         /// <summary>
         /// Deletes a(n) <%= entityinfo.PropertyName %> entity from the databaes
         /// </summary>
-        /// <param name="Id">The primary key of the <%= entityinfo.PropertyName %> to delete</param>
-        public void Delete(<%= entityinfo.PrimaryKey %> Id)
+        /// <param name="id">The primary key of the <%= entityinfo.PropertyName %> to delete</param>
+        public void Delete(<%= entityinfo.PrimaryKey %> id)
         {
-            this.serviceClient.Delete(Id);
+            this.serviceClient.Delete(id);
             this.cache.Remove(CACHEKEY);
         }
+
+        /// <summary>
+        /// Deletes a(n) <%= entityinfo.PropertyName %> entity from the databaes
+        /// </summary>
+        /// <param name="id">The primary key of the <%= entityinfo.PropertyName %> to delete</param>
+        //public async System.Threading.Tasks.Task DeleteAsync(<%= entityinfo.PrimaryKey %> id)
+        //{
+        //    await this.serviceClient.DeleteAsync(id);
+        //    this.cache.Remove(CACHEKEY);
+        //}
 
         /// <summary>
         /// Get all of the <%= entityinfo.PropertyName %> entity from the database
@@ -66,13 +89,31 @@ namespace IBI.<%= projectname %>.Application.Services
         }
 
         /// <summary>
+        /// Get all of the <%= entityinfo.PropertyName %> entity from the database
+        /// </summary>
+        /// <returns>List of <%= entityinfo.PropertyName %></returns>
+        //public async System.Threading.Tasks.Task<List<<%= entityinfo.PropertyName %>>> GetAsync()
+        //{
+        //    return await this.serviceClient.GetAsync();
+        //}
+
+        /// <summary>
         /// Returns a single <%= entityinfo.PropertyName %> entity by it's primary key
         /// </summary>
         /// <returns><%= entityinfo.PropertyName %></returns>
-        public <%= entityinfo.PropertyName %> Get(<%= entityinfo.PrimaryKey %> Id)
+        public <%= entityinfo.PropertyName %> Get(<%= entityinfo.PrimaryKey %> id)
         {
-            return this.serviceClient.Get(Id);
+            return this.serviceClient.Get(id);
         }
+
+        /// <summary>
+        /// Returns a single <%= entityinfo.PropertyName %> entity by it's primary key
+        /// </summary>
+        /// <returns><%= entityinfo.PropertyName %></returns>
+        //public async System.Threading.Tasks.Task<<%= entityinfo.PropertyName %>> GetAsync(<%= entityinfo.PrimaryKey %> id)
+        //{
+        //    return await this.serviceClient.GetAsync(id);
+        //}
 
         /// <summary>
         /// Inserts a(n) <%= entityinfo.PropertyName %> record to the database and
@@ -89,6 +130,20 @@ namespace IBI.<%= projectname %>.Application.Services
         }
 
         /// <summary>
+        /// Inserts a(n) <%= entityinfo.PropertyName %> record to the database and
+        /// returns the same entity back with it's new primary
+        /// key filled in
+        /// </summary>
+        /// <param name="entity">The new <%= entityinfo.PropertyName %> record to create</param>
+        /// <returns><%= entityinfo.PropertyName %></returns>
+        //public async System.Threading.Tasks.Task<<%= entityinfo.PropertyName %>> InsertAsync(<%= entityinfo.PropertyName %> entity)
+        //{
+        //    var rtnVal = await this.serviceClient.PostReturnIdAsync(entity);
+        //    this.cache.Remove(CACHEKEY);
+        //    return rtnVal;
+        //}
+
+        /// <summary>
         /// Updates a(n) <%= entityinfo.PropertyName %> record on the database
         /// </summary>
         /// <param name="entity">The <%= entityinfo.PropertyName %> entity to update</param>
@@ -97,6 +152,16 @@ namespace IBI.<%= projectname %>.Application.Services
             this.serviceClient.Put(entity.<%= entityinfo.PrimaryName %>, entity);
             this.cache.Remove(CACHEKEY);
         }
+
+        /// <summary>
+        /// Updates a(n) <%= entityinfo.PropertyName %> record on the database
+        /// </summary>
+        /// <param name="entity">The <%= entityinfo.PropertyName %> entity to update</param>
+        //public async System.Threading.Tasks.Task UpdateAsync(<%= entityinfo.PropertyName %> entity)
+        //{
+        //    await this.serviceClient.PutAsync(entity.<%= entityinfo.PrimaryName %>, entity);
+        //    this.cache.Remove(CACHEKEY);
+        //}
 
         #endregion CRUD Operations
 
@@ -121,6 +186,23 @@ namespace IBI.<%= projectname %>.Application.Services
         }
 
         /// <summary>
+        /// Gets a page of the <%= entityinfo.PropertyName %> entity with
+        /// an advanced query to help filter the data
+        /// </summary>
+        /// <param name="advancedSearch">List of AdvancedSearch properties</param>
+        /// <param name="limit">The size of the page</param>
+        /// <param name="offset">The row offset</param>
+        /// <param name="search">The search string if any</param>
+        /// <param name="sort">The name of the property to sort by</param>
+        /// <param name="order">The order direction to sort the property (asc/desc)</param>
+        /// <param name="type">Helps with filtering the data further</param>
+        /// <returns>PaginationResult of <%= entityinfo.PropertyName %></returns>
+        //public async System.Threading.Tasks.Task<PaginationResult<<%= entityinfo.PropertyName %>>> GetAdvancedPageAsync(List<AdvancedSearch> advancedSearch, int limit, int offset, string search = null, string sort = null, string order = null, int type = 0)
+        //{
+        //    return await this.serviceClient.GetAdvancedPageAsync(advancedSearch, limit, offset, search, sort, order, type);
+        //}
+
+        /// <summary>
         /// Get a page of the <%= entityinfo.PropertyName %> entity from the database
         /// with the standard paging
         /// </summary>
@@ -135,6 +217,21 @@ namespace IBI.<%= projectname %>.Application.Services
             var results = this.serviceClient.GetPage(limit, offset, search, sort, order);
             return results;
         }
+
+        /// <summary>
+        /// Get a page of the <%= entityinfo.PropertyName %> entity from the database
+        /// with the standard paging
+        /// </summary>
+        /// <param name="limit">The size of the page</param>
+        /// <param name="offset">The row offset</param>
+        /// <param name="search">The search string if any</param>
+        /// <param name="sort">The name of the property to sort by</param>
+        /// <param name="order">The order direction to sort the property (asc/desc)</param>
+        /// <returns>PaginationResult of <%= entityinfo.PropertyName %></returns>
+        //public async System.Threading.Tasks.Task<PaginationResult<<%= entityinfo.PropertyName %>>> GetPageAsync(int limit, int offset, string search, string sort, string order)
+        //{
+        //    return await this.serviceClient.GetPageAsync(limit, offset, search, sort, order);
+        //}
 
         #endregion Paging Operations
 
@@ -153,6 +250,19 @@ namespace IBI.<%= projectname %>.Application.Services
             return this.serviceClient.GetAutoComplete(term, length, type);
         }
 
+        /// <summary>
+        /// Returns a list of the Category entity by the autocomplete
+        /// properties by the term
+        /// </summary>
+        /// <param name="term">The search term to filter the records of the Category entity</param>
+        /// <param name="length">The number of records to return</param>
+        /// <param name="type">The type to return</param>
+        /// <returns>List of Category</returns>
+        //public async System.Threading.Tasks.Task<List<Category>> GetAutocompleteAsync(string term, int length = 20, int type = 0)
+        //{
+        //    return await this.serviceClient.GetAutoCompleteAsync(term, length, type);
+        //}
+        
         #endregion Auto Complete
 
         /* GENIE HOOK */

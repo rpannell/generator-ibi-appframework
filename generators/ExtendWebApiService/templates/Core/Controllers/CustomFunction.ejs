@@ -1,7 +1,7 @@
 
         // Created by Genie on <%= TodaysDate %> by v<%= Version %> 
         [<%if(IsPost){%>HttpPost()<%}else{%>HttpGet()<%}%>, Route("<%= functionname %><%= ControllerPath %>")]
-        public async <%- Return %> <%= functionname %>(<%= FunctionDefinition %>)
+        public async <%- ServiceReturn %> <%= functionname %>(<%= FunctionDefinition %>)
         {
             try
             {
