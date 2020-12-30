@@ -8,5 +8,5 @@
         //// Created by Genie on <%= TodaysDate %> by v<%= Version %> 
         //public async <%- ServiceReturn %> <%= functionname %>Async(<%= FunctionDefinition %>)
         //{
-        //    <%if(HasReturnType){%>return await<%}%> this.serviceClient.<%if(IsList){if(IsPost){%>PostGetListFromActionAsync<%}else{%>GetListFromActionAsync<%}}else{if(IsPost){%>PostGetFromActionAsync<%}else{%>GetFromActionAsync<%}}%>("<%= functionname%>"<%if(FunctionCall != ""){%>, <%}if(IsPost && FunctionCall != ""){%>null, <%}%><%= FunctionCall %>);
+        //    <%if(HasReturnType){%>return<%}%> await this.serviceClient.<%if(IsList){if(IsPost){%>PostGetListFromActionAsync<%}else{%>GetListFromActionAsync<%}}else{if(IsPost){%>PostGetFromActionAsync<%}else{%>GetFromActionAsync<%}}%>("<%= functionname%>"<%if(FunctionCall != ""){%>, <%}if(IsPost && FunctionCall != ""){%>null, <%}%><%= FunctionCall %>);
         //}
