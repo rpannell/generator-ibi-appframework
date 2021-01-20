@@ -146,6 +146,8 @@ namespace IBI.<%= Name %>.Application
                         options.AccessDeniedPath = "/Home/AccessDenied";
 #if DEBUG
                         options.SessionStore = new CookieStore(this.Configuration["Webservice:Redis"], "<%= Name %>");
+#else
+                    options.SessionStore = new RedisCookieStore(this.Configuration);
 #endif
                     })
                     .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, o =>
