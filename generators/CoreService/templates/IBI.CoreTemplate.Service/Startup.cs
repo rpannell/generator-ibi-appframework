@@ -59,6 +59,7 @@ namespace IBI.<%= Name %>.Service
             }
             else
             {
+                app.UseAzureAppConfiguration();
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
