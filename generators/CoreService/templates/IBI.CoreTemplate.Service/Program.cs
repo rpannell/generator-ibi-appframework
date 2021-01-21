@@ -83,9 +83,7 @@ namespace IBI.<%= Name %>.Service
                            })
                            .ConfigureRefresh(configuration =>
                            {
-                               configuration.Register(KeyFilter.Any, "Authority", true);
-                               configuration.Register(KeyFilter.Any, "<%= Name %>", true);
-                               configuration.Register(KeyFilter.Any, "Redis", true);
+                               configuration.Register("<%= Name %>:RefreshSentinel", "<%= Name %>", true);
                                configuration.SetCacheExpiration(TimeSpan.FromMinutes(30));
                            })
                            .Select(KeyFilter.Any, "Authority")
