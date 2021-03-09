@@ -92,9 +92,12 @@ module.exports = class extends Generator {
     var applicationVersion = ibigenerator.getApplicationVersionFromProj(this.options.location);
 
     if(applicationVersion != null && applicationVersion != ""){
+      //.NET CORE VErsion
       this._writeCoreApplicationFiles(entityInfo);
     } else {
-
+      /*
+       * ASP.NET Version
+       */
       for (var i = 0; i < entityInfo.length; i++) {
         var entityTemplateData = this._buildTemplateData(entityInfo[i]);
         

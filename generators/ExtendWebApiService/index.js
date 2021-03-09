@@ -99,6 +99,12 @@ module.exports = class extends Generator {
     }
   }
 
+  /*
+   * Runs EJS on the coded template
+   *  opens the source file, replaces HOOKSTRING with the
+   *  string from EJS and adds the HOOKSTRING back on the end
+   * Write out the new file!
+   */
   _templateFile(templatePath, fileName) {
     var that = this;
     var currentFile = "";
@@ -134,6 +140,10 @@ module.exports = class extends Generator {
           path.join(this.options.serviceLocation, "Controllers", this.templatedata.entityname + "Controller.cs"));
   }
 
+  /*
+   * Run the .net core version of the custom route
+   *  make sure to handle async and void
+   */
   _coreVersion(serviceGenerateVersion){
     ibigenerator.log("", "The return: " + this.templatedata.Return);
     if(this.templatedata.ServiceReturn === "void"){
