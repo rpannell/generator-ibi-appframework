@@ -37,7 +37,7 @@
     "npm-pack-all": "^1.12.7",
     "q": "^1.5.1",
     "winston": "^2.4.4",
-    "xmldom": "^0.1.27",
+    "xmldom": "^0.6.0",
     "yeoman-generator": "^3.2.0",
     "yosay": "^2.0.2"
   },
